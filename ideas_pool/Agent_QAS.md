@@ -1,4 +1,4 @@
-# 文献库驱动的量子线路设计方法
+# 文献库驱动Agent的量子线路设计方法
 
 ## 思路概述
 本想法涉及构建量子架构搜索（QAS）文献库，并通过智能体（Agent）或大语言模型（LLM）阅读分析文献，生成解决线路深度与表达能力平衡问题的新思路。最终利用工具（如Ralph、code-agent）实现解决方案，针对实际科学问题[Quantum circuit design search](https://link.springer.com/article/10.1007/s42484-021-00051-z)。
