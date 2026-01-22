@@ -1,8 +1,18 @@
-我的第一个想法是 使用强化学习量子架构搜索VQE线路（包括HEA以及UCC线路），以实现更大体系的精确计算。目标是得到比HEA_Rylinear、UCCSD or adaptvqe更浅的线路。
-其中搜索空间的池子可以为硬件高效的门（Rx、Ry、Rz and CNOT or SWAP），但这部分工作已经有文献实现了（https://arxiv.org/pdf/2103.16089），后续我也会在literature文件夹中创建一个属于RLQAS的文献库。
-但对于UCC线路来说是创新的，我们可以将算符池定义为UCC的单双（三）SD(T)激发算符、或者是李震宇提出的sQEB算符以适应硬件（https://pubs.acs.org/doi/10.1021/acs.jctc.5c00119）
-通过RLQAS来搜索线路，目标是尽可能模拟大的体系例如（20qubits左右）
+# 强化学习量子架构搜索（RLQAS）用于VQE线路优化
 
-第二个做法是这样的：将我的QAS文献库导入到literature文件夹中，或者通过agent-skills搜索更多的关于QAS或者量子线路设计的文章，形成一个文献库。通过Agent or LLM阅读这些文献，以及我和他们的chat。
-让不同的agent和LLM提出一些关于可以解决线路设计中线路深度与表达能力平衡的问题。（例如提出如何设计一个更高效的激发算符的线路，设计算符如何排列组合算符等可能的解决办法）
-Anyway，总之就是和Agent聊一些可能的idea出来，然后最后通过“牛马”工具例如Ralph、code-agent等来实现，最好是可以解决一些存在的科学问题。
+## 思路概述
+本想法旨在使用强化学习量子架构搜索（RLQAS）方法优化变分量子本征求解器（VQE）的线路结构，重点针对硬件高效ansatz（HEA）和酉耦合簇（UCC）线路。目标是实现比现有方法（如HEA_Rylinear、UCCSD或adaptvqe）更浅的线路深度，以支持更大量子体系（约20量子比特）的精确计算[Reinforcement learning for optimization of variational quantum circuit architectures](https://arxiv.org/abs/2103.16089)。
+
+## 方法论
+- **RLQAS框架**：采用强化学习算法自动搜索最优量子线路架构，通过奖励函数引导搜索过程，平衡线路深度与表达能⼒[Reinforcement learning for optimization of variational quantum circuit architectures](https://arxiv.org/abs/2103.16089)。
+- **HEA线路搜索空间**：对于HEA线路，搜索空间定义为硬件高效的门集，如Rx、Ry、Rz和CNOT或SWAP门。这部分工作已有文献基础，可直接引用[Reinforcement learning for optimization of variational quantum circuit architectures](https://arxiv.org/abs/2103.16089)。
+- **UCC线路创新**：对于UCC线路，算符池可定义为UCC的单双（三）SD(T)激发算符，或采用李震宇提出的sQEB算符以适应硬件约束[sQEB operators](https://pubs.acs.org/doi/10.1021/acs.jctc.5c00119)。这是本想法的创新点。
+
+## 目标
+- 通过RLQAS搜索获得浅层线路，减少线路深度，提升计算效率。
+- 应用于大体系模拟（如20量子比特），比较RLQAS优化线路与HEA_Rylinear、UCCSD和adaptvqe的性能。
+- 在literature文件夹中建立RLQAS文献库，整合相关研究。
+
+## 参考文献
+1. [Reinforcement learning for optimization of variational quantum circuit architectures](https://arxiv.org/abs/2103.16089)
+2. [sQEB operators](https://pubs.acs.org/doi/10.1021/acs.jctc.5c00119)
