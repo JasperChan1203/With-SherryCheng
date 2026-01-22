@@ -1,4 +1,4 @@
-# 强化学习量子架构搜索（RLQAS）用于VQE线路优化
+# 通过Agent实现强化学习量子架构搜索（RLQAS）用于VQE线路优化
 
 ## 思路概述
 本想法旨在使用强化学习量子架构搜索（RLQAS）方法优化变分量子本征求解器（VQE）的线路结构，重点针对硬件高效ansatz（HEA）和酉耦合簇（UCC）线路。目标是实现比现有方法（如HEA_Rylinear、UCCSD或adaptvqe）更浅的线路深度，以支持更大量子体系（约20量子比特）的精确计算[Reinforcement learning for optimization of variational quantum circuit architectures](https://arxiv.org/abs/2103.16089)。
