@@ -1,2 +1,2 @@
 # With-SherryCheng
-cooperation with Sherry Cheng in Agent4S
+cooperation with Sherry Cheng in LLM for QC
