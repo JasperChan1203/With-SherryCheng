@@ -1,0 +1,52 @@
+{
+  "molecule": {
+    "formula": "H2",
+    "bond_length_angstrom": 0.5,
+    "basis_set": "sto-3g",
+    "atoms": [
+      {
+        "symbol": "H",
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "symbol": "H",
+        "position": [
+          0.5,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "energies": {
+    "hf_hartree": -1.042996274540095,
+    "fci_hartree": -1.0551597944706257,
+    "correlation_energy": -0.012163519930530775
+  },
+  "hamiltonian": {
+    "n_qubits": 4,
+    "h1_hermitian": true,
+    "n_spin_orbitals": 4,
+    "n_spatial_orbitals": 2,
+    "one_electron_integrals_shape": [
+      2,
+      2
+    ],
+    "two_electron_integrals_shape": [
+      4,
+      4,
+      4,
+      4
+    ]
+  },
+  "implementation_details": {
+    "method": "PySCF RHF + FCI",
+    "pyscf_version": "2.12.0",
+    "script_path": "/curie-home/jpchen/scratch/LLM/code/RLQAS/Ralph_Test_H2_Hamiltonian/generate_h2_hamiltonian.py",
+    "converged": true
+  }
+}

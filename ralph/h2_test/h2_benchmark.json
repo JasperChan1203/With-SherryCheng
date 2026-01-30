@@ -1,0 +1,57 @@
+{
+  "molecule": {
+    "formula": "H2",
+    "atoms": [
+      {
+        "symbol": "H",
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "symbol": "H",
+        "position": [
+          0.0,
+          0.0,
+          0.5
+        ]
+      }
+    ],
+    "bond_length_angstrom": 0.5,
+    "basis_set": "sto-3g"
+  },
+  "energies": {
+    "hf_hartree": -1.042996274540095,
+    "fci_hartree": -1.0551597944706257,
+    "correlation_energy": -0.012163519930530775
+  },
+  "hamiltonian": {
+    "n_spin_orbitals": 4,
+    "n_qubits_min": 2,
+    "n_qubits_max": 4,
+    "one_electron_integrals_shape": [
+      2,
+      2
+    ],
+    "two_electron_integrals_shape": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "h1_hermitian": true
+  },
+  "verification_tolerances": {
+    "hf_energy_tolerance_hartree": 0.001,
+    "fci_energy_tolerance_hartree": 0.001,
+    "bond_length_tolerance_angstrom": 0.01,
+    "basis_set_match": true
+  },
+  "computation_details": {
+    "method": "PySCF RHF + FCI",
+    "pyscf_version": "2.12.0",
+    "converged": true
+  }
+}
