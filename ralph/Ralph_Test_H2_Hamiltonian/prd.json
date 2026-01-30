@@ -1,0 +1,80 @@
+{
+  "project": "H2 Hamiltonian Generation with PySCF - Basic Validation",
+  "version": "1.0",
+  "description": "A minimal test to verify Ralph can correctly use PySCF to generate the Hamiltonian for H2 molecule at 0.5 Å bond length. This serves as a foundational benchmark for quantum computational chemistry tasks.",
+  "objectives": [
+    {
+      "id": "h2-hamiltonian",
+      "description": "Generate H2 molecule Hamiltonian at 0.5 Å bond length using PySCF and compute reference energies",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Python script that imports PySCF and creates H2 molecule at 0.5 Å bond length",
+        "Script performs Hartree-Fock calculation and extracts molecular integrals",
+        "Script computes Full Configuration Interaction (FCI) energy for reference",
+        "Script outputs Hamiltonian information (number of qubits, energy values)",
+        "Generate h2_results.json file with structured results in specified format",
+        "Run validation script to verify implementation against benchmark",
+        "Documentation explaining the molecular setup and results",
+        "Ralph learning log documenting iteration progress and thought process"
+      ]
+    }
+  ],
+  "constraints": {
+    "technology_stack": ["python3", "pyscf>=2.0.0", "numpy"],
+    "output_requirements": [
+      "Clean, well-commented code",
+      "Clear output showing Hamiltonian generation steps",
+      "Reproducible results (set random seeds if needed)",
+      "Brief documentation of the approach",
+      "Ralph learning log showing iterative learning progress"
+    ],
+    "computational_limits": [
+      "Focus only on H2 molecule at 0.5 Å bond length",
+      "Keep computation light (PySCF HF+FCI for H2 is trivial)",
+      "This can run on login node as a quick test"
+    ],
+    "verification_points": [
+      "Expected H2 Hamiltonian dimension: 2-4 qubits depending on mapping",
+      "FCI energy should be close to literature values for H2 at 0.5 Å",
+      "Hamiltonian should be Hermitian and properly constructed"
+    ]
+  },
+  "output_format": {
+    "h2_results.json": {
+      "required_fields": [
+        {"molecule": ["formula", "bond_length_angstrom", "basis_set"]},
+        {"energies": ["hf_hartree", "fci_hartree"]},
+        {"hamiltonian": ["n_qubits", "h1_hermitian"]},
+        {"implementation_details": ["method", "pyscf_version", "script_path"]}
+      ],
+      "notes": "JSON file must be valid and include all required fields"
+    }
+  },
+  "validation_procedure": {
+    "description": "Implementation must be validated against benchmark values",
+    "steps": [
+      "Generate h2_results.json with implementation results",
+      "Run validation script: python ../validate_h2.py h2_results.json",
+      "Check validation summary for any issues",
+      "If validation fails, review implementation and try again"
+    ],
+    "validation_script": "../validate_h2.py",
+    "benchmark_file": "../h2_benchmark.json (not accessible to Ralph)",
+    "expected_outcome": "All validation checks pass (validation_summary.txt shows PASS status)"
+  },
+  "success_criteria": {
+    "technical": [
+      "PySCF successfully installed and imported",
+      "H2 molecule correctly defined with 0.5 Å bond length",
+      "Hartree-Fock and FCI energies computed",
+      "Hamiltonian information extracted and displayed"
+    ],
+    "process": [
+      "Ralph completes the objective in one iteration",
+      "Knowledge about PySCF usage captured in AGENTS.md",
+      "Clear progress recorded in progress.txt",
+      "Code is reusable for future quantum chemistry tasks",
+      "Ralph learning log demonstrates iterative learning and problem-solving"
+    ]
+  }
+}
