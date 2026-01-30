@@ -1,9 +1,0 @@
-H2 Hamiltonian Validation Summary
-========================================
-
-Overall Status: PASS - All checks passed
-
-Detailed Results:
-  MOLECULE     PASS   - OK
-  ENERGIES     PASS   - OK
-  HAMILTONIAN  PASS   - OK
