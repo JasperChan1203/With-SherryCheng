@@ -1,0 +1,236 @@
+LiH VQE Custom Circuit Generation
+==================================================
+HF energy: -7.83090558 Hartree
+Selected active orbitals (0-indexed): [1, 2, 5]
+Orbital energies: [-0.25010671  0.07327904  0.43264512]
+Justification: Selected active orbitals using PySCF sort_mo([2,3,6]) (1-based indices): Orbital 2 (0-based 1, energy -0.250107 Ha), Orbital 3 (0-based 2, energy 0.073279 Ha), Orbital 6 (0-based 5, energy 0.432645 Ha). This matches the benchmark calculation and yields FCI energy -7.860153 Hartree.
+FCI energy (PySCF CASCI): -7.86015321 Hartree
+Active integrals computed: int1e shape (3, 3), int2e shape (3, 3, 3, 3)
+Number of terms in Hamiltonian: 100
+First 20 terms:
+  (): -7.11840566426017
+  ((3, 'Z'),): -0.09900948773405584
+  ((2, 'Z'), (3, 'X')): -0.005302441768954853
+  ((3, 'X'),): 0.005302441768954853
+  ((2, 'X'), (3, 'X')): -0.005558042287278105
+  ((2, 'Y'), (3, 'Y')): 0.005558042287278105
+  ((2, 'Z'), (3, 'Z')): -0.20481087912542295
+  ((2, 'X'), (3, 'Z')): 0.018610343552991147
+  ((2, 'X'),): 0.018610343552991147
+  ((2, 'Z'),): 0.30113861754747356
+  ((1, 'Z'),): 0.09900948773405585
+  ((0, 'Z'), (1, 'X')): 0.005302441768954855
+  ((1, 'X'),): 0.005302441768954855
+  ((0, 'X'), (1, 'X')): -0.005558042287278103
+  ((0, 'Y'), (1, 'Y')): 0.005558042287278103
+  ((0, 'Z'), (1, 'Z')): -0.20481087912542295
+  ((0, 'X'), (1, 'Z')): -0.018610343552991154
+  ((0, 'X'),): 0.018610343552991154
+  ((0, 'Z'),): -0.3011386175474736
+  ((1, 'Z'), (3, 'Z')): -0.11506949138818226
+Qubit Hamiltonian built, n_qubits = 4
+Number of Pauli terms: 100
+HF state energy (active space): -7.83090558
+HF state (binary): 1100
+HF state energy (active space): -7.83090558
+Total HF energy (core + active): -14.70132026
+Expected total HF energy: -7.83090558
+Starting VQE optimization with 18 parameters
+Restart 1, Iteration 1: energy = -7.42528073
+Restart 1, Iteration 2: energy = -7.44635146
+Restart 1, Iteration 3: energy = -7.45297405
+Restart 1, Iteration 4: energy = -7.46501214
+Restart 1, Iteration 5: energy = -7.51378036
+Restart 1, Iteration 6: energy = -7.53728303
+Restart 1, Iteration 7: energy = -7.57811829
+Restart 1, Iteration 8: energy = -7.64620260
+Restart 1, Iteration 9: energy = -7.73537193
+Restart 1, Iteration 10: energy = -7.77918379
+Restart 1, Iteration 11: energy = -7.80240712
+Restart 1, Iteration 12: energy = -7.81531767
+Restart 1, Iteration 13: energy = -7.82065435
+Restart 1, Iteration 14: energy = -7.82404505
+Restart 1, Iteration 15: energy = -7.82632058
+Restart 1, Iteration 16: energy = -7.82922638
+Restart 1, Iteration 17: energy = -7.83161572
+Restart 1, Iteration 18: energy = -7.83288489
+Restart 1, Iteration 19: energy = -7.83366291
+Restart 1, Iteration 20: energy = -7.83393550
+Restart 1, Iteration 21: energy = -7.83440965
+Restart 1, Iteration 22: energy = -7.83520066
+Restart 1, Iteration 23: energy = -7.83614795
+Restart 1, Iteration 24: energy = -7.83676084
+Restart 1, Iteration 25: energy = -7.83776046
+Restart 1, Iteration 26: energy = -7.83911637
+Restart 1, Iteration 27: energy = -7.84022783
+Restart 1, Iteration 28: energy = -7.84195381
+Restart 1, Iteration 29: energy = -7.84347537
+Restart 1, Iteration 30: energy = -7.84462151
+Restart 1, Iteration 31: energy = -7.84620742
+Restart 1, Iteration 32: energy = -7.84818831
+Restart 1, Iteration 33: energy = -7.85056349
+Restart 1, Iteration 34: energy = -7.85423523
+Restart 1, Iteration 35: energy = -7.85796585
+Restart 1, Iteration 36: energy = -7.85886827
+Restart 1, Iteration 37: energy = -7.85954637
+Restart 1, Iteration 38: energy = -7.85976583
+Restart 1, Iteration 39: energy = -7.85984308
+Restart 1, Iteration 40: energy = -7.85987585
+Restart 1, Iteration 41: energy = -7.85990401
+Restart 1, Iteration 42: energy = -7.85992605
+Restart 1, Iteration 43: energy = -7.85994396
+Restart 1, Iteration 44: energy = -7.85995424
+Restart 1, Iteration 45: energy = -7.85995656
+Restart 1, Iteration 46: energy = -7.85995676
+Restart 1, Iteration 47: energy = -7.85995679
+Restart 1, Iteration 48: energy = -7.85995681
+Restart 1, Iteration 49: energy = -7.85995681
+Restart 1, Iteration 50: energy = -7.85995681
+Restart 1, Iteration 51: energy = -7.85995681
+Restart 1, Iteration 52: energy = -7.85995681
+Restart 1, Iteration 53: energy = -7.85995681
+Restart 1, Iteration 54: energy = -7.85995681
+Restart 1, Iteration 55: energy = -7.85995681
+Restart 1, Iteration 56: energy = -7.85995682
+Restart 1, Iteration 57: energy = -7.85995682
+Restart 1, Iteration 58: energy = -7.85995684
+Restart 1, Iteration 59: energy = -7.85995685
+Restart 1, Iteration 60: energy = -7.85995688
+Restart 1, Iteration 61: energy = -7.85995694
+Restart 1, Iteration 62: energy = -7.85995701
+Restart 1, Iteration 63: energy = -7.85995710
+Restart 1, Iteration 64: energy = -7.85995754
+Restart 1, Iteration 65: energy = -7.85995819
+Restart 1, Iteration 66: energy = -7.85995869
+Restart 1, Iteration 67: energy = -7.85995901
+Restart 1, Iteration 68: energy = -7.85995921
+Restart 1, Iteration 69: energy = -7.85995950
+Restart 1, Iteration 70: energy = -7.85995991
+Restart 1, Iteration 71: energy = -7.85996063
+Restart 1, Iteration 72: energy = -7.85996116
+Restart 1, Iteration 73: energy = -7.85996168
+Restart 1, Iteration 74: energy = -7.85996246
+Restart 1, Iteration 75: energy = -7.85996361
+Restart 1, Iteration 76: energy = -7.85996505
+Restart 1, Iteration 77: energy = -7.85996653
+Restart 1, Iteration 78: energy = -7.85996785
+Restart 1, Iteration 79: energy = -7.85996858
+Restart 1, Iteration 80: energy = -7.85996964
+Restart 1, Iteration 81: energy = -7.85997092
+Restart 1, Iteration 82: energy = -7.85997165
+Restart 1, Iteration 83: energy = -7.85997293
+Restart 1, Iteration 84: energy = -7.85997510
+Restart 1, Iteration 85: energy = -7.85997853
+Restart 1, Iteration 86: energy = -7.85998308
+Restart 1, Iteration 87: energy = -7.85998370
+Restart 1, Iteration 88: energy = -7.85998486
+Restart 1, Iteration 89: energy = -7.85998697
+Restart 1, Iteration 90: energy = -7.85999060
+Restart 1, Iteration 91: energy = -7.85999627
+Restart 1, Iteration 92: energy = -7.86000357
+Restart 1, Iteration 93: energy = -7.86000581
+Restart 1, Iteration 94: energy = -7.86000827
+Restart 1, Iteration 95: energy = -7.86001219
+Restart 1, Iteration 96: energy = -7.86001684
+Restart 1, Iteration 97: energy = -7.86002118
+Restart 1, Iteration 98: energy = -7.86002435
+Restart 1, Iteration 99: energy = -7.86002644
+Restart 1, Iteration 100: energy = -7.86002930
+Restart 1 finished: energy = -7.86002930, success = False
+Restart 2, Iteration 1: energy = -7.48323837
+Restart 2, Iteration 2: energy = -7.52876997
+Restart 2, Iteration 3: energy = -7.60056735
+Restart 2, Iteration 4: energy = -7.64480141
+Restart 2, Iteration 5: energy = -7.71049088
+Restart 2, Iteration 6: energy = -7.74465445
+Restart 2, Iteration 7: energy = -7.74856402
+Restart 2, Iteration 8: energy = -7.75027819
+Restart 2, Iteration 9: energy = -7.75337049
+Restart 2, Iteration 10: energy = -7.75915434
+Restart 2, Iteration 11: energy = -7.77033819
+Restart 2, Iteration 12: energy = -7.78512490
+Restart 2, Iteration 13: energy = -7.80211249
+Restart 2, Iteration 14: energy = -7.81186237
+Restart 2, Iteration 15: energy = -7.82028369
+Restart 2, Iteration 16: energy = -7.82593153
+Restart 2, Iteration 17: energy = -7.82830606
+Restart 2, Iteration 18: energy = -7.82902243
+Restart 2, Iteration 19: energy = -7.82968803
+Restart 2, Iteration 20: energy = -7.83063329
+Restart 2, Iteration 21: energy = -7.83107379
+Restart 2, Iteration 22: energy = -7.83131019
+Restart 2, Iteration 23: energy = -7.83172586
+Restart 2, Iteration 24: energy = -7.83244150
+Restart 2, Iteration 25: energy = -7.83332384
+Restart 2, Iteration 26: energy = -7.83396488
+Restart 2, Iteration 27: energy = -7.83490345
+Restart 2, Iteration 28: energy = -7.83564595
+Restart 2, Iteration 29: energy = -7.83616547
+Restart 2, Iteration 30: energy = -7.83695772
+Restart 2, Iteration 31: energy = -7.83818959
+Restart 2, Iteration 32: energy = -7.84017708
+Restart 2, Iteration 33: energy = -7.84329504
+Restart 2, Iteration 34: energy = -7.84710782
+Restart 2, Iteration 35: energy = -7.85235688
+Restart 2, Iteration 36: energy = -7.85396228
+Restart 2, Iteration 37: energy = -7.85594724
+Restart 2, Iteration 38: energy = -7.85641996
+Restart 2, Iteration 39: energy = -7.85701603
+Restart 2, Iteration 40: energy = -7.85727176
+Restart 2, Iteration 41: energy = -7.85772459
+Restart 2, Iteration 42: energy = -7.85847797
+Restart 2, Iteration 43: energy = -7.85915918
+Restart 2, Iteration 44: energy = -7.85943730
+Restart 2, Iteration 45: energy = -7.85973322
+Restart 2, Iteration 46: energy = -7.85979808
+Restart 2, Iteration 47: energy = -7.85984453
+Restart 2, Iteration 48: energy = -7.85990283
+Restart 2, Iteration 49: energy = -7.85995929
+Restart 2, Iteration 50: energy = -7.86000771
+Restart 2, Iteration 51: energy = -7.86002497
+Restart 2, Iteration 52: energy = -7.86002949
+Restart 2, Iteration 53: energy = -7.86003232
+Restart 2, Iteration 54: energy = -7.86003700
+Restart 2, Iteration 55: energy = -7.86004461
+Restart 2, Iteration 56: energy = -7.86005547
+Restart 2, Iteration 57: energy = -7.86006195
+Restart 2, Iteration 58: energy = -7.86006413
+Restart 2, Iteration 59: energy = -7.86006441
+Restart 2, Iteration 60: energy = -7.86006443
+Restart 2, Iteration 61: energy = -7.86006443
+Restart 2, Iteration 62: energy = -7.86006443
+Restart 2, Iteration 63: energy = -7.86006443
+Restart 2, Iteration 64: energy = -7.86006443
+Restart 2, Iteration 65: energy = -7.86006443
+Restart 2, Iteration 66: energy = -7.86006443
+Restart 2, Iteration 67: energy = -7.86006443
+Restart 2, Iteration 68: energy = -7.86006445
+Restart 2, Iteration 69: energy = -7.86006450
+Restart 2, Iteration 70: energy = -7.86006460
+Restart 2, Iteration 71: energy = -7.86006478
+Restart 2, Iteration 72: energy = -7.86006563
+Restart 2, Iteration 73: energy = -7.86006615
+Restart 2, Iteration 74: energy = -7.86006692
+Restart 2, Iteration 75: energy = -7.86006767
+Restart 2, Iteration 76: energy = -7.86006800
+Restart 2, Iteration 77: energy = -7.86006828
+Restart 2, Iteration 78: energy = -7.86006841
+Restart 2, Iteration 79: energy = -7.86006860
+Restart 2, Iteration 80: energy = -7.86006874
+Restart 2, Iteration 81: energy = -7.86006878
+Restart 2, Iteration 82: energy = -7.86006879
+Restart 2, Iteration 83: energy = -7.86006881
+Restart 2, Iteration 84: energy = -7.86006881
+Restart 2, Iteration 85: energy = -7.86006882
+Restart 2, Iteration 86: energy = -7.86006882
+Restart 2, Iteration 87: energy = -7.86006882
+Restart 2, Iteration 88: energy = -7.86006882
+Restart 2, Iteration 89: energy = -7.86006882
+Restart 2, Iteration 90: energy = -7.86006882
+Restart 2, Iteration 91: energy = -7.86006882
+Restart 2, Iteration 92: energy = -7.86006882
+Restart 2, Iteration 93: energy = -7.86006883
+Restart 2, Iteration 94: energy = -7.86006883
+Restart 2, Iteration 95: energy = -7.86006883
+Restart 2, Iteration 96: energy = -7.86006883
+Restart 2, Iteration 97: energy = -7.86006883

@@ -1,0 +1,379 @@
+{
+  "molecule": {
+    "formula": "LiH",
+    "bond_length_angstrom": 2.0,
+    "basis_set": "sto-3g",
+    "hf_energy": -7.830905584637074,
+    "orbital_energies": [
+      -2.361187848314218,
+      -0.25010671381478816,
+      0.07327904035430893,
+      0.16210567288619984,
+      0.16210567288619984,
+      0.4326451168494869
+    ]
+  },
+  "target_fci_energy": -7.860153,
+  "results": [
+    {
+      "combo_0based": [
+        0,
+        2,
+        3
+      ],
+      "combo_1based": [
+        1,
+        3,
+        4
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "0": {
+          "energy": -2.361187848314218,
+          "occupied": true
+        },
+        "2": {
+          "energy": 0.07327904035430893,
+          "occupied": false
+        },
+        "3": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        0,
+        2,
+        4
+      ],
+      "combo_1based": [
+        1,
+        3,
+        5
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "0": {
+          "energy": -2.361187848314218,
+          "occupied": true
+        },
+        "2": {
+          "energy": 0.07327904035430893,
+          "occupied": false
+        },
+        "4": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        0,
+        2,
+        5
+      ],
+      "combo_1based": [
+        1,
+        3,
+        6
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "0": {
+          "energy": -2.361187848314218,
+          "occupied": true
+        },
+        "2": {
+          "energy": 0.07327904035430893,
+          "occupied": false
+        },
+        "5": {
+          "energy": 0.4326451168494869,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        0,
+        3,
+        4
+      ],
+      "combo_1based": [
+        1,
+        4,
+        5
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "0": {
+          "energy": -2.361187848314218,
+          "occupied": true
+        },
+        "3": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        },
+        "4": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        0,
+        3,
+        5
+      ],
+      "combo_1based": [
+        1,
+        4,
+        6
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "0": {
+          "energy": -2.361187848314218,
+          "occupied": true
+        },
+        "3": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        },
+        "5": {
+          "energy": 0.4326451168494869,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        0,
+        4,
+        5
+      ],
+      "combo_1based": [
+        1,
+        5,
+        6
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "0": {
+          "energy": -2.361187848314218,
+          "occupied": true
+        },
+        "4": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        },
+        "5": {
+          "energy": 0.4326451168494869,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        1,
+        2,
+        3
+      ],
+      "combo_1based": [
+        2,
+        3,
+        4
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "1": {
+          "energy": -0.25010671381478816,
+          "occupied": true
+        },
+        "2": {
+          "energy": 0.07327904035430893,
+          "occupied": false
+        },
+        "3": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        1,
+        2,
+        4
+      ],
+      "combo_1based": [
+        2,
+        3,
+        5
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "1": {
+          "energy": -0.25010671381478816,
+          "occupied": true
+        },
+        "2": {
+          "energy": 0.07327904035430893,
+          "occupied": false
+        },
+        "4": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        1,
+        2,
+        5
+      ],
+      "combo_1based": [
+        2,
+        3,
+        6
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "1": {
+          "energy": -0.25010671381478816,
+          "occupied": true
+        },
+        "2": {
+          "energy": 0.07327904035430893,
+          "occupied": false
+        },
+        "5": {
+          "energy": 0.4326451168494869,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        1,
+        3,
+        4
+      ],
+      "combo_1based": [
+        2,
+        4,
+        5
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "1": {
+          "energy": -0.25010671381478816,
+          "occupied": true
+        },
+        "3": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        },
+        "4": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        1,
+        3,
+        5
+      ],
+      "combo_1based": [
+        2,
+        4,
+        6
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "1": {
+          "energy": -0.25010671381478816,
+          "occupied": true
+        },
+        "3": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        },
+        "5": {
+          "energy": 0.4326451168494869,
+          "occupied": false
+        }
+      }
+    },
+    {
+      "combo_0based": [
+        1,
+        4,
+        5
+      ],
+      "combo_1based": [
+        2,
+        5,
+        6
+      ],
+      "fci_energy": -7.832221960355423,
+      "casci_total": -7.832221960355423,
+      "core_energy": -6.870414678427148,
+      "diff_from_target": 0.027931039644577105,
+      "orbitals": {
+        "1": {
+          "energy": -0.25010671381478816,
+          "occupied": true
+        },
+        "4": {
+          "energy": 0.16210567288619984,
+          "occupied": false
+        },
+        "5": {
+          "energy": 0.4326451168494869,
+          "occupied": false
+        }
+      }
+    }
+  ]
+}

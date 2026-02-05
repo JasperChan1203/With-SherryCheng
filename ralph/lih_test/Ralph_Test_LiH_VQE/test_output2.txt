@@ -1,0 +1,62 @@
+LiH VQE Custom Circuit Generation
+==================================================
+HF energy: -7.83090558 Hartree
+Selected active orbitals (0-indexed): [1, 2, 5]
+Orbital energies: [-0.25010671  0.07327904  0.43264512]
+Justification: Selected active orbitals using PySCF sort_mo([2,3,6]) (1-based indices): Orbital 2 (0-based 1, energy -0.250107 Ha), Orbital 3 (0-based 2, energy 0.073279 Ha), Orbital 6 (0-based 5, energy 0.432645 Ha). This matches the benchmark calculation and yields FCI energy -7.860153 Hartree.
+FCI energy (PySCF CASCI): -7.86015321 Hartree
+Active integrals computed: int1e shape (3, 3), int2e shape (3, 3, 3, 3)
+Qubit Hamiltonian built, n_qubits = 4
+Number of Pauli terms: 100
+Starting VQE optimization with 18 parameters
+Iteration 1: energy = -7.69019065
+Iteration 2: energy = -7.72287015
+Iteration 3: energy = -7.75155623
+Iteration 4: energy = -7.75488707
+Iteration 5: energy = -7.75670690
+Iteration 6: energy = -7.75884190
+Iteration 7: energy = -7.75914936
+Iteration 8: energy = -7.75929177
+Iteration 9: energy = -7.75940492
+Iteration 10: energy = -7.75953571
+Iteration 11: energy = -7.75965546
+Iteration 12: energy = -7.75982999
+Iteration 13: energy = -7.76009601
+Iteration 14: energy = -7.76042056
+Iteration 15: energy = -7.76065817
+Iteration 16: energy = -7.76077319
+Iteration 17: energy = -7.76083176
+Iteration 18: energy = -7.76090404
+Iteration 19: energy = -7.76096907
+Iteration 20: energy = -7.76101271
+Iteration 21: energy = -7.76104492
+Iteration 22: energy = -7.76107910
+Iteration 23: energy = -7.76110769
+Iteration 24: energy = -7.76111925
+Iteration 25: energy = -7.76112088
+Iteration 26: energy = -7.76112096
+Iteration 27: energy = -7.76112096
+Iteration 28: energy = -7.76112096
+Iteration 29: energy = -7.76112096
+Iteration 30: energy = -7.76112096
+Iteration 31: energy = -7.76112096
+Iteration 32: energy = -7.76112096
+Iteration 33: energy = -7.76112096
+Iteration 34: energy = -7.76112096
+Iteration 35: energy = -7.76112096
+Iteration 36: energy = -7.76112096
+Iteration 37: energy = -7.76112097
+Iteration 38: energy = -7.76112097
+Iteration 39: energy = -7.76112097
+Iteration 40: energy = -7.76112097
+Iteration 41: energy = -7.76112100
+Iteration 42: energy = -7.76112104
+Iteration 43: energy = -7.76112112
+Iteration 44: energy = -7.76112127
+Iteration 45: energy = -7.76112140
+Iteration 46: energy = -7.76112151
+Iteration 47: energy = -7.76112169
+Iteration 48: energy = -7.76112191
+Iteration 49: energy = -7.76112197
+Iteration 50: energy = -7.76112204
+Iteration 51: energy = -7.76112204

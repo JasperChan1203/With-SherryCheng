@@ -1,0 +1,45 @@
+{
+  "project": "LiH VQE Benchmark (Corrected)",
+  "version": "2.0",
+  "description": "CORRECTED benchmark values for LiH molecule at 2.0 Å bond length with active_space=(2,3), orbitals=[1,2,5]. FCI energy has been corrected from -7.844879 to -7.860153 Hartree.",
+  "molecule": {
+    "formula": "LiH",
+    "bond_length_angstrom": 2.0,
+    "basis_set": "sto-3g",
+    "active_space": [
+      2,
+      3
+    ],
+    "active_orbitals": [
+      1,
+      2,
+      5
+    ]
+  },
+  "energies": {
+    "fci_hartree": -7.860153,
+    "note": "CORRECT FCI energy for LiH at 2.0 Å with active_space=(2,3), orbitals=[1,2,5]. Previous value -7.844879 was incorrect. HF energy should be computed by Ralph as part of VQE implementation."
+  },
+  "qubit_information": {
+    "n_spatial_orbitals": 3,
+    "n_spin_orbitals": 6,
+    "n_qubits_parity": 4
+  },
+  "verification_tolerances": {
+    "bond_length_tolerance_angstrom": 0.01,
+    "fci_energy_tolerance_hartree": 0.0016,
+    "vqe_energy_tolerance_hartree": 0.0016
+  },
+  "validation_criteria": {
+    "vqe_success": "Final VQE energy must be within 1.6 mHa (0.0016 Hartree) of CORRECT FCI energy (-7.860153 Hartree)",
+    "circuit_requirements": "Must produce parameterized circuit with optimization. For custom circuit test: circuit must be manually designed, not using pre-defined ansatz functions.",
+    "convergence_requirements": "Energy curve should show decreasing trend",
+    "note": "FCI energy is CORRECTED user-provided reference. Ralph should compute VQE energy to match this reference. This benchmark is for the custom circuit design test."
+  },
+  "correction_history": {
+    "previous_fci_energy": -7.844879,
+    "correct_fci_energy": -7.860153,
+    "difference": 0.015274,
+    "note": "Previous FCI energy was incorrect by 15.274 mHa. Correct energy confirmed by user."
+  }
+}

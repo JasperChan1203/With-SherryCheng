@@ -1,0 +1,175 @@
+{
+  "project": "LiH VQE Custom Circuit Design Test with PySCF Control",
+  "version": "3.0",
+  "description": "Test Ralph's ability to MANUALLY DESIGN variational quantum eigensolver (VQE) circuits for LiH molecule at 2.0 Å bond length. This test focuses on using PySCF for active orbital control and FCI reference energy calculation, ensuring chemical interpretation.",
+  "objectives": [
+    {
+      "id": "lih-vqe-custom-circuit-pyscf",
+      "description": "MANUALLY DESIGN and implement a VQE circuit for LiH molecule at 2.0 Å bond length. Use PySCF to control active orbital selection with chemical interpretation (active_space=(2,3)), perform parity transformation to 4 qubits. Compute FCI reference energy using PySCF.",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Python script that uses PySCF to define LiH molecule with bond length 2.0 Å, basis set STO-3G",
+        "Use PySCF to select active orbitals with chemical interpretation for active space (2 electrons, 3 orbitals)",
+        "Implement parity transformation using Tencirchem to obtain 4-qubit Hamiltonian",
+        "Compute FCI energy using PySCF as reference energy",
+        "MANUALLY DESIGN VQE ansatz circuit: DO NOT use pre-defined ansatz functions like HEA.ry(), UCCSD(), etc.",
+        "Manually construct quantum circuit using basic quantum gates (Rx, Ry, Rz, CNOT, etc.) with trainable parameters",
+        "Document the circuit design rationale and architecture choices",
+        "Use Scipy BFGS optimizer for classical optimization",
+        "Track and record energy convergence curve during optimization",
+        "Compute final VQE energy and compare with PySCF FCI reference",
+        "Output circuit gates, parameters, energy curve, and final energy",
+        "Generate lih_results.json file with structured results",
+        "Run validation script to verify implementation",
+        "Documentation explaining the VQE setup, circuit design, and results",
+        "Ralph learning log documenting iterative learning and design decisions"
+      ]
+    }
+  ],
+  "reference_example": {
+    "h2_vqe_example": {
+      "description": "H2 VQE circuit at 0.74 Å bond length - EXAMPLE OF MANUAL CIRCUIT DESIGN",
+      "circuit_gates": ["rz1", "ry0", "cnot0_1", "rx1", "rx1", "rx1"],
+      "parameters": [-1.1754374504089355, -0.22369137406349182, 0.0, 1.4277695416969798, 0.2513202621250142, 1.462464690208435],
+      "framework": "Tencirchem",
+      "optimizer": "Scipy BFGS",
+      "note": "This example shows manual circuit design with specific gates. Ralph should create a SIMILAR MANUAL DESIGN for LiH, not use pre-built ansatz functions."
+    },
+    "lih_fci_reference_note": {
+      "description": "FCI energy reference must be computed using PySCF, not taken from fixed benchmark",
+      "note": "Ralph should compute FCI energy for LiH at 2.0 Å with active_space=(2,3) using PySCF's CASCI or FCI implementation. This computed FCI energy serves as reference for VQE accuracy."
+    }
+  },
+  "constraints": {
+    "technology_stack": ["python3", "pyscf>=2.0.0", "tencirchem", "numpy", "scipy"],
+    "molecular_settings": {
+      "molecule": "LiH",
+      "bond_length_angstrom": 2.0,
+      "basis_set": "STO-3G",
+      "active_space": [2, 3],
+      "active_orbital_selection": "Use PySCF to select active orbitals with chemical interpretation (e.g., energy ordering, HOMO-LUMO). Do NOT use fixed orbital indices.",
+      "transformation": "parity",
+      "qubits": 4
+    },
+    "vqe_settings": {
+      "ansatz_design": "MANUAL DESIGN REQUIRED - NO PRE-DEFINED ANSATZ FUNCTIONS",
+      "allowed_gates": ["Rx", "Ry", "Rz", "CNOT", "CZ", "CRx", "CRy", "CRz", "RXX", "RYY", "RZZ"],
+      "prohibited_approaches": [
+        "DO NOT use pre-defined ansatz functions: HEA.ry(), HEA.rx(), HEA.ucc(), UCC(), UCCSD(), etc.",
+        "DO NOT call any function that returns a complete ansatz circuit",
+        "DO NOT use 'from_xxx' methods that construct ansatz automatically"
+      ],
+      "manual_construction_required": [
+        "Manually create quantum circuit object",
+        "Manually add parameterized gates to the circuit",
+        "Manually define parameter initialization",
+        "Manually construct entanglement layers if needed"
+      ],
+      "optimizer": "Scipy BFGS",
+      "framework": "Tencirchem",
+      "measurement": "energy expectation value"
+    },
+    "orbital_selection_requirements": [
+      "Use PySCF to perform Hartree-Fock calculation for LiH",
+      "Select active orbitals based on chemical interpretation (e.g., energy ordering, natural orbitals)",
+      "Active space must contain 2 electrons in 3 orbitals",
+      "Orbital selection should be justified (e.g., HOMO, LUMO, LUMO+1)",
+      "Document the selected orbital indices and their energies"
+    ],
+    "fci_reference_requirements": [
+      "Compute FCI energy using PySCF's CASCI or FCI implementation",
+      "Verify FCI energy convergence",
+      "Use the computed FCI energy as reference for VQE accuracy target",
+      "Document FCI calculation method and energy value"
+    ],
+    "circuit_design_requirements": [
+      "Circuit must have trainable parameters (at least 4 parameters)",
+      "Circuit should include both single-qubit rotations and entangling gates",
+      "No restriction on total gate count (can use as many gates as needed)",
+      "Circuit depth should be reasonable for 4-qubit system",
+      "Document design choices: why certain gates, connectivity, layers were chosen"
+    ],
+    "output_requirements": [
+      "Clean, well-commented code showing manual circuit construction",
+      "Clear output showing VQE optimization progress",
+      "Reproducible results (set random seeds if needed)",
+      "Visualization of energy convergence curve",
+      "Detailed documentation of circuit design approach and rationale",
+      "Ralph learning log showing iterative learning and design decisions"
+    ],
+    "computational_limits": [
+      "Focus only on LiH molecule at 2.0 Å bond length with specified settings",
+      "Keep computation reasonable (4-qubit VQE is moderate complexity)",
+      "Should run on compute node with adequate resources"
+    ],
+    "verification_points": [
+      "FCI energy must be computed using PySCF (not taken from fixed benchmark)",
+      "Orbital selection must be performed by PySCF with chemical justification",
+      "Final VQE energy should be within 1.6 mHa of PySCF-computed FCI energy",
+      "Circuit must be manually designed (not using pre-defined ansatz functions)",
+      "Circuit should have proper gate structure with trainable parameters",
+      "Optimization should converge to reasonable energy minimum",
+      "Energy curve should show decreasing trend",
+      "Code inspection will verify manual circuit construction"
+    ]
+  },
+  "output_format": {
+    "lih_results.json": {
+      "required_fields": [
+        {"molecule": ["formula", "bond_length_angstrom", "active_space", "selected_orbitals", "n_qubits"]},
+        {"vqe_settings": ["ansatz_type", "optimizer", "framework", "design_approach"]},
+        {"circuit": ["gates", "parameters", "circuit_depth", "n_parameters", "design_rationale"]},
+        {"results": ["final_energy_hartree", "fci_energy_hartree", "energy_difference_mha", "converged", "fci_computation_method"]},
+        {"convergence_data": ["energy_curve", "n_iterations", "optimization_time_seconds"]},
+        {"orbital_information": ["selected_orbitals", "orbital_energies", "selection_justification"]},
+        {"implementation_details": ["method", "pyscf_version", "tencirchem_version", "script_path", "manual_design_verified"]}
+      ],
+      "notes": "JSON file must be valid and include all required fields. The 'selected_orbitals' field should list the orbital indices chosen by PySCF. 'fci_computation_method' should describe how FCI energy was computed (e.g., PySCF CASCI)."
+    }
+  },
+  "validation_procedure": {
+    "description": "Implementation must be validated against PySCF-computed FCI energy AND manual circuit design requirement",
+    "steps": [
+      "Generate lih_results.json with implementation results",
+      "Run validation script: python ../validate_lih_custom_circuit.py lih_results.json",
+      "Manual code review to verify circuit was manually designed (not using pre-defined ansatz functions)",
+      "Check validation summary for any issues",
+      "If validation fails, review implementation and try again"
+    ],
+    "validation_script": "../validate_lih_custom_circuit.py",
+    "benchmark_file": "../lih_benchmark_corrected.json",
+    "note": "Validation script may need to be updated to accept PySCF-computed FCI energy. For now, it uses fixed benchmark; ensure your computed FCI energy matches benchmark tolerance."
+  },
+  "success_criteria": {
+    "technical": [
+      "PySCF and Tencirchem successfully installed and imported",
+      "LiH molecule correctly defined with PySCF, active orbital selection performed with chemical interpretation",
+      "FCI energy computed using PySCF as reference",
+      "Parity transformation correctly implemented to 4-qubit Hamiltonian",
+      "VQE circuit MANUALLY DESIGNED (not using pre-defined ansatz functions)",
+      "Circuit includes both single-qubit rotations and entangling gates",
+      "Final VQE energy within 1.6 mHa of PySCF-computed FCI energy",
+      "Energy convergence curve recorded and visualized"
+    ],
+    "process": [
+      "Ralph completes the objective within maximum iterations",
+      "Knowledge about manual VQE circuit design and PySCF orbital selection captured in AGENTS.md",
+      "Clear progress recorded in progress.txt",
+      "Detailed documentation of circuit design decisions and rationale",
+      "Ralph learning log demonstrates iterative learning, design thinking, and problem-solving"
+    ],
+    "evaluation_focus": [
+      "Circuit architecture innovation and design capability",
+      "Understanding of ansatz design principles for quantum chemistry",
+      "Ability to manually construct effective parameterized circuits",
+      "Proper use of PySCF for orbital selection and FCI reference computation"
+    ]
+  },
+  "notes": [
+    "This test focuses on evaluating Ralph's circuit design capabilities and proper use of PySCF for quantum chemistry tasks.",
+    "Active orbital selection must be performed by PySCF with chemical justification, not using fixed orbital indices.",
+    "FCI reference energy must be computed using PySCF, not taken from fixed benchmark.",
+    "Gate count is not restricted; focus is on effective circuit architecture.",
+    "Ralph should document orbital selection process and FCI computation method."
+  ]
+}

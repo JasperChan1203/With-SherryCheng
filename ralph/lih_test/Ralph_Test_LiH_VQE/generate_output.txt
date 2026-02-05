@@ -1,0 +1,99 @@
+LiH VQE Custom Circuit Generation
+==================================================
+HF energy: -7.83090558 Hartree
+Selected active orbitals (0-indexed): [1, 2, 5]
+Orbital energies: [-0.25010671  0.07327904  0.43264512]
+Justification: Selected user-specified active orbitals (1-based indices [2,3,6]): Orbital 2 (0-based 1, energy -0.250107 Ha), Orbital 3 (0-based 2, energy 0.073279 Ha), Orbital 6 (0-based 5, energy 0.432645 Ha). This selection corresponds to PySCF sort_mo([2,3,6]) and tencirchem aslst=[1,2,5].
+FCI energy (PySCF CASCI): -7.83222196 Hartree
+Active integrals computed: int1e shape (3, 3), int2e shape (3, 3, 3, 3)
+Qubit Hamiltonian built, n_qubits = 4
+Number of Pauli terms: 52
+Starting VQE optimization with 18 parameters
+Iteration 1: energy = -7.29472419
+Iteration 2: energy = -7.47652820
+Iteration 3: energy = -7.49798076
+Iteration 4: energy = -7.51465324
+Iteration 5: energy = -7.53929890
+Iteration 6: energy = -7.55689869
+Iteration 7: energy = -7.58255158
+Iteration 8: energy = -7.60844920
+Iteration 9: energy = -7.64085050
+Iteration 10: energy = -7.68590627
+Iteration 11: energy = -7.70771489
+Iteration 12: energy = -7.71539089
+Iteration 13: energy = -7.71789104
+Iteration 14: energy = -7.72126577
+Iteration 15: energy = -7.72263914
+Iteration 16: energy = -7.72374248
+Iteration 17: energy = -7.72577560
+Iteration 18: energy = -7.74185476
+Iteration 19: energy = -7.75415190
+Iteration 20: energy = -7.76706331
+Iteration 21: energy = -7.78568571
+Iteration 22: energy = -7.80128063
+Iteration 23: energy = -7.81247675
+Iteration 24: energy = -7.82570767
+Iteration 25: energy = -7.82952187
+Iteration 26: energy = -7.83071290
+Iteration 27: energy = -7.83090613
+Iteration 28: energy = -7.83096461
+Iteration 29: energy = -7.83106458
+Iteration 30: energy = -7.83117312
+Iteration 31: energy = -7.83117675
+Iteration 32: energy = -7.83117828
+Iteration 33: energy = -7.83117991
+Iteration 34: energy = -7.83118283
+Iteration 35: energy = -7.83118812
+Iteration 36: energy = -7.83119745
+Iteration 37: energy = -7.83121265
+Iteration 38: energy = -7.83123233
+Iteration 39: energy = -7.83124561
+Iteration 40: energy = -7.83126637
+Iteration 41: energy = -7.83128740
+Iteration 42: energy = -7.83129863
+Iteration 43: energy = -7.83131000
+Iteration 44: energy = -7.83131465
+Iteration 45: energy = -7.83131768
+Iteration 46: energy = -7.83132226
+Iteration 47: energy = -7.83133036
+Iteration 48: energy = -7.83134503
+Iteration 49: energy = -7.83137139
+Iteration 50: energy = -7.83141574
+Iteration 51: energy = -7.83147599
+Iteration 52: energy = -7.83151201
+Iteration 53: energy = -7.83152099
+Iteration 54: energy = -7.83152342
+Iteration 55: energy = -7.83152417
+Iteration 56: energy = -7.83152479
+Iteration 57: energy = -7.83152486
+Iteration 58: energy = -7.83152497
+Iteration 59: energy = -7.83152519
+Iteration 60: energy = -7.83152560
+Iteration 61: energy = -7.83152634
+Iteration 62: energy = -7.83152760
+Iteration 63: energy = -7.83152952
+Iteration 64: energy = -7.83153123
+Iteration 65: energy = -7.83153250
+Iteration 66: energy = -7.83153337
+Iteration 67: energy = -7.83153359
+Iteration 68: energy = -7.83153362
+Iteration 69: energy = -7.83153362
+Optimization terminated successfully.
+         Current function value: -7.831534
+         Iterations: 69
+         Function evaluations: 1406
+         Gradient evaluations: 74
+
+Optimization converged: True
+Final VQE energy: -7.83153362 Hartree
+Number of iterations: 69
+Optimization time: 36.00 seconds
+
+Results saved to lih_results.json
+
+Summary:
+  VQE energy: -7.83153362 Hartree
+  FCI energy: -7.83222196 Hartree
+  Difference: 0.688 mHa
+  Target tolerance: 1.6 mHa
+  ✅ Within chemical accuracy!

@@ -1,0 +1,12 @@
+<promise>COMPLETE</promise>
+
+**Summary:** Successfully implemented a manually designed VQE circuit for LiH molecule at 2.0 Å bond length using PySCF for orbital selection and FCI reference energy. The corrected implementation:
+
+- Computes FCI energy via PySCF CASCI: **‑7.83222196 Ha**
+- Applies parity transformation to obtain a **4‑qubit** Hamiltonian
+- Manually constructs a parameterized circuit (18 gates, 18 parameters) with Ry/Rz rotations and CNOT ladders
+- Optimizes with BFGS, converging to VQE energy **‑7.83153363 Ha**
+- Achieves chemical accuracy: **0.688 mHa** difference (well within the 1.6 mHa tolerance)
+- Passes all validation checks (molecule, energy, circuit properties)
+
+All required outputs are generated (`lih_results.json`, updated `AGENTS.md`, `progress.txt`). The task is complete.

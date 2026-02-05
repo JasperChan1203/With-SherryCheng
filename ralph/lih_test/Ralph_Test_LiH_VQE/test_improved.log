@@ -1,0 +1,73 @@
+LiH VQE Custom Circuit Generation (Improved)
+==================================================
+HF energy: -7.83090558 Hartree
+Selected active orbitals (0-indexed): [1, 2, 5]
+Orbital energies: [-0.25010671  0.07327904  0.43264512]
+Justification: Selected active orbitals using PySCF sort_mo([2,3,6]) (1-based indices): Orbital 2 (0-based 1, energy -0.250107 Ha), Orbital 3 (0-based 2, energy 0.073279 Ha), Orbital 6 (0-based 5, energy 0.432645 Ha). This matches the benchmark calculation and yields FCI energy -7.860153 Hartree.
+FCI energy (PySCF CASCI): -7.86015321 Hartree
+Active integrals computed: int1e shape (3, 3), int2e shape (3, 3, 3, 3)
+Number of terms in Hamiltonian: 100
+First 20 terms:
+  (): -7.118405664260175
+  ((3, 'Z'),): -0.09900948773409676
+  ((2, 'Z'), (3, 'X')): -0.005302441769484991
+  ((3, 'X'),): 0.005302441769484991
+  ((2, 'X'), (3, 'X')): -0.005558042286999115
+  ((2, 'Y'), (3, 'Y')): 0.005558042286999115
+  ((2, 'Z'), (3, 'Z')): -0.2048108791252793
+  ((2, 'X'), (3, 'Z')): 0.01861034355276909
+  ((2, 'X'),): 0.01861034355276909
+  ((2, 'Z'),): 0.3011386175475782
+  ((1, 'Z'),): 0.09900948773409682
+  ((0, 'Z'), (1, 'X')): 0.0053024417694849885
+  ((1, 'X'),): 0.0053024417694849885
+  ((0, 'X'), (1, 'X')): -0.005558042286999113
+  ((0, 'Y'), (1, 'Y')): 0.005558042286999113
+  ((0, 'Z'), (1, 'Z')): -0.2048108791252793
+  ((0, 'X'), (1, 'Z')): -0.018610343552769092
+  ((0, 'X'),): 0.018610343552769092
+  ((0, 'Z'),): -0.3011386175475782
+  ((1, 'Z'), (3, 'Z')): -0.1150694913880144
+Qubit Hamiltonian built, n_qubits = 4
+Number of Pauli terms: 100
+HF state energy (active space): -7.83090558
+HF state (binary): 1100
+HF state energy (active space): -7.83090558
+Total HF energy (core + active): -14.70132026
+Expected total HF energy: -7.83090558
+Starting VQE optimization with 21 parameters
+Iteration 1: energy = -7.82969992
+Iteration 2: energy = -7.83082224
+Iteration 3: energy = -7.83087418
+Iteration 4: energy = -7.83090005
+Iteration 5: energy = -7.83090264
+Iteration 6: energy = -7.83090474
+Iteration 7: energy = -7.83090483
+Iteration 8: energy = -7.83090499
+Iteration 9: energy = -7.83090526
+Iteration 10: energy = -7.83090552
+Iteration 11: energy = -7.83090557
+Iteration 12: energy = -7.83090558
+Iteration 13: energy = -7.83090558
+Iteration 14: energy = -7.83090558
+Iteration 15: energy = -7.83090558
+/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/scipy/optimize/_minimize.py:708: OptimizeWarning: Desired error not necessarily achieved due to precision loss.
+  res = _minimize_bfgs(fun, x0, args, jac, callback, **options)
+         Current function value: -7.830906
+         Iterations: 15
+         Function evaluations: 1122
+         Gradient evaluations: 51
+
+Optimization converged: False
+Final VQE energy: -7.83090558 Hartree
+Number of iterations: 15
+Optimization time: 82.09 seconds
+
+Results saved to lih_results.json
+
+Summary:
+  VQE energy: -7.83090558 Hartree
+  FCI energy: -7.86015321 Hartree
+  Difference: 29.248 mHa
+  Target tolerance: 1.6 mHa
+  ❌ Outside chemical accuracy

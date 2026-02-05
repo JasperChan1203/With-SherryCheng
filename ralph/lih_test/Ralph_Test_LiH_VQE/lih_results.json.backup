@@ -1,0 +1,102 @@
+{
+  "molecule": {
+    "formula": "LiH",
+    "bond_length_angstrom": 2.0,
+    "active_space": [
+      2,
+      3
+    ],
+    "selected_orbitals": [
+      2,
+      3,
+      4
+    ],
+    "n_qubits": 3
+  },
+  "vqe_settings": {
+    "ansatz_type": "manual_design",
+    "optimizer": "BFGS",
+    "framework": "Tencirchem"
+  },
+  "circuit": {
+    "gates": [
+      "ry0",
+      "ry1",
+      "ry2",
+      "cnot0_1",
+      "cnot1_2",
+      "rz0",
+      "rz1",
+      "rz2",
+      "ry0",
+      "ry1",
+      "ry2",
+      "cnot1_2",
+      "cnot0_1"
+    ],
+    "parameters": [
+      -3.1415919045330036,
+      3.1415925088947874,
+      1.826073801224755e-07,
+      0.6630360203582096,
+      -1.9935042417746958,
+      -1.2791774841197852,
+      -3.1591446708781197,
+      3.14154766607281,
+      -6.142252132762876e-08
+    ],
+    "circuit_depth": 13,
+    "n_parameters": 9,
+    "design_rationale": "Layered ansatz with single-qubit Ry/Rz rotations and CNOT ladders for entanglement. Designed to be expressive enough for 4-qubit LiH Hamiltonian."
+  },
+  "results": {
+    "final_energy_hartree": -7.824282774451049,
+    "fci_energy_hartree": -6.8709595122851645,
+    "energy_difference_mha": 953.3232621658847,
+    "converged": true,
+    "fci_computation_method": "PySCF CASCI"
+  },
+  "convergence_data": {
+    "energy_curve": [
+      -6.108203602698194,
+      -7.043015114933787,
+      -7.4838248170966795,
+      -7.578842114610909,
+      -7.655525868456005,
+      -7.77432405824802,
+      -7.804366863564169,
+      -7.820120266544686,
+      -7.822645159094045,
+      -7.824239671324161,
+      -7.8242756301292635,
+      -7.824280604635781,
+      -7.824282428998343,
+      -7.824282752715982,
+      -7.824282773880082,
+      -7.8242827744282115,
+      -7.824282774451049
+    ],
+    "n_iterations": 17,
+    "optimization_time_seconds": 1.611853837966919
+  },
+  "orbital_information": {
+    "selected_orbitals": [
+      2,
+      3,
+      4
+    ],
+    "orbital_energies": [
+      -0.2501067138147842,
+      0.07327904035430804,
+      0.16210567288619943
+    ],
+    "selection_justification": "Selected HOMO (orbital 1, energy -0.250107 Ha), LUMO (orbital 2, energy 0.073279 Ha), LUMO+1 (orbital 3, energy 0.162106 Ha). These orbitals are chemically relevant for LiH bonding/antibonding and excited states."
+  },
+  "implementation_details": {
+    "method": "VQE with Tencirchem, PySCF for orbital selection and FCI",
+    "pyscf_version": "2.12.0",
+    "tencirchem_version": "2023.03",
+    "script_path": "generate_lih_vqe.py",
+    "manual_design_verified": true
+  }
+}

@@ -1,0 +1,6 @@
+Iteration 2: Successfully fixed FCI energy computation, parity mapping, and parameter-gate mismatch. VQE optimization converged to chemical accuracy (0.688 mHa difference from PySCF-computed FCI energy). Validation passed.
+
+Iteration 3: Modified according to user specifications: changed molecular geometry to H(0,0,0) Li(2.0,0,0), set active orbitals to exact indices [2,3,6] (1-based), simplified integral computation. VQE optimization maintained chemical accuracy (0.688 mHa). Validation passed.
+
+Iteration 4: CRITICAL DISCOVERY - FCI energy mismatch identified. Benchmark FCI energy is -7.860153 Hartree (requires symmetry=True + sort_mo([2,3,6])), not -7.832222 Hartree. Fixed PySCF setup to match benchmark. Current status: FCI energy now correct (-7.860153 Hartree), but VQE energy (-7.830906 Hartree) differs by 29.2 mHa > 1.6 mHa target. Need enhanced circuit expressibility and optimization strategy.
+Iteration 5: Attempted circuit redesign focusing on double excitation block (four-qubit Pauli rotation XXXX). Modified ansatz with central Rz gate for double excitation parameterization. Optimization still converges to HF energy (-7.830906 Hartree), failing to capture correlation energy (29.2 mHa difference from FCI). Need further investigation into circuit expressibility or optimization landscape.

@@ -1,0 +1,31 @@
+Patched QubitOperator to accept numpy types
+
+--- Restart 1/5 ---
+Iter 1: energy = -7.60136096
+Iter 2: energy = -7.62143691
+Iter 3: energy = -7.63707015
+Iter 4: energy = -7.64491045
+Iter 5: energy = -7.65768732
+Iter 6: energy = -7.67330652
+Iter 7: energy = -7.75085146
+Iter 8: energy = -7.76106849
+Iter 9: energy = -7.78055090
+Iter 10: energy = -7.81452312
+Iter 11: energy = -7.84880964
+Iter 12: energy = -7.84975483
+Iter 13: energy = -7.85122691
+Iter 14: energy = -7.85178753
+Iter 15: energy = -7.85179742
+Iter 16: energy = -7.85180075
+Iter 17: energy = -7.85180644
+Iter 18: energy = -7.85181442
+Iter 19: energy = -7.85181867
+Iter 20: energy = -7.85182428
+Iter 21: energy = -7.85183437
+Iter 22: energy = -7.85185337
+Iter 23: energy = -7.85197821
+Iter 24: energy = -7.85209374
+Iter 25: energy = -7.85229506
+Iter 26: energy = -7.85263694
+Iter 27: energy = -7.85321598
+Iter 28: energy = -7.85413193

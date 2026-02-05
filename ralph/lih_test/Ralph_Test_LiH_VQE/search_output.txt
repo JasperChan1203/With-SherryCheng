@@ -1,0 +1,162 @@
+Searching for optimal active orbital combinations for LiH
+Target FCI energy: ~-7.860153 Hartree (benchmark)
+======================================================================
+HF energy: -7.83090558 Hartree
+Number of spatial orbitals: 6
+Number of electrons: 4
+Occupied orbitals (0-based): [0, 1]
+
+Orbital energies (0-based):
+  0: -2.361188 Ha
+  1: -0.250107 Ha
+  2: 0.073279 Ha
+  3: 0.162106 Ha
+  4: 0.162106 Ha
+  5: 0.432645 Ha
+
+Total combinations to test: 20
+======================================================================
+Combination  1: [0, 1, 2] - ERROR: 
+
+Combination  2: [0, 1, 3] - ERROR: 
+
+Combination  3: [0, 1, 4] - ERROR: 
+
+Combination  4: [0, 1, 5] - ERROR: 
+
+Combination  5: [0, 2, 3] (1-based [1, 3, 4])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-2.361188', '0.073279', '0.162106']
+
+Combination  6: [0, 2, 4] (1-based [1, 3, 5])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-2.361188', '0.073279', '0.162106']
+
+Combination  7: [0, 2, 5] (1-based [1, 3, 6])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-2.361188', '0.073279', '0.432645']
+
+Combination  8: [0, 3, 4] (1-based [1, 4, 5])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-2.361188', '0.162106', '0.162106']
+
+Combination  9: [0, 3, 5] (1-based [1, 4, 6])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-2.361188', '0.162106', '0.432645']
+
+Combination 10: [0, 4, 5] (1-based [1, 5, 6])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-2.361188', '0.162106', '0.432645']
+
+Combination 11: [1, 2, 3] (1-based [2, 3, 4])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-0.250107', '0.073279', '0.162106']
+
+Combination 12: [1, 2, 4] (1-based [2, 3, 5])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-0.250107', '0.073279', '0.162106']
+
+Combination 13: [1, 2, 5] (1-based [2, 3, 6])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-0.250107', '0.073279', '0.432645']
+
+Combination 14: [1, 3, 4] (1-based [2, 4, 5])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-0.250107', '0.162106', '0.162106']
+
+Combination 15: [1, 3, 5] (1-based [2, 4, 6])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-0.250107', '0.162106', '0.432645']
+
+Combination 16: [1, 4, 5] (1-based [2, 5, 6])
+  FCI energy: -7.83222196 Ha, Diff from target: 0.02793104 Ha (27.931 mHa)
+  Orbital energies: ['-0.250107', '0.162106', '0.432645']
+
+Combination 17: [2, 3, 4] - ERROR: 
+
+Combination 18: [2, 3, 5] - ERROR: 
+
+Combination 19: [2, 4, 5] - ERROR: 
+
+Combination 20: [3, 4, 5] - ERROR: 
+
+======================================================================
+TOP COMBINATIONS (closest to target -7.860153 Hartree):
+======================================================================
+ 1. Orbitals (0-based): [0, 2, 3]
+    Orbitals (1-based): [1, 3, 4]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-2.361187848314218), np.float64(0.07327904035430893), np.float64(0.16210567288619984)]
+
+ 2. Orbitals (0-based): [0, 2, 4]
+    Orbitals (1-based): [1, 3, 5]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-2.361187848314218), np.float64(0.07327904035430893), np.float64(0.16210567288619984)]
+
+ 3. Orbitals (0-based): [0, 2, 5]
+    Orbitals (1-based): [1, 3, 6]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-2.361187848314218), np.float64(0.07327904035430893), np.float64(0.4326451168494869)]
+
+ 4. Orbitals (0-based): [0, 3, 4]
+    Orbitals (1-based): [1, 4, 5]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-2.361187848314218), np.float64(0.16210567288619984), np.float64(0.16210567288619984)]
+
+ 5. Orbitals (0-based): [0, 3, 5]
+    Orbitals (1-based): [1, 4, 6]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-2.361187848314218), np.float64(0.16210567288619984), np.float64(0.4326451168494869)]
+
+ 6. Orbitals (0-based): [0, 4, 5]
+    Orbitals (1-based): [1, 5, 6]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-2.361187848314218), np.float64(0.16210567288619984), np.float64(0.4326451168494869)]
+
+ 7. Orbitals (0-based): [1, 2, 3]
+    Orbitals (1-based): [2, 3, 4]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-0.25010671381478816), np.float64(0.07327904035430893), np.float64(0.16210567288619984)]
+
+ 8. Orbitals (0-based): [1, 2, 4]
+    Orbitals (1-based): [2, 3, 5]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-0.25010671381478816), np.float64(0.07327904035430893), np.float64(0.16210567288619984)]
+
+ 9. Orbitals (0-based): [1, 2, 5]
+    Orbitals (1-based): [2, 3, 6]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-0.25010671381478816), np.float64(0.07327904035430893), np.float64(0.4326451168494869)]
+
+10. Orbitals (0-based): [1, 3, 4]
+    Orbitals (1-based): [2, 4, 5]
+    FCI energy: -7.83222196 Ha
+    Diff from target: 0.02793104 Ha (27.931 mHa)
+    Orbital energies: [np.float64(-0.25010671381478816), np.float64(0.16210567288619984), np.float64(0.16210567288619984)]
+
+
+Detailed results saved to: orbital_search_results.json
+
+======================================================================
+BEST COMBINATION FOUND:
+  Orbitals (0-based): [0, 2, 3]
+  Orbitals (1-based): [1, 3, 4]
+  FCI energy: -7.83222196 Ha
+  Difference from target: 0.02793104 Ha (27.931 mHa)
+
+======================================================================
+COMPARISON WITH CURRENT SELECTION:
+  Current orbitals (0-based): [1, 2, 5]
+  Current orbitals (1-based): [2, 3, 6]
+  Current FCI energy: -7.83222196 Ha
+  Current diff from target: 0.02793104 Ha (27.931 mHa)
+  Improvement with best: 0.00000000 Ha

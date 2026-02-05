@@ -1,0 +1,12 @@
+LiH VQE Validation Summary (Custom Circuit Test)
+========================================
+
+Overall Status: FAIL - Some checks failed
+
+Detailed Results:
+  MOLECULE     PASS   - OK
+  ENERGIES     FAIL   - VQE energy outside tolerance: 0.029248 Hartree > 0.0016 Hartree (1.6 mHa); VQE: -7.830906 Hartree, FCI (PySCF-computed): -7.860153 Hartree
+  CIRCUIT      PASS   - OK
+
+NOTE: This test requires MANUAL circuit design (not using pre-defined ansatz functions).
+Manual code review is needed to verify circuit was designed from scratch.

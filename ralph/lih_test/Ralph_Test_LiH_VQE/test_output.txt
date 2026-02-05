@@ -1,0 +1,52 @@
+LiH VQE Custom Circuit Generation
+==================================================
+HF energy: -7.83090558 Hartree
+Selected active orbitals (0-indexed): [1, 2, 5]
+Orbital energies: [-0.25010671  0.07327904  0.43264512]
+Justification: Selected active orbitals using PySCF sort_mo([2,3,6]) (1-based indices): Orbital 2 (0-based 1, energy -0.250107 Ha), Orbital 3 (0-based 2, energy 0.073279 Ha), Orbital 6 (0-based 5, energy 0.432645 Ha). This matches the benchmark calculation and yields FCI energy -7.860153 Hartree.
+FCI energy (PySCF CASCI): -7.86015321 Hartree
+Active integrals computed: int1e shape (3, 3), int2e shape (3, 3, 3, 3)
+Qubit Hamiltonian built, n_qubits = 4
+Number of Pauli terms: 100
+Starting VQE optimization with 18 parameters
+Iteration 1: energy = -7.38154000
+Iteration 2: energy = -7.43160340
+Iteration 3: energy = -7.55157775
+Iteration 4: energy = -7.67760814
+Iteration 5: energy = -7.71079487
+Iteration 6: energy = -7.76675048
+Iteration 7: energy = -7.82276611
+Iteration 8: energy = -7.82764037
+Iteration 9: energy = -7.82938914
+Iteration 10: energy = -7.82991539
+Iteration 11: energy = -7.83021747
+Iteration 12: energy = -7.83050130
+Iteration 13: energy = -7.83076323
+Iteration 14: energy = -7.83088592
+Iteration 15: energy = -7.83090466
+Iteration 16: energy = -7.83090557
+Iteration 17: energy = -7.83090558
+Iteration 18: energy = -7.83090558
+Iteration 19: energy = -7.83090558
+Iteration 20: energy = -7.83090558
+Iteration 21: energy = -7.83090558
+/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/scipy/optimize/_minimize.py:708: OptimizeWarning: Desired error not necessarily achieved due to precision loss.
+  res = _minimize_bfgs(fun, x0, args, jac, callback, **options)
+         Current function value: -7.830906
+         Iterations: 21
+         Function evaluations: 608
+         Gradient evaluations: 32
+
+Optimization converged: False
+Final VQE energy: -7.83090558 Hartree
+Number of iterations: 21
+Optimization time: 44.35 seconds
+
+Results saved to lih_results.json
+
+Summary:
+  VQE energy: -7.83090558 Hartree
+  FCI energy: -7.86015321 Hartree
+  Difference: 29.248 mHa
+  Target tolerance: 1.6 mHa
+  ❌ Outside chemical accuracy
