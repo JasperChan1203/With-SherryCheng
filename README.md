@@ -1,2 +1,2 @@
 # Ralph for RLQAS
-cooperation with Sherry Cheng in LLM for QC
+cooperation with Sherry Cheng in Ralph for RLQAS
