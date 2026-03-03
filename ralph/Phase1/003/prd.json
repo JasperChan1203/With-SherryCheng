@@ -1,0 +1,354 @@
+{
+  "project": "RLQAS Phase 1 - PPO RL Agent",
+  "version": "1.0",
+  "branchName": "ralph/Phase1/003",
+  "description": "Implement a basic Proximal Policy Optimization (PPO) agent following the RL agent interface. Focus on algorithm correctness using Stable-Baselines3 as the core implementation.",
+  "dependencies": {
+    "RLQAS_Phase1_001": {
+      "required": true,
+      "description": "Molecule processing module provides MoleculeData objects for UCC-compatible testing",
+      "import_path": "../001",
+      "files": [
+        "../001/src/modules/molecule_processor.py"
+      ],
+      "classes_to_import": [
+        "MoleculeData",
+        "process_molecule"
+      ],
+      "usage": "Used in UCC-compatible test environments to validate agent interface with actual quantum chemistry data"
+    }
+  },
+  "objectives": [
+    {
+      "id": "rl-agent-interface",
+      "description": "Implement the RLAgent abstract base class with required methods as defined in RLQAS specification section 3.3",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Implement RLAgent abstract base class with act(), learn(), save(), load() methods",
+        "Create PPOAgent class implementing the PPO algorithm using Stable-Baselines3",
+        "Include non-abstract helper methods for UCC compatibility (format_ucc_state, parse_ucc_action)",
+        "Implement configuration management with validation",
+        "Support fixed random seeds for reproducibility",
+        "Implement automatic GPU detection with CPU fallback"
+      ]
+    },
+    {
+      "id": "basic-rl-validation",
+      "description": "Validate basic RL functionality with CartPole-v1 environment",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Agent can learn CartPole-v1 task (achieve reward > 100 within reasonable training)",
+        "Save/load functionality works correctly with SB3 .zip format",
+        "Fixed random seeds produce identical training results",
+        "All unit tests for basic RL functionality pass",
+        "Code coverage for core agent implementation >80%"
+      ]
+    },
+    {
+      "id": "ucc-compatibility-testing",
+      "description": "Test agent compatibility with UCC search patterns using Task 001 molecule data",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Successfully import and use MoleculeData objects from Phase 1 Task 001",
+        "Create UCC-compatible test environment using H2 molecule data",
+        "Test helper methods for UCC state/action formatting",
+        "Verify agent interface works with UCC-like state/action spaces",
+        "Integration tests pass with Task 001 dependencies"
+      ]
+    },
+    {
+      "id": "configuration-validation",
+      "description": "Validate configuration options and parameter tuning",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Default hyperparameters match RLQAS specification section 3.3",
+        "Configuration parameters can be overridden by user",
+        "Configuration validation catches invalid parameter values",
+        "Different configurations produce expected behavioral changes"
+      ]
+    }
+  ],
+  "constraints": {
+    "technology_stack": {
+      "runtime_dependencies": [
+        "python3",
+        "tencirchem-ng>=2024.10",
+        "openfermion>=1.5",
+        "pyscf>=2.0.0",
+        "numpy>=1.21",
+        "scipy>=1.7",
+        "stable-baselines3>=2.0.0",
+        "gym>=0.21.0",
+        "torch>=1.9.0"
+      ],
+      "development_dependencies": [
+        "pytest>=7.0",
+        "pytest-cov>=4.0"
+      ],
+      "system_requirements": [
+        "cuda (optional, for GPU acceleration if available)",
+        "8GB+ RAM recommended"
+      ],
+      "environment_consistency_note": "This task uses the same core quantum chemistry dependencies as Phase 1 Task 001/002 (tencirchem-ng, openfermion, pyscf, numpy, scipy) for consistency. Additional RL-specific dependencies (stable-baselines3, gym, torch) are required for the PPO agent implementation."
+    },
+    "implementation_requirements": [
+      "File structure must follow: src/modules/rl_agents/ with submodules",
+      "RLAgent abstract class must have exactly four abstract methods: act(), learn(), save(), load()",
+      "PPOAgent must use Stable-Baselines3 as the core implementation with a wrapper interface",
+      "Include SB3-specific adapters for seamless integration",
+      "Configuration management must validate parameters and provide sensible defaults from RLQAS spec",
+      "Random seeds must be fixed for reproducibility in all tests and demonstrations",
+      "GPU usage must be automatic: use GPU if available and requested, fallback to CPU",
+      "Helper methods for UCC compatibility must be implemented as non-abstract methods",
+      "Save/load functionality must use SB3's native .zip format",
+      "Policy network must use MLP architecture by default (MlpPolicy in SB3)"
+    ],
+    "output_requirements": [
+      "Clean, well-commented code following PEP8 standards",
+      "Comprehensive unit tests in tests/test_rl_agents.py with >80% coverage",
+      "Documentation explaining the module usage, configuration options, and UCC integration",
+      "Ralph learning log documenting iterative learning and design decisions",
+      "Fixed random seeds in all test cases for reproducibility"
+    ],
+    "computational_limits": [
+      "Focus on basic correctness rather than advanced optimization",
+      "CartPole training should complete in reasonable time (<30 minutes on standard hardware)",
+      "Memory usage should be moderate (<4GB for typical usage)",
+      "Should run on standard compute resources without specialized hardware"
+    ],
+    "verification_points": [
+      "RLAgent abstract class correctly defined with all abstract methods",
+      "PPOAgent implements all abstract methods using Stable-Baselines3",
+      "Agent can learn CartPole-v1 task (reward > 100)",
+      "Save/load functionality works correctly",
+      "Fixed random seeds produce identical results across runs",
+      "UCC compatibility helpers work correctly with Task 001 data",
+      "All tests pass with >80% code coverage"
+    ]
+  },
+  "output_format": {
+    "rl_agents_module": {
+      "required_files": [
+        "src/modules/rl_agents/base_agent.py",
+        "src/modules/rl_agents/ppo_agent.py",
+        "src/modules/rl_agents/sb3_adapter.py",
+        "src/modules/rl_agents/config.py",
+        "tests/test_base_agent.py",
+        "tests/test_ppo_agent.py",
+        "tests/test_sb3_integration.py",
+        "docs/rl_agents_usage.md"
+      ],
+      "module_interface": {
+        "RLAgent": {
+          "abstract_methods": [
+            "act(state: np.ndarray) -> Tuple[int, Dict]",
+            "learn(experience: Dict) -> Dict",
+            "save(path: str)",
+            "load(path: str)"
+          ],
+          "helper_methods": [
+            "format_ucc_state(energy: float, circuit_params: np.ndarray) -> np.ndarray",
+            "parse_ucc_action(action_idx: int) -> Dict"
+          ],
+          "notes": "Abstract methods provide generic Gym-compatible interface. Helper methods are non-abstract and provide UCC-specific functionality."
+        },
+        "PPOAgent": {
+          "inherits": "RLAgent",
+          "config_parameters": {
+            "core_ppo": {
+              "learning_rate": 3e-4,
+              "gamma": 0.99,
+              "gae_lambda": 0.95,
+              "clip_range": 0.2,
+              "ent_coef": 0.01,
+              "vf_coef": 0.5,
+              "max_grad_norm": 0.5,
+              "n_steps": 2048,
+              "batch_size": 64,
+              "n_epochs": 10
+            },
+            "additional": {
+              "policy_type": "MlpPolicy",
+              "verbose": 1,
+              "seed": 42,
+              "use_gpu": true,
+              "tensorboard_log": null
+            }
+          },
+          "notes": "Default hyperparameters match RLQAS specification section 3.3. Uses Stable-Baselines3 as the core implementation with a wrapper interface."
+        }
+      }
+    }
+  },
+  "test_cases": {
+    "description": "Standard test cases for validating PPO RL agent module",
+    "basic_rl_tests": [
+      {
+        "id": "test_cartpole_learning",
+        "description": "Basic RL validation with CartPole-v1",
+        "environment": "CartPole-v1",
+        "training_steps": 10000,
+        "success_criteria": "Average reward > 100 over last 10 episodes",
+        "random_seed": 42,
+        "validation": "Agent demonstrates learning capability"
+      },
+      {
+        "id": "test_save_load",
+        "description": "Test save/load functionality",
+        "procedure": "Train agent, save model, load model, compare performance",
+        "validation": "Loaded model performs identically to saved model"
+      },
+      {
+        "id": "test_reproducibility",
+        "description": "Test fixed random seed reproducibility",
+        "procedure": "Run identical training twice with same seed",
+        "validation": "Training curves and final performance are identical"
+      }
+    ],
+    "ucc_compatibility_tests": [
+      {
+        "id": "test_ucc_helper_methods",
+        "description": "Test UCC helper methods with mock data",
+        "test_data": "Mock energy and circuit parameters",
+        "validation": "format_ucc_state() returns correctly formatted array, parse_ucc_action() returns correct structure"
+      },
+      {
+        "id": "test_h2_molecule_integration",
+        "description": "Integration test with H2 molecule data from Task 001",
+        "molecule": "H2",
+        "bond_length": 0.74,
+        "procedure": "Import Task 001, process H2 molecule, test agent interface with molecule data",
+        "validation": "Agent can interface with UCC-compatible environment using real molecule data"
+      }
+    ],
+    "configuration_tests": [
+      {
+        "id": "test_default_config",
+        "description": "Test default configuration matches spec",
+        "validation": "Default hyperparameters exactly match RLQAS spec section 3.3"
+      },
+      {
+        "id": "test_config_override",
+        "description": "Test configuration parameter overriding",
+        "test_cases": [
+          {"parameter": "learning_rate", "value": 1e-3},
+          {"parameter": "gamma", "value": 0.95}
+        ],
+        "validation": "Overridden parameters are correctly applied"
+      }
+    ]
+  },
+  "validation_procedure": {
+    "description": "Implementation must be validated through unit tests, basic RL learning tests, and UCC compatibility tests",
+    "steps": [
+      "Implement the module according to specifications",
+      "Write comprehensive unit tests covering all functionality",
+      "Run tests: pytest tests/test_rl_agents.py --cov=src/modules/rl_agents --cov-report=term",
+      "Verify code coverage >80%",
+      "Test basic RL learning with CartPole-v1 environment",
+      "Test integration with Phase 1 Task 001 molecule processor for UCC compatibility",
+      "Validate save/load functionality and reproducibility",
+      "Test configuration options and parameter validation",
+      "Document any issues and fix them iteratively"
+    ],
+    "success_criteria": [
+      "All unit tests pass",
+      "Code coverage >80%",
+      "Agent can learn CartPole-v1 task (reward > 100)",
+      "Save/load functionality works correctly",
+      "Fixed random seeds ensure reproducible results",
+      "Integration with Task 001 works for UCC compatibility testing",
+      "Module can be imported without errors",
+      "Example usage works correctly"
+    ]
+  },
+  "configuration_examples": {
+    "description": "Example configurations for different use cases",
+    "examples": {
+      "default_training": {
+        "description": "Default training configuration matching RLQAS spec",
+        "config": {
+          "learning_rate": 3e-4,
+          "gamma": 0.99,
+          "gae_lambda": 0.95,
+          "clip_range": 0.2,
+          "ent_coef": 0.01,
+          "vf_coef": 0.5,
+          "max_grad_norm": 0.5,
+          "n_steps": 2048,
+          "batch_size": 64,
+          "n_epochs": 10,
+          "policy_type": "MlpPolicy",
+          "verbose": 1,
+          "seed": 42,
+          "use_gpu": true,
+          "tensorboard_log": null
+        },
+        "use_case": "Standard training with default hyperparameters"
+      },
+      "reproducible_research": {
+        "description": "Configuration for reproducible research",
+        "config": {
+          "seed": 12345,
+          "use_gpu": false,
+          "verbose": 0,
+          "tensorboard_log": "./logs"
+        },
+        "use_case": "Research experiments requiring exact reproducibility"
+      },
+      "fast_debugging": {
+        "description": "Configuration for fast debugging",
+        "config": {
+          "n_steps": 512,
+          "batch_size": 32,
+          "n_epochs": 3,
+          "verbose": 2
+        },
+        "use_case": "Quick debugging and development iterations"
+      }
+    }
+  },
+  "success_criteria": {
+    "technical": [
+      "RLAgent abstract class correctly implemented",
+      "PPOAgent implements all abstract methods using Stable-Baselines3",
+      "Agent can learn CartPole-v1 task",
+      "Save/load functionality works correctly",
+      "Fixed random seeds ensure reproducible results",
+      "UCC compatibility helpers work correctly",
+      "Configuration management validates parameters"
+    ],
+    "process": [
+      "Ralph completes the objective within maximum iterations",
+      "Knowledge about PPO, Stable-Baselines3, and RL agent design captured in AGENTS.md",
+      "Clear progress recorded in progress.txt",
+      "Detailed documentation of implementation decisions and rationale",
+      "Ralph learning log demonstrates iterative learning and problem-solving"
+    ],
+    "integration_readiness": [
+      "Module provides clean interface for UCC search module (Phase 1 Task 004)",
+      "Agent interface compatible with Gym environments",
+      "UCC helper methods support quantum chemistry state/action formatting",
+      "Code is modular and extensible for future enhancements"
+    ]
+  },
+  "reference_materials": {
+    "rlqas_specification": "Section 3.3: PPO RL Agent",
+    "stable_baselines3_docs": "https://stable-baselines3.readthedocs.io/",
+    "openai_gym_docs": "https://www.gymlibrary.dev/",
+    "pytorch_docs": "https://pytorch.org/docs/",
+    "phase1_task001": "../001 (Molecule Processing Module)",
+    "example_implementations": "Existing test cases in ralph/test directory"
+  },
+  "notes": [
+    "This implementation uses Stable-Baselines3 as the core PPO implementation for reliability and correctness",
+    "The RLAgent interface is generic (Gym-compatible) with UCC-specific helper methods",
+    "Random seeds must be fixed in all tests and demonstrations for reproducibility",
+    "GPU usage is automatic: use GPU if available and requested in config, otherwise CPU",
+    "Core dependencies match Phase 1 Task 001/002 for environment consistency",
+    "CartPole-v1 is used for basic RL validation; actual UCC search will be in Task 004",
+    "Configuration defaults exactly match RLQAS specification section 3.3 hyperparameters",
+    "The agent should be designed for integration with Phase 1 Task 004 (UCC search module)",
+    "Test coverage must exceed 80% as per Phase 1 requirements"
+  ]
+}

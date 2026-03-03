@@ -1,0 +1,2 @@
+iteration,energy,fci_energy,error_hartree,error_mha,chemical_accuracy_achieved,timestamp
+0,-7.862621218540893,-7.8629193366023475,0.00029811806145474407,0.29811806145474407,True,3.0994415283203125e-06

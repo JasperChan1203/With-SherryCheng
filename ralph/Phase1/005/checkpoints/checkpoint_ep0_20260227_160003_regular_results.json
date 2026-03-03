@@ -1,0 +1,51 @@
+{
+  "best_energy": -7.861864769808654,
+  "best_circuit": null,
+  "best_excitations": [],
+  "best_params": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "training_history": [
+    {
+      "episode": 0,
+      "reward": 0.0,
+      "energy": -7.861550836783073,
+      "depth": 1,
+      "best_energy": -7.861864769808654
+    }
+  ],
+  "convergence_reached": false,
+  "episode_rewards": [
+    0.0
+  ],
+  "episode_energies": [
+    -7.861550836783073
+  ],
+  "episode_depths": [
+    1
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "project": "RLQAS Phase 1 - LiH Validation Test",
+  "version": "1.0",
+  "branchName": "ralph/Phase1/005",
+  "description": "Create comprehensive validation tests for the complete RLQAS system using LiH molecule. This task validates that all Phase 1 components work together correctly and achieve chemical accuracy (<1.6 mHa error) within reasonable time.",
+  "dependencies": {
+    "RLQAS_Phase1_001": {
+      "required": true,
+      "description": "Molecule processing module provides MoleculeData for LiH molecule",
+      "import_path": "../001",
+      "files": [
+        "../001/src/modules/molecule_processor.py"
+      ],
+      "classes_to_import": [
+        "MoleculeData",
+        "process_molecule"
+      ],
+      "usage": "Process LiH molecule to obtain Hamiltonian, qubit count, reference state, and FCI energy"
+    },
+    "RLQAS_Phase1_002": {
+      "required": true,
+      "description": "Quantum simulator module provides energy evaluation for UCC circuits",
+      "import_path": "../002",
+      "files": [
+        "../002/src/modules/quantum_simulator.py"
+      ],
+      "classes_to_import": [
+        "QuantumSimulator",
+        "SimulatorFactory"
+      ],
+      "usage": "Create simulator for 4-qubit LiH system to evaluate circuit energies"
+    },
+    "RLQAS_Phase1_003": {
+      "required": true,
+      "description": "PPO RL Agent provides reinforcement learning agent for UCC search",
+      "import_path": "../003",
+      "files": [
+        "../003/src/modules/rl_agents/ppo_agent.py",
+        "../003/src/modules/rl_agents/base_agent.py"
+      ],
+      "classes_to_import": [
+        "RLAgent",
+        "PPOAgent"
+      ],
+      "usage": "Create RL agent for the UCC search environment"
+    },
+    "RLQAS_Phase1_004": {
+      "required": true,
+      "description": "UCC Search Module provides search environment and controller",
+      "import_path": "../004",
+      "files": [
+        "../004/src/modules/ucc_search/environment.py",
+        "../004/src/modules/ucc_search/circuit_builder.py",
+        "../004/src/modules/ucc_search/reward_function.py",
+        "../004/src/modules/ucc_search/controller.py",
+        "../004/src/modules/ucc_search/config.py"
+      ],
+      "classes_to_import": [
+        "UCCSearchEnv",
+        "UCCCircuitBuilder",
+        "UCCRewardFunction",
+        "UCCSearchController"
+      ],
+      "usage": "Create UCC search environment and controller for LiH molecule"
+    }
+  },
+  "objectives": [
+    {
+      "id": "lih-validation-script",
+      "description": "Create end-to-end validation script for LiH UCC search as specified in RLQAS Phase 1 Task 005",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Implement run_lih_validation() function as described in RLQAS_Phase1_Tasks.md",
+        "Script processes LiH molecule with bond length 1.6 Å, active_space=(2,2), basis_set='sto-3g', transform='parity'",
+        "Creates appropriate simulator using SimulatorFactory",
+        "Creates UCCSearchController with PPO agent",
+        "Runs search with n_episodes=500 and early_stop_threshold=1.6e-3",
+        "Collects performance metrics: final energy, FCI error, circuit depth, training time, episode count",
+        "Evaluates results against chemical accuracy threshold (1.6 mHa)",
+        "Generates comprehensive validation report",
+        "Script should be executable and produce structured output"
+      ]
+    },
+    {
+      "id": "performance-metrics-collection",
+      "description": "Implement performance metrics collection and analysis for RLQAS system validation",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Collect key metrics: final VQE energy, FCI energy error (mHa), circuit depth, number of excitation operators",
+        "Track training metrics: episode rewards, energy progression, convergence behavior",
+        "Record computational metrics: training time, simulator evaluations, memory usage",
+        "Implement metrics aggregation and statistical analysis",
+        "Save metrics in structured format (JSON, CSV) for further analysis",
+        "Generate performance summary with key indicators",
+        "Compare results against Phase 1 success criteria"
+      ]
+    },
+    {
+      "id": "validation-criteria-implementation",
+      "description": "Implement validation criteria based on chemical accuracy and system performance",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Define chemical accuracy threshold: <1.6 mHa error from FCI energy",
+        "Implement performance goals: single experiment <2 hours, reasonable resource usage",
+        "Create validation checks for each module integration",
+        "Implement error handling and validation for edge cases",
+        "Define success metrics: functional success, accuracy success, performance success, integration success",
+        "Create validation report template with all required sections",
+        "Implement automated validation checks that can be run independently"
+      ]
+    },
+    {
+      "id": "test-report-generation",
+      "description": "Generate comprehensive test report with results and analysis",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Generate formatted test report with: test configuration, results summary, performance metrics, validation outcomes",
+        "Include visualizations: energy convergence curve, reward progression, circuit architecture",
+        "Create comparison with expected results and Phase 1 goals",
+        "Document any issues, limitations, or deviations from specifications",
+        "Generate recommendations for system improvements",
+        "Save report in multiple formats: markdown, PDF (optional), HTML (optional)",
+        "Include reproducibility information: software versions, configuration, random seeds"
+      ]
+    },
+    {
+      "id": "basic-evaluation-tools",
+      "description": "Implement basic evaluation tools for RLQAS system analysis",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Create circuit analysis tools: visualize UCC circuits, count gates, measure depth",
+        "Implement energy analysis tools: track energy progression, compute errors, compare to reference",
+        "Create RL training analysis tools: plot rewards, analyze agent behavior, evaluate policy",
+        "Build configuration validation tools: verify module compatibility, check dependency versions",
+        "Implement result comparison tools: compare multiple runs, benchmark against targets",
+        "Create visualization utilities for common analysis tasks",
+        "Tools should be modular and reusable for future phases"
+      ]
+    },
+    {
+      "id": "integration-testing",
+      "description": "Perform comprehensive integration testing of all Phase 1 modules",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Test end-to-end pipeline with LiH molecule",
+        "Verify all module imports and dependencies work correctly",
+        "Test error handling across module boundaries",
+        "Validate data flow between modules: MoleculeData → Simulator → Environment → Agent → Controller",
+        "Test configuration consistency across all modules",
+        "Verify random seed propagation for reproducibility",
+        "Run integration tests with both success and failure scenarios",
+        "Ensure system handles resource limits gracefully (memory, time)"
+      ]
+    }
+  ],
+  "constraints": {
+    "technology_stack": {
+      "runtime_dependencies": [
+        "python3",
+        "tencirchem-ng>=2024.10",
+        "openfermion>=1.5",
+        "pyscf>=2.0.0",
+        "numpy>=1.21",
+        "scipy>=1.7",
+        "stable-baselines3>=2.0.0",
+        "gym>=0.21.0",
+        "torch>=1.9.0",
+        "pandas>=1.3",
+        "matplotlib>=3.5"
+      ],
+      "development_dependencies": [
+        "pytest>=7.0",
+        "pytest-cov>=4.0"
+      ],
+      "system_requirements": [
+        "cuda (optional, for GPU acceleration if available)",
+        "8GB+ RAM recommended for simulator",
+        "Moderate compute resources for RL training (CPU/GPU)",
+        "Disk space for saving results and models"
+      ],
+      "environment_consistency_note": "This task uses all Phase 1 modules (001-004). Dependency versions must be consistent across all tasks."
+    },
+    "implementation_requirements": [
+      "File structure must follow: scripts/validate_lih.py, tests/integration/test_lih_validation.py",
+      "Validation script must implement run_lih_validation() function as per specification",
+      "Performance metrics must be collected and saved in structured format",
+      "Validation report must include all required sections",
+      "Evaluation tools should be modular and placed in appropriate directories",
+      "All code must follow PEP8 standards with proper documentation",
+      "Random seeds must be fixed for reproducibility",
+      "Error handling for integration failures and edge cases"
+    ],
+    "output_requirements": [
+      "Clean, well-commented code following PEP8 standards",
+      "Comprehensive integration tests in tests/integration/test_lih_validation.py",
+      "Documentation explaining validation procedure and usage",
+      "Ralph learning log documenting iterative learning and design decisions",
+      "Fixed random seeds in all test cases for reproducibility",
+      "Example validation scripts and configuration files",
+      "Generated test reports and performance metrics"
+    ],
+    "computational_limits": [
+      "LiH validation test should complete in <2 hours (performance goal)",
+      "Memory usage should be reasonable for 4-qubit system (<8GB)",
+      "Should run on standard compute resources without specialized hardware",
+      "Focus on validation accuracy rather than extensive hyperparameter tuning"
+    ],
+    "verification_points": [
+      "End-to-end test runs without errors",
+      "System achieves chemical accuracy (<1.6 mHa error) on LiH",
+      "Test completes within reasonable time (<2 hours)",
+      "Comprehensive test report generated",
+      "All integration tests pass",
+      "Results demonstrate working UCC search prototype",
+      "Performance metrics collected and analyzed",
+      "Evaluation tools function correctly"
+    ]
+  },
+  "output_format": {
+    "validation_artifacts": {
+      "required_files": [
+        "scripts/validate_lih.py",
+        "scripts/run_phase1_test.py",
+        "tests/integration/test_lih_validation.py",
+        "tests/integration/test_phase1_integration.py",
+        "src/evaluation/metrics_collector.py",
+        "src/evaluation/report_generator.py",
+        "src/evaluation/visualization.py",
+        "docs/validation_procedure.md"
+      ],
+      "generated_outputs": [
+        "results/lih_test_results/metrics.json",
+        "results/lih_test_results/validation_report.md",
+        "results/lih_test_results/circuit_visualizations/",
+        "results/lih_test_results/training_logs/",
+        "results/lih_test_results/performance_summary.json"
+      ],
+      "validation_script_interface": {
+        "run_lih_validation": {
+          "parameters": [
+            "bond_length: float = 1.6",
+            "active_space: Tuple[int, int] = (2, 2)",
+            "basis_set: str = 'sto-3g'",
+            "transform: str = 'parity'",
+            "n_episodes: int = 500",
+            "early_stop_threshold: float = 1.6e-3",
+            "output_dir: str = 'results/lih_test_results'"
+          ],
+          "return_type": "Dict[str, Any]",
+          "description": "Run complete LiH validation test and return results dictionary"
+        }
+      }
+    }
+  },
+  "technical_specifications": {
+    "description": "Detailed technical specifications for LiH validation test implementation",
+    "chemical_accuracy_calculation": {
+      "hartree_to_mha_conversion": "error_mha = (vqe_energy - fci_energy) * 1000",
+      "threshold_hartree": 0.0016,
+      "threshold_mha": 1.6,
+      "fci_energy_source": "MoleculeData.fci_energy field from Task 001 output",
+      "calculation_note": "FCI energy should be obtained from molecule_data.fci_energy after processing LiH molecule"
+    },
+    "performance_monitoring": {
+      "memory_monitoring": "Use psutil.Process().memory_info().rss to track memory usage in MB",
+      "timing_sections": ["molecule_processing", "simulator_setup", "rl_training", "circuit_evaluation", "total_validation"],
+      "convergence_check_frequency": "Every 10 episodes or after each significant circuit modification",
+      "progress_logging_frequency": "Log progress every 5% of total episodes or at least every 10 episodes"
+    },
+    "module_health_checks": {
+      "task_001_check": "Verify process_molecule('LiH', 1.6, 'UCC', active_space=(2,2)) returns valid MoleculeData with fci_energy field",
+      "task_002_check": "Verify SimulatorFactory.create_simulator(4) returns working QuantumSimulator instance",
+      "task_003_check": "Verify PPOAgent(config={'seed': 42}) initializes without errors",
+      "task_004_check": "Verify UCCSearchController can be instantiated with mock dependencies"
+    },
+    "debugging_procedures": {
+      "chemical_accuracy_failure": [
+        "1. Verify FCI energy from Task 001 is correct (compare with known benchmark)",
+        "2. Check circuit parameter optimization convergence",
+        "3. Verify RL agent is receiving meaningful rewards",
+        "4. Check if circuit architecture has sufficient expressive power"
+      ],
+      "integration_failure": [
+        "1. Test each module independently with simple test cases",
+        "2. Verify data types and formats between modules",
+        "3. Check for version incompatibilities between quantum chemistry libraries",
+        "4. Verify random seed propagation across all modules"
+      ],
+      "performance_exceeded": [
+        "1. Switch to fast validation configuration for debugging",
+        "2. Reduce n_episodes to 50 for initial testing",
+        "3. Increase early_stop_threshold temporarily",
+        "4. Monitor memory usage and adjust simulator configuration"
+      ]
+    }
+  },
+  "validation_procedure": {
+    "description": "Implementation must be validated through comprehensive integration testing and performance validation",
+    "steps": [
+      "Implement validation script and evaluation tools",
+      "Run integration tests to verify all modules work together",
+      "Execute LiH validation test with default parameters",
+      "Collect performance metrics and generate validation report",
+      "Verify chemical accuracy achievement (<1.6 mHa error)",
+      "Check performance goals (test completion <2 hours)",
+      "Validate all output artifacts are generated correctly",
+      "Run validation on different configurations if time permits",
+      "Document any issues and fix them iteratively"
+    ],
+    "success_criteria": [
+      "End-to-end test runs without errors",
+      "System achieves chemical accuracy on LiH (<1.6 mHa error)",
+      "Test completes in <2 hours (performance goal)",
+      "All integration tests pass",
+      "Comprehensive test report generated",
+      "Performance metrics collected and analyzed",
+      "Evaluation tools function correctly",
+      "Validation script produces structured output"
+    ]
+  },
+  "configuration_examples": {
+    "description": "Example configurations for LiH validation test",
+    "examples": {
+      "default_validation": {
+        "description": "Default LiH validation configuration matching RLQAS specification",
+        "config": {
+          "molecule": "LiH",
+          "bond_length_angstrom": 1.6,
+          "active_space": [2, 2],
+          "basis_set": "sto-3g",
+          "transform": "parity",
+          "search_config": {
+            "n_episodes": 500,
+            "early_stop_threshold": 1.6e-3,
+            "max_depth": 12,
+            "max_excitations": 15
+          },
+          "simulator_config": {
+            "max_memory_gb": 32
+          },
+          "output_dir": "results/lih_test_results"
+        },
+        "use_case": "Standard validation test as per Phase 1 specification"
+      },
+      "fast_validation": {
+        "description": "Fast validation for debugging and development",
+        "config": {
+          "molecule": "LiH",
+          "bond_length_angstrom": 1.6,
+          "active_space": [2, 2],
+          "basis_set": "sto-3g",
+          "transform": "parity",
+          "search_config": {
+            "n_episodes": 50,
+            "early_stop_threshold": 0.01,
+            "max_depth": 8,
+            "max_excitations": 10
+          },
+          "simulator_config": {
+            "max_memory_gb": 8
+          },
+          "output_dir": "results/lih_test_fast"
+        },
+        "use_case": "Quick validation during development"
+      }
+    }
+  },
+  "success_criteria": {
+    "technical": [
+      "End-to-end validation test runs without errors",
+      "System achieves chemical accuracy (<1.6 mHa error) on LiH",
+      "Performance metrics collected and analyzed",
+      "Comprehensive validation report generated",
+      "Evaluation tools function correctly",
+      "Integration tests pass with all Phase 1 modules"
+    ],
+    "process": [
+      "Ralph completes the objective within maximum iterations",
+      "Knowledge about system validation, integration testing, and performance analysis captured in AGENTS.md",
+      "Clear progress recorded in progress.txt",
+      "Detailed documentation of validation approach and rationale",
+      "Ralph learning log demonstrates iterative learning and problem-solving"
+    ],
+    "phase1_completion": [
+      "Validates that all Phase 1 modules work together correctly",
+      "Demonstrates working UCC search prototype system",
+      "Establishes performance baseline for Phase 1",
+      "Provides foundation for Phase 2 (multi-algorithm support)",
+      "Results show system is extensible for HEA and hybrid search"
+    ]
+  },
+  "reference_materials": {
+    "rlqas_phase1_tasks": "ideas_pool/RLQAS_Phase1_Tasks.md (Section: RLQAS_Phase1_005: LiH Validation Test)",
+    "rlqas_specification": "Sections 5.1 and 6.1: Validation and Testing",
+    "phase1_task001": "../001 (Molecule Processing Module)",
+    "phase1_task002": "../002 (Quantum Simulator Module)",
+    "phase1_task003": "../003 (PPO RL Agent)",
+    "phase1_task004": "../004 (UCC Search Module)",
+    "tencirchem_docs": "https://tencirchem.readthedocs.io/",
+    "openfermion_docs": "https://quantumai.google/openfermion"
+  },
+  "notes": [
+    "This is the final validation task for RLQAS Phase 1",
+    "Focus on integration testing and system validation rather than new module development",
+    "Chemical accuracy target: <1.6 mHa error from FCI energy",
+    "Performance goal: single experiment <2 hours",
+    "Ensure reproducibility with fixed random seeds",
+    "Document any deviations from specifications or assumptions",
+    "Results should demonstrate a working UCC search prototype system",
+    "Validation should confirm readiness for Phase 2 development"
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "validation_start_time": 1772455445.5328624,
+  "configuration": {
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "active_space": [
+      2,
+      3
+    ],
+    "basis_set": "sto-3g",
+    "transform": "jordan_wigner",
+    "n_episodes": 500,
+    "early_stop_threshold": 0.0016,
+    "output_dir": "results/final_validation"
+  },
+  "metrics": {
+    "final_energy": -7.862621218540893,
+    "fci_energy": -7.8629193366023475,
+    "error_hartree": 0.00029811806145474407,
+    "error_mha": 0.29811806145474407,
+    "chemical_accuracy_achieved": "True",
+    "circuit_depth": 1,
+    "n_excitations": 1,
+    "n_parameters": 4,
+    "convergence_reached": "True",
+    "episodes_completed": 1,
+    "final_reward": 0.0
+  },
+  "success": true,
+  "errors": [],
+  "warnings": [],
+  "molecule_info": {
+    "formula": "LiH",
+    "bond_length_angstrom": 1.6,
+    "basis_set": "sto-3g",
+    "active_space": [
+      2,
+      3
+    ],
+    "transform": "jordan_wigner",
+    "ansatz_type": "UCC",
+    "hf_energy": -7.861864769808654,
+    "n_electrons": 4,
+    "n_orbitals": "6",
+    "n_qubits": 6
+  },
+  "fci_energy": -7.8629193366023475,
+  "n_qubits": 6,
+  "search_results": {
+    "best_energy": -7.862621218540893,
+    "best_circuit": null,
+    "best_excitations": [
+      [
+        2,
+        5,
+        3,
+        0
+      ]
+    ],
+    "best_params": "[ 0.          0.          0.         -0.02509198]",
+    "training_history": [
+      {
+        "episode": 0,
+        "reward": 0.0,
+        "energy": -7.862621218540893,
+        "depth": 1,
+        "best_energy": -7.862621218540893
+      }
+    ],
+    "convergence_reached": "True",
+    "episode_rewards": [
+      0.0
+    ],
+    "episode_energies": [
+      -7.862621218540893
+    ],
+    "episode_depths": [
+      1
+    ]
+  },
+  "validation_end_time": 1772455450.3204548,
+  "total_time_seconds": 4.78759241104126
+}

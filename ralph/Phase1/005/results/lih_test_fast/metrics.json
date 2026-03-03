@@ -1,0 +1,881 @@
+{
+  "energy_metrics": [
+    {
+      "iteration": 0,
+      "energy": -7.859162815505877,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.02316156337761477,
+      "error_mha": 23.16156337761477,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 1.4543533325195312e-05
+    },
+    {
+      "iteration": 1,
+      "energy": -7.856742694454174,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.02558168442931752,
+      "error_mha": 25.58168442931752,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 1.9073486328125e-05
+    },
+    {
+      "iteration": 2,
+      "energy": -7.860237803754113,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.022086575129378616,
+      "error_mha": 22.086575129378616,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 2.09808349609375e-05
+    },
+    {
+      "iteration": 3,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 2.3365020751953125e-05
+    },
+    {
+      "iteration": 4,
+      "energy": -7.838855262375904,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.04346911650758756,
+      "error_mha": 43.46911650758756,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 2.5033950805664062e-05
+    },
+    {
+      "iteration": 5,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 2.6941299438476562e-05
+    },
+    {
+      "iteration": 6,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 2.86102294921875e-05
+    },
+    {
+      "iteration": 7,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 3.0517578125e-05
+    },
+    {
+      "iteration": 8,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 3.218650817871094e-05
+    },
+    {
+      "iteration": 9,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 3.457069396972656e-05
+    },
+    {
+      "iteration": 10,
+      "energy": -7.844490809092929,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.037833569790562294,
+      "error_mha": 37.833569790562294,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 3.6716461181640625e-05
+    },
+    {
+      "iteration": 11,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 3.814697265625e-05
+    },
+    {
+      "iteration": 12,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 4.029273986816406e-05
+    },
+    {
+      "iteration": 13,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 4.1961669921875e-05
+    },
+    {
+      "iteration": 14,
+      "energy": -7.854383504390889,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.027940874492601964,
+      "error_mha": 27.940874492601964,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 4.363059997558594e-05
+    },
+    {
+      "iteration": 15,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 4.506111145019531e-05
+    },
+    {
+      "iteration": 16,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 4.696846008300781e-05
+    },
+    {
+      "iteration": 17,
+      "energy": -7.861508574471704,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020815804411787653,
+      "error_mha": 20.815804411787653,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 4.887580871582031e-05
+    },
+    {
+      "iteration": 18,
+      "energy": -7.844383103413494,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.03794127546999704,
+      "error_mha": 37.94127546999704,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 5.078315734863281e-05
+    },
+    {
+      "iteration": 19,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 5.221366882324219e-05
+    },
+    {
+      "iteration": 20,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 5.3882598876953125e-05
+    },
+    {
+      "iteration": 21,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 5.53131103515625e-05
+    },
+    {
+      "iteration": 22,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 5.745887756347656e-05
+    },
+    {
+      "iteration": 23,
+      "energy": -7.820776027936122,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.0615483509473691,
+      "error_mha": 61.5483509473691,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 5.91278076171875e-05
+    },
+    {
+      "iteration": 24,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 6.079673767089844e-05
+    },
+    {
+      "iteration": 25,
+      "energy": -7.859571909327729,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.022752469555761934,
+      "error_mha": 22.752469555761934,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 6.29425048828125e-05
+    },
+    {
+      "iteration": 26,
+      "energy": -7.859653416485263,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.02267096239822841,
+      "error_mha": 22.67096239822841,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 6.4849853515625e-05
+    },
+    {
+      "iteration": 27,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 6.651878356933594e-05
+    },
+    {
+      "iteration": 28,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 6.842613220214844e-05
+    },
+    {
+      "iteration": 29,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 6.985664367675781e-05
+    },
+    {
+      "iteration": 30,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 7.176399230957031e-05
+    },
+    {
+      "iteration": 31,
+      "energy": -7.858523198546902,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.023801180336588956,
+      "error_mha": 23.801180336588956,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 7.343292236328125e-05
+    },
+    {
+      "iteration": 32,
+      "energy": -7.861337960926199,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020986417957292502,
+      "error_mha": 20.986417957292502,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 7.534027099609375e-05
+    },
+    {
+      "iteration": 33,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 7.677078247070312e-05
+    },
+    {
+      "iteration": 34,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 7.867813110351562e-05
+    },
+    {
+      "iteration": 35,
+      "energy": -7.860494693121976,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.02182968576151545,
+      "error_mha": 21.82968576151545,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 8.0108642578125e-05
+    },
+    {
+      "iteration": 36,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 8.177757263183594e-05
+    },
+    {
+      "iteration": 37,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 8.320808410644531e-05
+    },
+    {
+      "iteration": 38,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 8.463859558105469e-05
+    },
+    {
+      "iteration": 39,
+      "energy": -7.823528688071462,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.05879569081202973,
+      "error_mha": 58.79569081202973,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 8.678436279296875e-05
+    },
+    {
+      "iteration": 40,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 8.797645568847656e-05
+    },
+    {
+      "iteration": 41,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 9.012222290039062e-05
+    },
+    {
+      "iteration": 42,
+      "energy": -7.859780299002286,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.022544079881205548,
+      "error_mha": 22.544079881205548,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 9.1552734375e-05
+    },
+    {
+      "iteration": 43,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 9.322166442871094e-05
+    },
+    {
+      "iteration": 44,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 9.465217590332031e-05
+    },
+    {
+      "iteration": 45,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 9.632110595703125e-05
+    },
+    {
+      "iteration": 46,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 9.775161743164062e-05
+    },
+    {
+      "iteration": 47,
+      "energy": -7.861864769808656,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.020459609074835683,
+      "error_mha": 20.459609074835683,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 9.918212890625e-05
+    },
+    {
+      "iteration": 48,
+      "energy": -7.86004336462532,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.022281014258171083,
+      "error_mha": 22.281014258171083,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 0.00010085105895996094
+    },
+    {
+      "iteration": 49,
+      "energy": -7.813545292285265,
+      "fci_energy": -7.882324378883491,
+      "error_hartree": 0.06877908659822651,
+      "error_mha": 68.77908659822651,
+      "chemical_accuracy_achieved": false,
+      "timestamp": 0.00010251998901367188
+    }
+  ],
+  "circuit_metrics": [
+    {
+      "iteration": 49,
+      "circuit_depth": 1,
+      "n_excitations": 1,
+      "n_parameters": 25,
+      "timestamp": 0.00010967254638671875
+    }
+  ],
+  "training_metrics": [
+    {
+      "episode": 0,
+      "reward": -10.0,
+      "energy": -7.859162815505877,
+      "depth": 1,
+      "best_energy": -7.859162815505877,
+      "timestamp": 0.00011682510375976562
+    },
+    {
+      "episode": 1,
+      "reward": -0.039173660918641245,
+      "energy": -7.856742694454174,
+      "depth": 2,
+      "best_energy": -7.859162815505877,
+      "timestamp": 0.00012087821960449219
+    },
+    {
+      "episode": 2,
+      "reward": -0.011626966054542933,
+      "energy": -7.860237803754113,
+      "depth": 1,
+      "best_energy": -7.860237803754113,
+      "timestamp": 0.00012373924255371094
+    },
+    {
+      "episode": 3,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00012612342834472656
+    },
+    {
+      "episode": 4,
+      "reward": -0.033009507432751876,
+      "energy": -7.838855262375904,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001285076141357422
+    },
+    {
+      "episode": 5,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001308917999267578
+    },
+    {
+      "episode": 6,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00013303756713867188
+    },
+    {
+      "episode": 7,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00013518333435058594
+    },
+    {
+      "episode": 8,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00013780593872070312
+    },
+    {
+      "episode": 9,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001399517059326172
+    },
+    {
+      "episode": 10,
+      "reward": -0.027373960715726613,
+      "energy": -7.844490809092929,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001423358917236328
+    },
+    {
+      "episode": 11,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00014472007751464844
+    },
+    {
+      "episode": 12,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001468658447265625
+    },
+    {
+      "episode": 13,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00014925003051757812
+    },
+    {
+      "episode": 14,
+      "reward": -0.017481265417766283,
+      "energy": -7.854383504390889,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.000152587890625
+    },
+    {
+      "episode": 15,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00015497207641601562
+    },
+    {
+      "episode": 16,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00015807151794433594
+    },
+    {
+      "episode": 17,
+      "reward": -0.01035619533695197,
+      "energy": -7.861508574471704,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00016045570373535156
+    },
+    {
+      "episode": 18,
+      "reward": -0.09655927933552938,
+      "energy": -7.844383103413494,
+      "depth": 3,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001633167266845703
+    },
+    {
+      "episode": 19,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00016570091247558594
+    },
+    {
+      "episode": 20,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001685619354248047
+    },
+    {
+      "episode": 21,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001709461212158203
+    },
+    {
+      "episode": 22,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00017404556274414062
+    },
+    {
+      "episode": 23,
+      "reward": -0.05108874187253342,
+      "energy": -7.820776027936122,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001766681671142578
+    },
+    {
+      "episode": 24,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00017952919006347656
+    },
+    {
+      "episode": 25,
+      "reward": -10.012292860480926,
+      "energy": -7.859571909327729,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00018262863159179688
+    },
+    {
+      "episode": 26,
+      "reward": -0.012211353323392729,
+      "energy": -7.859653416485263,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00018525123596191406
+    },
+    {
+      "episode": 27,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0001881122589111328
+    },
+    {
+      "episode": 28,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00019168853759765625
+    },
+    {
+      "episode": 29,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00019478797912597656
+    },
+    {
+      "episode": 30,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00019812583923339844
+    },
+    {
+      "episode": 31,
+      "reward": -0.013341571261753274,
+      "energy": -7.858523198546902,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00020122528076171875
+    },
+    {
+      "episode": 32,
+      "reward": -0.01052680888245682,
+      "energy": -7.861337960926199,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00020503997802734375
+    },
+    {
+      "episode": 33,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00020837783813476562
+    },
+    {
+      "episode": 34,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002117156982421875
+    },
+    {
+      "episode": 35,
+      "reward": -0.011370076686679767,
+      "energy": -7.860494693121976,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002148151397705078
+    },
+    {
+      "episode": 36,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002181529998779297
+    },
+    {
+      "episode": 37,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00022149085998535156
+    },
+    {
+      "episode": 38,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00022482872009277344
+    },
+    {
+      "episode": 39,
+      "reward": -0.1459557756437583,
+      "energy": -7.823528688071462,
+      "depth": 4,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002281665802001953
+    },
+    {
+      "episode": 40,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002319812774658203
+    },
+    {
+      "episode": 41,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00023555755615234375
+    },
+    {
+      "episode": 42,
+      "reward": -0.012084470806369865,
+      "energy": -7.859780299002286,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002396106719970703
+    },
+    {
+      "episode": 43,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00024318695068359375
+    },
+    {
+      "episode": 44,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002472400665283203
+    },
+    {
+      "episode": 45,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.0002510547637939453
+    },
+    {
+      "episode": 46,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00025534629821777344
+    },
+    {
+      "episode": 47,
+      "reward": 0.0,
+      "energy": -7.861864769808656,
+      "depth": 0,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00025916099548339844
+    },
+    {
+      "episode": 48,
+      "reward": -0.0118214051833354,
+      "energy": -7.86004336462532,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.000263214111328125
+    },
+    {
+      "episode": 49,
+      "reward": -0.05831947752339083,
+      "energy": -7.813545292285265,
+      "depth": 1,
+      "best_energy": -7.861864769808656,
+      "timestamp": 0.00026702880859375
+    }
+  ],
+  "timing_metrics": [
+    {
+      "stage": "total_validation",
+      "duration": 9.956403017044067,
+      "timestamp": 0.0002696514129638672
+    }
+  ],
+  "resource_metrics": [],
+  "validation_metrics": {
+    "final_energy": -7.8649022917376525,
+    "fci_energy": -7.882324378883491,
+    "error_mha": 17.422087145838816,
+    "chemical_accuracy_achieved": false,
+    "convergence_reached": false,
+    "episodes_completed": 50
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "best_energy": -1.1167593073964255,
+  "best_circuit": null,
+  "best_excitations": [],
+  "best_params": [
+    0.0,
+    0.0
+  ],
+  "training_history": [],
+  "convergence_reached": false,
+  "episode_rewards": [
+    -0.06683115175047315
+  ],
+  "episode_energies": [
+    -1.0699281556459523
+  ],
+  "episode_depths": [
+    2
+  ]
+}

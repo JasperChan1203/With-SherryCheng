@@ -1,0 +1,516 @@
+{
+  "project": "RLQAS Phase 1 - UCC Search Module",
+  "version": "1.0",
+  "branchName": "ralph/Phase1/004",
+  "description": "Implement the UCC-specific search environment and controller. This is the core module that ties together molecule processing, simulation, and RL for UCC architecture search.",
+  "dependencies": {
+    "RLQAS_Phase1_001": {
+      "required": true,
+      "description": "Molecule processing module provides MoleculeData objects for UCC search environment",
+      "import_path": "../001",
+      "files": [
+        "../001/src/modules/molecule_processor.py"
+      ],
+      "classes_to_import": [
+        "MoleculeData",
+        "process_molecule"
+      ],
+      "usage": "Provides molecular Hamiltonian, qubit count, reference state, and FCI energy for UCC search environment"
+    },
+    "RLQAS_Phase1_002": {
+      "required": true,
+      "description": "Quantum simulator module provides energy evaluation for UCC circuits",
+      "import_path": "../002",
+      "files": [
+        "../002/src/modules/quantum_simulator.py"
+      ],
+      "classes_to_import": [
+        "QuantumSimulator",
+        "TencirchemCISimulator",
+        "SimulatorFactory"
+      ],
+      "usage": "Used to evaluate circuit energies during UCC search process"
+    },
+    "RLQAS_Phase1_003": {
+      "required": true,
+      "description": "PPO RL Agent provides reinforcement learning agent for the search process",
+      "import_path": "../003",
+      "files": [
+        "../003/src/modules/rl_agents/ppo_agent.py",
+        "../003/src/modules/rl_agents/base_agent.py"
+      ],
+      "classes_to_import": [
+        "RLAgent",
+        "PPOAgent"
+      ],
+      "usage": "RL agent interacts with UCCSearchEnv to learn optimal UCC circuit architectures"
+    }
+  },
+  "objectives": [
+    {
+      "id": "ucc-search-environment",
+      "description": "Implement UCCSearchEnv class that is gym.Env compatible as defined in RLQAS specification section 3.4",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Implement UCCSearchEnv class with required gym.Env methods: __init__, step, reset, render, close",
+        "Environment state includes circuit architecture, parameters, and energy",
+        "Action space corresponds to UCC excitation operators (single and double excitations)",
+        "Observation space includes current energy, circuit parameters, and architecture information",
+        "Environment provides reward based on energy improvement",
+        "Termination conditions include max depth, convergence threshold, or invalid actions",
+        "Observation vector should include: normalized energy, circuit parameters, architecture encoding, and step count",
+        "Action space size should equal number of available excitation operators for the molecule",
+        "Implement action masking to prevent invalid actions (exceeding max depth, duplicate excitations)",
+        "State should track current circuit depth, excitation sequence, and best energy found",
+        "Environment should handle simulator failures gracefully with appropriate error handling",
+        "Render method should display current circuit, energy, and search progress"
+      ]
+    },
+    {
+      "id": "ucc-circuit-builder",
+      "description": "Create UCCCircuitBuilder for constructing UCC circuits from excitation sequences",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Implement UCCCircuitBuilder class with build_circuit method",
+        "Support basic UCC excitation operators (single and double excitations)",
+        "Generate parameterized quantum circuits compatible with quantum simulator",
+        "Handle circuit depth limits and parameter initialization",
+        "Support circuit visualization and debugging",
+        "Excitation operators should be represented as tuples: (i,j) for single, (i,j,k,l) for double excitations",
+        "Circuit construction should map excitation operators to parameterized quantum gates",
+        "Parameter initialization should support strategies: random, zeros, normal distribution",
+        "Builder should validate excitation sequences for physical validity",
+        "Circuit output should be compatible with Task 002 quantum simulator interface",
+        "Builder should provide method to get all available excitations based on molecular orbital count",
+        "Circuit visualization should show excitation sequence and parameter values"
+      ]
+    },
+    {
+      "id": "ucc-reward-function",
+      "description": "Implement UCCRewardFunction for computing rewards based on energy improvements",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Implement UCCRewardFunction class with compute_reward method",
+        "Reward based on energy improvement relative to previous best",
+        "Include penalty for circuit complexity (depth, number of excitations)",
+        "Support configurable reward shaping parameters",
+        "Handle baseline energy (Hartree-Fock, current best, etc.)",
+        "Reward formula: R = (E_best - E_current) * energy_weight - depth * complexity_penalty + shaping_rewards",
+        "Energy improvement should be computed in Hartree units (appropriate scaling)",
+        "Complexity penalty should be configurable and applied per excitation operator",
+        "Support multiple baseline types: Hartree-Fock, current best, rolling average",
+        "Reward function should be differentiable-friendly for potential future extensions",
+        "Include optional shaping rewards for intermediate progress (e.g., parameter optimization success)",
+        "Handle edge cases: zero improvement, negative improvement, first evaluation"
+      ]
+    },
+    {
+      "id": "ucc-search-controller",
+      "description": "Create UCCSearchController to manage the complete UCC search process",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Implement UCCSearchController class with search method",
+        "Initialize RL agent, environment, and simulator",
+        "Manage training episodes and collect performance metrics",
+        "Support early stopping based on convergence threshold",
+        "Save and log search results (best circuits, energies, training history)",
+        "Controller should integrate Task 001 (molecule data), Task 002 (simulator), and Task 003 (RL agent)",
+        "Search method should accept configuration parameters: n_episodes, early_stop_threshold, etc.",
+        "Collect comprehensive metrics: episode rewards, circuit depths, energy progression, training time",
+        "Implement checkpointing: save best model periodically during training",
+        "Handle errors gracefully: simulator failures, invalid circuits, RL training instability",
+        "Provide clear progress reporting and logging for debugging",
+        "Save results in structured format for analysis and Task 005 validation"
+      ]
+    },
+    {
+      "id": "basic-ucc-search-validation",
+      "description": "Validate basic UCC search functionality with H2 molecule",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "End-to-end test with H2 molecule (2 qubits) completes successfully",
+        "Search process produces valid UCC circuits",
+        "Energy improves from Hartree-Fock towards FCI energy",
+        "Integration tests with all dependent modules pass",
+        "Code coverage for core UCC search module >70%",
+        "H2 test should demonstrate measurable energy improvement (>0.001 Hartree) within reasonable training",
+        "Test should verify all components work together: molecule processing, circuit building, simulation, RL",
+        "Validation should include quantitative metrics: final energy error, circuit depth, training episodes",
+        "Test should run within reasonable time (<30 minutes for basic validation)",
+        "Results should be reproducible with fixed random seeds",
+        "Test should verify error handling and edge cases",
+        "Validation should confirm module is ready for Task 005 LiH validation"
+      ]
+    },
+    {
+      "id": "configuration-management",
+      "description": "Implement configuration management for UCC search parameters",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Centralized configuration for environment, circuit builder, reward function, and controller",
+        "Default parameters match RLQAS specification section 3.4",
+        "Configuration validation and error handling",
+        "Support for different search strategies and hyperparameters",
+        "Configuration should include: environment (max_depth, max_excitations), reward (energy_weight, complexity_penalty), controller (n_episodes, early_stop_threshold)",
+        "Parameter validation: type checking, range validation, cross-parameter consistency",
+        "Support configuration loading from JSON/YAML files and programmatic override",
+        "Default values should be documented and match RLQAS spec exactly",
+        "Configuration should be serializable for logging and reproducibility",
+        "Error messages should be clear and help users fix configuration issues",
+        "Support for different search strategies: basic UCC, adaptive depth, multi-start"
+      ]
+    }
+  ],
+  "constraints": {
+    "technology_stack": {
+      "runtime_dependencies": [
+        "python3",
+        "tencirchem-ng>=2024.10",
+        "openfermion>=1.5",
+        "pyscf>=2.0.0",
+        "numpy>=1.21",
+        "scipy>=1.7",
+        "stable-baselines3>=2.0.0",
+        "gym>=0.21.0",
+        "torch>=1.9.0"
+      ],
+      "development_dependencies": [
+        "pytest>=7.0",
+        "pytest-cov>=4.0"
+      ],
+      "system_requirements": [
+        "cuda (optional, for GPU acceleration if available)",
+        "8GB+ RAM recommended for simulator",
+        "Moderate compute resources for RL training"
+      ],
+      "environment_consistency_note": "This task uses all Phase 1 modules: Task 001 (molecule processor), Task 002 (quantum simulator), and Task 003 (RL agent). Dependencies must be consistent across all tasks."
+    },
+    "implementation_requirements": [
+      "File structure must follow: src/modules/ucc_search/ with submodules",
+      "UCCSearchEnv must implement full gym.Env interface",
+      "Circuit builder must support basic UCC excitation operators (single and double)",
+      "Reward function must balance energy improvement and circuit complexity",
+      "Search controller must integrate all components and manage RL training",
+      "Configuration must be centralized and validated",
+      "Random seeds must be fixed for reproducibility",
+      "Error handling for invalid circuits and simulator failures"
+    ],
+    "output_requirements": [
+      "Clean, well-commented code following PEP8 standards",
+      "Comprehensive unit tests in tests/test_ucc_search.py with >70% coverage",
+      "Documentation explaining module usage and configuration options",
+      "Ralph learning log documenting iterative learning and design decisions",
+      "Fixed random seeds in all test cases for reproducibility",
+      "Example scripts demonstrating basic usage"
+    ],
+    "computational_limits": [
+      "Focus on correctness rather than optimization",
+      "H2 molecule test should complete in reasonable time (<30 minutes)",
+      "Memory usage should be moderate (<4GB for typical usage)",
+      "Should run on standard compute resources without specialized hardware"
+    ],
+    "verification_points": [
+      "UCCSearchEnv correctly implements gym.Env interface",
+      "UCCCircuitBuilder creates valid quantum circuits",
+      "UCCRewardFunction computes meaningful rewards",
+      "UCCSearchController can run complete search episodes",
+      "Integration with all dependent modules works correctly",
+      "Basic H2 molecule search demonstrates energy improvement",
+      "All tests pass with >70% code coverage"
+    ]
+  },
+  "output_format": {
+    "ucc_search_module": {
+      "required_files": [
+        "src/modules/ucc_search/environment.py",
+        "src/modules/ucc_search/circuit_builder.py",
+        "src/modules/ucc_search/reward_function.py",
+        "src/modules/ucc_search/controller.py",
+        "src/modules/ucc_search/config.py",
+        "tests/test_environment.py",
+        "tests/test_circuit_builder.py",
+        "tests/test_reward_function.py",
+        "tests/test_controller.py",
+        "tests/test_integration.py",
+        "docs/ucc_search_usage.md"
+      ],
+      "module_interface": {
+        "UCCSearchEnv": {
+          "inherits": "gym.Env",
+          "required_methods": [
+            "__init__(molecule_data: MoleculeData, config: Dict = None)",
+            "step(action: int) -> Tuple[np.ndarray, float, bool, Dict]",
+            "reset() -> np.ndarray",
+            "render(mode: str = 'human')",
+            "close()"
+          ],
+          "attributes": [
+            "observation_space: gym.Space",
+            "action_space: gym.Space",
+            "current_state: Dict",
+            "best_energy: float"
+          ],
+          "notes": "Environment for UCC architecture search. State includes circuit information and energy. Actions correspond to adding excitation operators."
+        },
+        "UCCCircuitBuilder": {
+          "methods": [
+            "build_circuit(excitations: List[Tuple[int, int]], params: np.ndarray = None) -> QuantumCircuit",
+            "get_available_excitations(n_qubits: int) -> List[Tuple[int, int]]",
+            "initialize_parameters(n_params: int, strategy: str = 'random') -> np.ndarray"
+          ],
+          "notes": "Builds UCC quantum circuits from excitation sequences. Supports single and double excitations."
+        },
+        "UCCRewardFunction": {
+          "methods": [
+            "compute_reward(current_energy: float, best_energy: float, circuit_complexity: int) -> float",
+            "update_baseline(new_best_energy: float)",
+            "get_shaping_parameters() -> Dict"
+          ],
+          "notes": "Computes rewards based on energy improvement with complexity penalty."
+        },
+        "UCCSearchController": {
+          "methods": [
+            "__init__(molecule_data: MoleculeData, agent_type: str = 'ppo', config: Dict = None)",
+            "search(n_episodes: int = 1000, early_stop_threshold: float = 1.6e-3) -> SearchResult",
+            "save_results(path: str)",
+            "load_results(path: str)"
+          ],
+          "notes": "Manages the complete UCC search process, integrating environment, agent, and simulator."
+        }
+      }
+    }
+  },
+  "test_cases": {
+    "description": "Test cases for validating UCC search module",
+    "component_tests": [
+      {
+        "id": "test_environment_interface",
+        "description": "Test UCCSearchEnv gym.Env interface compliance",
+        "procedure": "Create environment instance, test reset, step, observation/action spaces",
+        "validation": "Environment correctly implements gym.Env interface"
+      },
+      {
+        "id": "test_circuit_builder",
+        "description": "Test UCCCircuitBuilder creates valid circuits",
+        "procedure": "Build circuits with different excitation sequences, validate circuit structure",
+        "validation": "Circuits are valid quantum circuits with correct number of parameters"
+      },
+      {
+        "id": "test_reward_function",
+        "description": "Test UCCRewardFunction computes correct rewards",
+        "procedure": "Test reward computation for different energy improvements and complexities",
+        "validation": "Rewards appropriately incentivize energy improvement while penalizing complexity"
+      },
+      {
+        "id": "test_controller_integration",
+        "description": "Test UCCSearchController integration with all components",
+        "procedure": "Create controller with mock dependencies, test search initialization",
+        "validation": "Controller correctly initializes and integrates all components"
+      }
+    ],
+    "integration_tests": [
+      {
+        "id": "test_h2_end_to_end",
+        "description": "End-to-end test with H2 molecule",
+        "molecule": "H2",
+        "bond_length": 0.74,
+        "procedure": "Process H2 molecule, create environment and controller, run short search",
+        "validation": "Search completes without errors, produces valid circuits, shows energy improvement"
+      },
+      {
+        "id": "test_module_integration",
+        "description": "Integration test with all dependent modules",
+        "procedure": "Import Task 001, 002, 003 modules, test full integration",
+        "validation": "All modules work together correctly, no import errors"
+      }
+    ],
+    "performance_tests": [
+      {
+        "id": "test_single_step_performance",
+        "description": "Test single environment step performance",
+        "procedure": "Measure time for single environment step (circuit building + simulation)",
+        "validation": "Single step completes in reasonable time (<1 second for small molecules)"
+      }
+    ]
+  },
+  "validation_procedure": {
+    "description": "Implementation must be validated through unit tests, integration tests, and end-to-end H2 molecule test",
+    "steps": [
+      "Implement the module according to specifications",
+      "Write comprehensive unit tests covering all components",
+      "Run tests: pytest tests/test_ucc_search.py --cov=src/modules/ucc_search --cov-report=term",
+      "Verify code coverage >70%",
+      "Test integration with Phase 1 Task 001, 002, 003 modules",
+      "Run end-to-end test with H2 molecule",
+      "Validate that search process produces energy improvement",
+      "Test configuration options and parameter validation",
+      "Document any issues and fix them iteratively"
+    ],
+    "success_criteria": [
+      "All unit tests pass",
+      "Code coverage >70%",
+      "UCCSearchEnv correctly implements gym.Env interface",
+      "UCCCircuitBuilder creates valid quantum circuits",
+      "UCCRewardFunction computes meaningful rewards",
+      "UCCSearchController can run search episodes",
+      "Integration with all dependent modules works",
+      "H2 molecule test demonstrates energy improvement",
+      "Module can be imported without errors"
+    ]
+  },
+  "configuration_examples": {
+    "description": "Example configurations for UCC search",
+    "examples": {
+      "default_search": {
+        "description": "Default UCC search configuration",
+        "config": {
+          "environment": {
+            "max_depth": 10,
+            "max_excitations": 20,
+            "use_sqeb": true,
+            "param_init_strategy": "random"
+          },
+          "reward": {
+            "energy_weight": 1.0,
+            "complexity_penalty": 0.01,
+            "baseline_type": "hartree_fock"
+          },
+          "controller": {
+            "agent_type": "ppo",
+            "n_episodes": 1000,
+            "early_stop_threshold": 1.6e-3
+          }
+        },
+        "use_case": "Standard UCC search with default parameters"
+      },
+      "fast_debug": {
+        "description": "Configuration for fast debugging",
+        "config": {
+          "environment": {
+            "max_depth": 5,
+            "max_excitations": 10
+          },
+          "controller": {
+            "n_episodes": 10,
+            "early_stop_threshold": 0.1
+          }
+        },
+        "use_case": "Quick debugging and development"
+      }
+    }
+  },
+  "success_criteria": {
+    "technical": [
+      "UCCSearchEnv correctly implements gym.Env interface",
+      "UCCCircuitBuilder creates valid UCC circuits",
+      "UCCRewardFunction computes appropriate rewards",
+      "UCCSearchController manages complete search process",
+      "Integration with all dependent modules works correctly",
+      "H2 molecule test demonstrates energy improvement"
+    ],
+    "process": [
+      "Ralph completes the objective within maximum iterations",
+      "Knowledge about UCC search, quantum circuits, and RL integration captured in AGENTS.md",
+      "Clear progress recorded in progress.txt",
+      "Detailed documentation of implementation decisions and rationale",
+      "Ralph learning log demonstrates iterative learning and problem-solving"
+    ],
+    "integration_readiness": [
+      "Module provides complete UCC search capability for Phase 1 Task 005 validation",
+      "Interface compatible with RL agent from Task 003",
+      "Works with molecule data from Task 001 and simulator from Task 002",
+      "Ready for LiH validation in Task 005"
+    ]
+  },
+  "reference_materials": {
+    "rlqas_specification": "Section 3.4: UCC Search Module",
+    "tencirchem_docs": "https://tencirchem.readthedocs.io/",
+    "openfermion_docs": "https://quantumai.google/openfermion",
+    "gym_docs": "https://www.gymlibrary.dev/",
+    "phase1_task001": "../001 (Molecule Processing Module)",
+    "phase1_task002": "../002 (Quantum Simulator Module)",
+    "phase1_task003": "../003 (PPO RL Agent)",
+    "example_implementations": "Existing test cases in ralph/test directory"
+  },
+  "technical_specification": {
+    "description": "Detailed technical specifications for UCC search module implementation",
+    "ucc_circuit_details": {
+      "excitation_operators": {
+        "single_excitations": "Tuples of the form (i, j) where i is occupied orbital index and j is virtual orbital index",
+        "double_excitations": "Tuples of the form (i, j, k, l) where i,k are occupied and j,l are virtual orbital indices",
+        "mapping_to_quantum_gates": "Each excitation operator maps to a parameterized quantum gate (typically a Givens rotation or similar)",
+        "parameterization": "Each excitation operator has an associated parameter theta for the rotation angle"
+      },
+      "circuit_construction": {
+        "initial_state": "Hartree-Fock reference state from MoleculeData",
+        "excitation_sequence": "Ordered list of excitation operators applied to build the circuit",
+        "parameter_vector": "Vector of rotation angles for each excitation operator",
+        "circuit_depth": "Number of excitation operators in the circuit (circuit complexity)"
+      }
+    },
+    "environment_details": {
+      "state_representation": {
+        "observation_components": [
+          "Current energy (normalized relative to Hartree-Fock)",
+          "Circuit parameters (normalized rotation angles)",
+          "Circuit architecture (one-hot encoding of excitation operators)",
+          "Step count (normalized)"
+        ],
+        "observation_dimension": "Variable depending on circuit depth and number of available excitations"
+      },
+      "action_space": {
+        "action_type": "Discrete",
+        "action_mapping": "Each action index maps to a specific excitation operator from the available set",
+        "available_actions": "List of valid excitation operators for the current molecule (depends on number of qubits/orbitals)",
+        "invalid_actions": "Actions that would exceed max depth or create invalid circuits are masked"
+      },
+      "reward_function": {
+        "energy_improvement_component": "Reward = (previous_best_energy - current_energy) * energy_weight",
+        "complexity_penalty_component": "Penalty = circuit_depth * complexity_penalty",
+        "total_reward": "R = energy_improvement - complexity_penalty + optional_shaping_rewards",
+        "baseline_energy": "Can be Hartree-Fock energy or current best energy found",
+        "shaping_rewards": "Optional additional rewards for intermediate progress"
+      },
+      "termination_conditions": [
+        "Max circuit depth reached (max_excitations parameter)",
+        "Energy convergence (|current_energy - target_energy| < early_stop_threshold)",
+        "Maximum episode steps reached",
+        "Invalid action attempted"
+      ]
+    },
+    "search_process": {
+      "episode_flow": [
+        "1. Reset environment: empty circuit, Hartree-Fock energy",
+        "2. For each step: agent selects excitation operator (action)",
+        "3. Environment adds excitation to circuit, optimizes parameters",
+        "4. Simulator evaluates circuit energy",
+        "5. Reward computed based on energy improvement",
+        "6. State updated, check termination conditions",
+        "7. Repeat until termination"
+      ],
+      "parameter_optimization": {
+        "method": "Can use gradient-based optimization (e.g., L-BFGS) or fixed learning rate",
+        "initialization": "Parameters initialized based on config (random, zeros, normal)",
+        "optimization_frequency": "Can optimize after each excitation addition or periodically"
+      },
+      "controller_responsibilities": [
+        "Initialize RL agent, environment, and simulator",
+        "Manage training episodes and collect metrics",
+        "Handle early stopping based on convergence",
+        "Save best circuits and training history",
+        "Log performance for analysis"
+      ]
+    }
+  },
+  "notes": [
+    "This is the core module of Phase 1, integrating all previous tasks",
+    "Focus on correctness and integration rather than optimization",
+    "Random seeds must be fixed in all tests for reproducibility",
+    "Circuit builder should support basic UCC excitations (single and double)",
+    "Reward function should balance energy improvement and circuit complexity",
+    "Controller should manage the complete search process and log results",
+    "Integration with all dependent modules is critical for success",
+    "H2 molecule (2 qubits) is used for basic validation; LiH will be used in Task 005",
+    "Test coverage must exceed 70% as per Phase 1 requirements"
+  ]
+}

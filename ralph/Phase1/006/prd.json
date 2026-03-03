@@ -1,0 +1,160 @@
+{
+  "project": "RLQAS Phase 1 - Integration and Optimization",
+  "version": "1.0",
+  "branchName": "ralph/Phase1/006",
+  "description": "Integrate and optimize all Phase 1 modules into a unified, production-ready package. Fix critical issues, ensure chemical accuracy targets are met, and provide a clean API for end users.",
+  "objectives": [
+    {
+      "id": "architecture-integration",
+      "description": "Create unified package structure that integrates Tasks 001-005 into a single Python package",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Create rlqas.phase1 Python package with proper module hierarchy",
+        "All modules from Tasks 001-005 available via 'import rlqas.phase1'",
+        "Eliminate hard-coded sys.path.append imports between tasks",
+        "Provide clean entry points for common workflows",
+        "Maintain backward compatibility with existing test scripts"
+      ]
+    },
+    {
+      "id": "gym-migration",
+      "description": "Migrate from deprecated Gym to Gymnasium",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Replace all 'import gym' with 'import gymnasium as gym'",
+        "Update environment interfaces to use Gymnasium API",
+        "Ensure UCCSearchEnv works correctly with Gymnasium",
+        "Update RL agent compatibility with Gymnasium",
+        "No Gym deprecation warnings in any module"
+      ]
+    },
+    {
+      "id": "chemical-accuracy-optimization",
+      "description": "Achieve chemical accuracy (<1.6 mHa error) for LiH with active_space=(2,3) and parity transformation",
+      "priority": "high",
+      "acceptance_criteria": [
+        "LiH molecule with active_space=(2,3) processed correctly (should produce 4 qubits with parity transformation)",
+        "UCC search converges to within 1.6 mHa of FCI energy",
+        "Optimize PPO hyperparameters for chemical accuracy",
+        "Improve reward function to better balance energy improvement vs circuit complexity",
+        "Validate results with multiple random seeds for statistical significance"
+      ]
+    },
+    {
+      "id": "performance-validation",
+      "description": "Validate all performance targets from Phase 1 specifications",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "8-qubit circuit energy evaluation completes in <500ms",
+        "Full LiH validation completes within <2 hours",
+        "Memory estimation functions provide accurate predictions",
+        "Benchmark scripts for measuring performance metrics"
+      ]
+    },
+    {
+      "id": "algorithm-optimizations",
+      "description": "Optimize key algorithms identified in Phase 1 review",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Improve reference state calculation efficiency (replace brute-force search)",
+        "Fix Hamiltonian mapping inconsistencies between modules",
+        "Optimize CI vector engine integration in quantum simulator",
+        "Enhance error handling and logging across all modules"
+      ]
+    },
+    {
+      "id": "documentation-examples",
+      "description": "Provide comprehensive documentation and usage examples",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Create README.md with installation and quickstart instructions",
+        "Provide API documentation for all public interfaces",
+        "Create example scripts for common use cases",
+        "Generate validation report showing all targets achieved"
+      ]
+    }
+  ],
+  "constraints": {
+    "technology_stack": {
+      "runtime_dependencies": [
+        "python3>=3.8",
+        "tencirchem-ng>=2024.10",
+        "openfermion>=1.5",
+        "numpy>=1.21",
+        "scipy>=1.7",
+        "gymnasium>=1.0.0",
+        "stable-baselines3>=2.0.0",
+        "torch>=1.9.0",
+        "pyscf>=2.0.0",
+        "tensorcircuit>=0.10.0"
+      ],
+      "development_dependencies": [
+        "pytest>=7.0",
+        "pytest-cov>=4.0",
+        "black>=22.0",
+        "flake8>=5.0"
+      ],
+      "system_requirements": [
+        "CUDA 12.4 (optional, for GPU acceleration)",
+        "16GB+ RAM recommended for full validation"
+      ]
+    },
+    "implementation_requirements": [
+      "Do not modify original Task 001-005 code directly - create new integrated structure",
+      "Maintain compatibility with existing test suites where possible",
+      "Use semantic versioning for the integrated package",
+      "Follow PEP8 standards and include type hints for public APIs",
+      "Provide both high-level and low-level APIs for different user needs"
+    ],
+    "output_requirements": [
+      "Integrated Python package in src/rlqas/phase1/ directory",
+      "Comprehensive test suite covering integration points",
+      "Example scripts in examples/ directory",
+      "Performance benchmark results",
+      "Validation report demonstrating chemical accuracy achievement"
+    ],
+    "integration_points": [
+      "MoleculeData objects must flow seamlessly between all modules",
+      "Quantum simulator must work with Hamiltonians from molecule processor",
+      "RL agent must interface correctly with UCC search environment",
+      "Validation system must integrate all components end-to-end"
+    ],
+    "preservation_requirements": [
+      "Keep original Task 001-005 directories intact as reference",
+      "Ensure integrated package can be tested independently",
+      "Maintain ability to run original validation scripts for comparison"
+    ]
+  },
+  "validation_procedure": {
+    "description": "Comprehensive validation of integrated Phase 1 system",
+    "steps": [
+      "Run module integration tests to verify all components work together",
+      "Execute chemical accuracy validation for LiH (2,3) active space",
+      "Perform performance benchmarking for 8-qubit simulations",
+      "Run end-to-end validation with H2 and LiH test cases",
+      "Compare results with original Task 005 validation outputs",
+      "Generate validation report with metrics and analysis"
+    ],
+    "success_criteria": [
+      "All integration tests pass",
+      "Chemical accuracy <1.6 mHa achieved for LiH (2,3)",
+      "8-qubit simulation <500ms performance target met",
+      "No critical warnings or errors in test execution",
+      "Validation report demonstrates all objectives achieved"
+    ]
+  },
+  "reference_materials": {
+    "phase1_tasks": "Tasks 001-005 in ../ directory",
+    "rlqas_specification": "Section 3: Phase 1 Module Specifications",
+    "gymnasium_migration": "https://gymnasium.farama.org/introduction/migration_guide/",
+    "tencirchem_docs": "https://tencirchem.readthedocs.io/",
+    "phase1_review": "Analysis of Phase 1 completion status"
+  },
+  "notes": [
+    "This is a consolidation and optimization task, not a rewrite",
+    "Focus on fixing identified issues while preserving existing functionality",
+    "Chemical accuracy may require significant hyperparameter tuning",
+    "Performance optimization should focus on critical bottlenecks identified in review",
+    "Documentation should target both researchers and developers"
+  ]
+}

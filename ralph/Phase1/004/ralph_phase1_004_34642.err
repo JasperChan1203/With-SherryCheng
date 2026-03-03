@@ -1,0 +1,2 @@
+<promise>COMPLETE</promise>
+slurmstepd: error: Detected 8 oom_kill events in StepId=34642.batch. Some of the step tasks have been OOM Killed.

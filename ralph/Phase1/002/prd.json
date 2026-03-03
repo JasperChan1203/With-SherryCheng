@@ -1,0 +1,325 @@
+{
+  "project": "RLQAS Phase 1 - Quantum Simulator Module",
+  "version": "1.0",
+  "branchName": "ralph/Phase1/002",
+  "description": "Implement the quantum simulator module using Tencirchem-ng 2024.10 CI vector engine. Create configurable simulation interfaces for systems with 4-20+ qubits.",
+  "dependencies": {
+    "RLQAS_Phase1_001": {
+      "required": true,
+      "description": "Molecule processing module provides MoleculeData objects containing Hamiltonians, reference states, and molecular information",
+      "import_path": "../001",
+      "files": [
+        "../001/src/modules/molecule_processor.py"
+      ],
+      "classes_to_import": [
+        "MoleculeData",
+        "process_molecule"
+      ]
+    }
+  },
+  "objectives": [
+    {
+      "id": "quantum-simulator-interface",
+      "description": "Implement the QuantumSimulator abstract base class with required methods as defined in RLQAS specification section 3.2",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Implement QuantumSimulator abstract base class with compute_energy(), get_max_qubits(), and estimate_memory() methods",
+        "Create TencirchemCISimulator class implementing the CI vector engine",
+        "Implement SimulatorFactory for creating simulators based on system scale",
+        "Support configuration-driven simulator selection",
+        "Implement performance estimation methods"
+      ]
+    },
+    {
+      "id": "integration-testing",
+      "description": "Test integration with molecule processing module (Phase 1 Task 001)",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Successfully import and use MoleculeData objects from Phase 1 Task 001",
+        "Test energy computation with actual H2 and LiH Hamiltonians",
+        "Verify reference state handling from molecule processor",
+        "Test simulator factory with different qubit counts"
+      ]
+    },
+    {
+      "id": "performance-validation",
+      "description": "Validate performance requirements for quantum simulator",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Single energy evaluation for 8-qubit circuit completes in <500ms",
+        "Memory estimation method provides reasonable estimates",
+        "Simulator correctly handles 4-20+ qubit systems",
+        "Configuration parameters affect simulator behavior as expected"
+      ]
+    }
+  ],
+  "constraints": {
+    "technology_stack": {
+      "runtime_dependencies": [
+        "python3",
+        "tencirchem-ng>=2024.10",
+        "openfermion>=1.5",
+        "numpy>=1.21",
+        "scipy>=1.7",
+        "pyscf>=2.0.0"
+      ],
+      "optional_dependencies": [
+        "torch>=1.9 (for GPU acceleration if available)",
+        "tensorcircuit>=0.8.0 (for advanced circuit operations)"
+      ],
+      "development_dependencies": [
+        "pytest>=7.0",
+        "pytest-cov>=4.0"
+      ],
+      "system_requirements": [
+        "cuda=12.4 (optional, for GPU acceleration if available)",
+        "32GB+ RAM recommended for larger systems (16GB minimum)"
+      ],
+      "environment_consistency_note": "This task uses the same core dependencies as Phase 1 Task 001 (tencirchem-ng, openfermion, numpy, scipy, pyscf) to ensure compatibility. Optional dependencies provide enhanced capabilities but are not required for core functionality."
+    },
+    "implementation_requirements": [
+      "File structure must follow: src/modules/quantum_simulator.py",
+      "QuantumSimulator abstract class must have exactly three abstract methods: compute_energy(), get_max_qubits(), estimate_memory()",
+      "TencirchemCISimulator must use tencirchem's CI vector engine as default, but support configuration to switch to other simulation methods (statevector, matrix product state, etc.)",
+      "Circuit representation must use Tencirchem-compatible circuit classes (e.g., tensorcircuit.Circuit) that can be converted to Tencirchem's internal representation",
+      "SimulatorFactory must implement decision logic: CI vector engine for 4-20 qubits (default), statevector for <8 qubits when memory permits, with configurable fallback strategies",
+      "Memory estimation method should consider: statevector requires 2^(n_qubits) * 16 bytes (complex128), CI vector memory depends on active space and symmetry utilization",
+      "Configuration parameters must be validated and have sensible defaults: engine='ci_vector', precision=1e-8, use_symmetry=True, max_memory_gb=32, fallback_method='statevector'",
+      "The simulator must handle Hamiltonians from Phase 1 Task 001 (OpenFermion QubitOperator format) and initial states as numpy arrays",
+      "Performance optimization: cache intermediate results when possible, support batch evaluation for multiple circuit parameters"
+    ],
+    "output_requirements": [
+      "Clean, well-commented code following PEP8",
+      "Comprehensive unit tests in tests/test_quantum_simulator.py",
+      "Documentation explaining the module usage and configuration options",
+      "Ralph learning log documenting iterative learning and design decisions"
+    ],
+    "computational_limits": [
+      "Focus on systems with 4-20+ qubits",
+      "Performance target: single energy evaluation <500ms for 8-qubit circuits",
+      "Memory estimation should be accurate within 20%",
+      "Should run on standard compute resources (32GB RAM recommended)"
+    ],
+    "verification_points": [
+      "QuantumSimulator abstract class correctly defined",
+      "TencirchemCISimulator implements all abstract methods",
+      "SimulatorFactory can create appropriate simulators based on qubit count",
+      "Single energy evaluation for 8-qubit circuit completes in <500ms",
+      "Memory estimation method provides reasonable estimates",
+      "All tests pass with >75% coverage"
+    ]
+  },
+  "output_format": {
+    "quantum_simulator_module": {
+      "required_files": [
+        "src/modules/quantum_simulator.py",
+        "tests/test_quantum_simulator.py",
+        "docs/quantum_simulator_usage.md"
+      ],
+      "module_interface": {
+        "QuantumSimulator": {
+          "abstract_methods": [
+            "compute_energy(circuit: Any, hamiltonian: QubitOperator, initial_state: Optional[np.ndarray] = None) -> float",
+            "get_max_qubits() -> int",
+            "estimate_memory(n_qubits: int) -> float"
+          ],
+          "notes": "circuit parameter accepts Tencirchem-compatible circuit objects (e.g., tensorcircuit.Circuit). The simulator should handle conversion to internal representation as needed."
+        },
+        "TencirchemCISimulator": {
+          "inherits": "QuantumSimulator",
+          "config_parameters": [
+            "engine: str = 'ci_vector' (options: 'ci_vector', 'statevector', 'mps' (matrix product state), 'custom')",
+            "precision: float = 1e-8 (energy convergence tolerance)",
+            "use_symmetry: bool = True (exploit molecular symmetry when available)",
+            "max_memory_gb: float = 32 (maximum memory allocation before fallback)",
+            "fallback_method: str = 'statevector' (fallback when CI vector exceeds memory limit)",
+            "use_gpu: bool = False (enable GPU acceleration if available)"
+          ],
+          "notes": "Default engine is CI vector for balance of accuracy and performance. Other engines can be selected via configuration for specific use cases."
+        },
+        "SimulatorFactory": {
+          "static_methods": [
+            "create_simulator(n_qubits: int, config: Dict = None) -> QuantumSimulator"
+          ],
+          "decision_logic": [
+            "n_qubits < 8: statevector simulator (fast, memory permitting)",
+            "8 ≤ n_qubits ≤ 20: CI vector simulator (default, memory efficient)",
+            "n_qubits > 20: CI vector with memory check, fallback to approximate methods",
+            "Config parameter overrides: user can specify engine directly"
+          ]
+        }
+      }
+    }
+  },
+  "test_cases": {
+    "description": "Standard test cases for validating quantum simulator module",
+    "test_circuit_sources": [
+      "Simple parameterized circuits generated from Phase 1 Task 001 MoleculeData",
+      "UCC-style circuits for H2 and LiH molecules",
+      "Random parameterized circuits for performance benchmarking"
+    ],
+    "specific_tests": [
+      {
+        "id": "test_h2_basic",
+        "description": "Basic functionality test with H2 molecule",
+        "molecule": "H2",
+        "bond_length": 0.74,
+        "active_space": null,
+        "expected_qubits": 2,
+        "circuit_type": "simple_parameterized",
+        "performance_target": "<100ms per energy evaluation",
+        "validation": "Energy computation matches reference within numerical tolerance"
+      },
+      {
+        "id": "test_lih_integration",
+        "description": "Integration test with LiH molecule from Task 001",
+        "molecule": "LiH",
+        "bond_length": 1.6,
+        "active_space": [2, 2],
+        "expected_qubits": 4,
+        "circuit_type": "ucc_style",
+        "performance_target": "<200ms per energy evaluation",
+        "validation": "Energy computation works with actual Task 001 outputs"
+      },
+      {
+        "id": "test_8qubit_performance",
+        "description": "Performance benchmark with 8-qubit system",
+        "system_type": "synthetic",
+        "qubits": 8,
+        "circuit_type": "random_parameterized",
+        "circuit_depth": 10,
+        "performance_target": "<500ms per energy evaluation",
+        "hardware_context": "Standard compute node with 32GB RAM, 8 CPU cores",
+        "validation": "Meets performance target and memory estimation within 20% accuracy"
+      },
+      {
+        "id": "test_simulator_factory",
+        "description": "SimulatorFactory selection logic test",
+        "test_cases": [
+          {"qubits": 4, "expected_engine": "ci_vector"},
+          {"qubits": 6, "expected_engine": "ci_vector"},
+          {"qubits": 8, "expected_engine": "ci_vector"},
+          {"qubits": 12, "expected_engine": "ci_vector"},
+          {"qubits": 2, "config": {"engine": "statevector"}, "expected_engine": "statevector"}
+        ],
+        "validation": "Factory creates appropriate simulator types based on qubit count and configuration"
+      }
+    ]
+  },
+  "validation_procedure": {
+    "description": "Implementation must be validated through unit tests, integration tests, and performance benchmarks",
+    "steps": [
+      "Implement the module according to specifications",
+      "Write comprehensive unit tests covering all functionality",
+      "Run tests: pytest tests/test_quantum_simulator.py --cov=src/modules/quantum_simulator.py --cov-report=term",
+      "Verify code coverage >75%",
+      "Test integration with Phase 1 Task 001 molecule processor",
+      "Run performance benchmarks for 8-qubit circuits",
+      "Validate memory estimation accuracy",
+      "Document any issues and fix them iteratively"
+    ],
+    "success_criteria": [
+      "All unit tests pass",
+      "Code coverage >75%",
+      "Module can be imported without errors",
+      "Integration with Phase 1 Task 001 works correctly",
+      "Performance requirements met (8-qubit evaluation <500ms)",
+      "Example usage works correctly"
+    ]
+  },
+  "configuration_examples": {
+    "description": "Example configurations for different use cases",
+    "examples": {
+      "high_precision_ci": {
+        "description": "High precision CI vector simulation for accurate energy computation",
+        "config": {
+          "engine": "ci_vector",
+          "precision": 1e-10,
+          "use_symmetry": true,
+          "max_memory_gb": 64,
+          "fallback_method": "statevector",
+          "use_gpu": false
+        },
+        "use_case": "High-accuracy energy evaluation for small to medium systems (4-16 qubits)"
+      },
+      "memory_constrained": {
+        "description": "Memory-constrained configuration for larger systems",
+        "config": {
+          "engine": "ci_vector",
+          "precision": 1e-6,
+          "use_symmetry": true,
+          "max_memory_gb": 8,
+          "fallback_method": "approximate",
+          "use_gpu": false
+        },
+        "use_case": "Systems with 12-20 qubits on memory-limited hardware"
+      },
+      "gpu_accelerated": {
+        "description": "GPU-accelerated configuration when hardware available",
+        "config": {
+          "engine": "ci_vector",
+          "precision": 1e-8,
+          "use_symmetry": true,
+          "max_memory_gb": 32,
+          "fallback_method": "statevector",
+          "use_gpu": true
+        },
+        "use_case": "Performance-critical applications with GPU support",
+        "requirements": "CUDA 12.4+, compatible GPU with sufficient VRAM"
+      },
+      "statevector_fallback": {
+        "description": "Statevector simulation as fallback or for small systems",
+        "config": {
+          "engine": "statevector",
+          "precision": 1e-8,
+          "use_symmetry": false,
+          "max_memory_gb": 16,
+          "fallback_method": "none",
+          "use_gpu": false
+        },
+        "use_case": "Small systems (<8 qubits) or when CI vector unavailable"
+      }
+    }
+  },
+  "success_criteria": {
+    "technical": [
+      "QuantumSimulator abstract class correctly implemented",
+      "TencirchemCISimulator implements all abstract methods",
+      "SimulatorFactory can create appropriate simulators based on qubit count",
+      "Single energy evaluation for 8-qubit circuit completes in <500ms",
+      "Memory estimation method provides reasonable estimates",
+      "Integration with molecule processing module works correctly"
+    ],
+    "process": [
+      "Ralph completes the objective within maximum iterations",
+      "Knowledge about quantum simulation and Tencirchem CI vector engine captured in AGENTS.md",
+      "Clear progress recorded in progress.txt",
+      "Detailed documentation of implementation decisions and rationale",
+      "Ralph learning log demonstrates iterative learning and problem-solving"
+    ],
+    "integration_readiness": [
+      "Module provides clean interface for UCC search module (Phase 1 Task 004)",
+      "Output format compatible with RL agent interface",
+      "Code is modular and extensible for future enhancements"
+    ]
+  },
+  "reference_materials": {
+    "rlqas_specification": "Section 3.2: Quantum Simulator Module",
+    "tencirchem_docs": "https://tencirchem.readthedocs.io/",
+    "openfermion_docs": "https://quantumai.google/openfermion",
+    "phase1_task001": "../001 (Molecule Processing Module)",
+    "example_implementations": "Existing test cases in ralph/test directory"
+  },
+  "notes": [
+    "This module builds directly on Phase 1 Task 001 (Molecule Processing). Import using: sys.path.append('../001'); from src.modules.molecule_processor import process_molecule, MoleculeData",
+    "Default simulation engine is CI vector (configuration interaction vector) for optimal balance of accuracy and memory efficiency for 4-20 qubit systems",
+    "The interface supports other simulation engines (statevector, matrix product state) via configuration parameters for flexibility",
+    "Circuit representation uses Tencirchem-compatible circuit classes (e.g., tensorcircuit.Circuit). The simulator should handle conversion between different circuit representations as needed",
+    "Environment consistency: Core dependencies match Phase 1 Task 001 (tencirchem-ng, openfermion, numpy, scipy, pyscf). Optional dependencies (torch, tensorcircuit) provide enhanced capabilities",
+    "Performance targets are based on standard compute nodes (32GB RAM, 8 CPU cores). Adjust expectations for different hardware",
+    "Memory estimation should be conservative and account for both circuit state and intermediate computations",
+    "Integration testing with actual Task 001 outputs is critical for validation",
+    "Document any assumptions about molecular symmetry, Hamiltonian sparsity, or circuit structure in the implementation",
+    "The simulator should be designed for integration with Phase 1 Task 004 (UCC search module), providing efficient energy evaluation for reinforcement learning"
+  ]
+}

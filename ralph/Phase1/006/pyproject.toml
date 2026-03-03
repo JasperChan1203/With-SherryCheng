@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rlqas-phase1"
+version = "1.0.0"
+description = "RLQAS Phase 1: Reinforcement Learning for Quantum Architecture Search"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "RLQAS Research Team"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "tencirchem-ng>=2024.10",
+    "openfermion>=1.5",
+    "pyscf>=2.0.0",
+    "numpy>=1.21",
+    "scipy>=1.7",
+    "gymnasium>=1.0.0",
+    "stable-baselines3>=2.0.0",
+    "torch>=1.9.0",
+    "tensorcircuit>=0.10.0",
+    "pandas>=1.3",
+    "matplotlib>=3.5",
+    "tqdm>=4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=22.0",
+    "flake8>=5.0",
+    "mypy>=0.900",
+]
+gpu = [
+    "torch>=1.9.0; platform_system != 'Windows'",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/rlqas"
+Documentation = "https://rlqas.readthedocs.io/"
+Repository = "https://github.com/your-org/rlqas.git"
+Issues = "https://github.com/your-org/rlqas/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
