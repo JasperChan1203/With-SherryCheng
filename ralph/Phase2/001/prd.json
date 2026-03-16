@@ -167,11 +167,11 @@
     ]
   },
   "referenceMaterials": {
-    "phase1Code": "../Phase1/006/src/rlqas/phase1/",
-    "rlAgentInterface": "../Phase1/006/src/rlqas/phase1/rl/base_agent.py",
-    "ppoImplementation": "../Phase1/006/src/rlqas/phase1/rl/ppo_agent.py",
+    "phase1Code": "../../Phase1/006/src/rlqas/phase1/",
+    "rlAgentInterface": "../../Phase1/006/src/rlqas/phase1/rl/base_agent.py",
+    "ppoImplementation": "../../Phase1/006/src/rlqas/phase1/rl/ppo_agent.py",
     "stableBaselines3DQN": "https://stable-baselines3.readthedocs.io/en/master/modules/dqn.html",
-    "phase2TaskSpec": "../../ideas_pool/RLQAS_Phase2_Tasks.md#rlqas_phase2_001-multi-rl-algorithm-support-ppo-dqn"
+    "phase2TaskSpec": "../../../ideas_pool/RLQAS_Phase2_Tasks.md#rlqas_phase2_001-multi-rl-algorithm-support-ppo-dqn"
   },
   "notes": [
     "This task focuses on DQN implementation only - multi-algorithm comparison framework is separate Task 002",

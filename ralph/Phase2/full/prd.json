@@ -1,0 +1,306 @@
+{
+  "project": "RLQAS Phase 2 Complete: Multi-RL Algorithm Support, HEA Search, and Autonomous Exploration",
+  "version": "2.0",
+  "branchName": "ralph/Phase2/full",
+  "description": "Complete Phase 2 implementation: Extend RLQAS system to support multiple RL algorithms (PPO, DQN), implement HEA architecture search, enable autonomous exploration of state-of-the-art RL algorithms, and provide comprehensive testing framework. This unified task builds directly upon Phase 1 integration (Phase1/006) and Phase 2 Task 001 foundation.",
+  "phaseDependencies": {
+    "phase1": "RLQAS_Phase1_006 (Integrated package) - Required as foundation",
+    "phase2_foundation": "RLQAS_Phase2_001 (DQN implementation) - Already completed and available in ../001",
+    "prerequisite": "Phase 1 must be fully integrated and Phase 2 Task 001 must be completed"
+  },
+  "overallGoal": "Implement complete Phase 2 functionality in a single development session, producing a fully functional multi-algorithm quantum architecture search system with HEA support, experiment management, autonomous RL exploration, and comprehensive testing capabilities.",
+  "tasks": [
+    {
+      "id": "phase2-task-001-verification",
+      "description": "Verify and integrate existing Phase 2 Task 001 (DQN implementation) components",
+      "priority": "high",
+      "acceptance_criteria": [
+        "DQNAgent from ../001 passes all interface compliance tests",
+        "AgentFactory supports both PPO and DQN agent creation",
+        "All Phase 2 Task 001 tests pass with >90% coverage",
+        "Code is properly integrated into unified Phase 2 package structure"
+      ]
+    },
+    {
+      "id": "phase2-task-002",
+      "description": "Implement Sequential Testing Framework (RLQAS_Phase2_002)",
+      "priority": "high",
+      "dependencies": ["phase2-task-001-verification"],
+      "acceptance_criteria": [
+        "SequentialRLTester class can run tests for multiple agents in sequence",
+        "Results from different algorithms are collected and stored",
+        "Comparison utilities generate meaningful performance comparisons",
+        "Framework tracks excitation operator count for each algorithm",
+        "Framework identifies which algorithm achieves chemical accuracy with fewer operators",
+        "All tests pass with >90% coverage"
+      ]
+    },
+    {
+      "id": "phase2-task-003",
+      "description": "Implement HEA Search Module (RLQAS_Phase2_003)",
+      "priority": "high",
+      "dependencies": ["phase2-task-001-verification"],
+      "acceptance_criteria": [
+        "HEASearchEnv implements gym.Env interface correctly",
+        "HEACircuitBuilder can build circuits with different entanglement patterns",
+        "All specified entanglement patterns are supported (linear, circular, fully connected)",
+        "HEASearchController can run complete HEA search episodes",
+        "Full HEA pipeline works end-to-end with test molecules",
+        "All tests pass with >90% coverage"
+      ]
+    },
+    {
+      "id": "phase2-task-004",
+      "description": "Implement Experiment Management System (RLQAS_Phase2_004)",
+      "priority": "medium",
+      "dependencies": ["phase2-task-001-verification", "phase2-task-003"],
+      "acceptance_criteria": [
+        "ExperimentManager can load and validate YAML/JSON configurations",
+        "Experiments can be executed from configuration files",
+        "Results are properly collected and stored in results database",
+        "Batch experiment execution works correctly",
+        "Logging and checkpointing function properly",
+        "All tests pass with >90% coverage"
+      ]
+    },
+    {
+      "id": "phase2-task-005",
+      "description": "Implement Agent Autonomous RL Exploration (RLQAS_Phase2_005) - Key Innovation",
+      "priority": "high",
+      "dependencies": ["phase2-task-001-verification", "phase2-task-002"],
+      "acceptance_criteria": [
+        "RL Algorithm Exploration Framework is fully implemented and documented",
+        "Capability detection system identifies missing functionality in external dependencies",
+        "Dynamic implementation framework generates missing features with templates",
+        "Adaptive execution flow operates seamlessly at runtime",
+        "Capability registry maintains records of implemented features",
+        "Tencirchem parity adapter example demonstrates full lifecycle",
+        "All adaptation components achieve >90% code coverage"
+      ]
+    },
+    {
+      "id": "phase2-task-006",
+      "description": "Phase 2 Integration Test (RLQAS_Phase2_006)",
+      "priority": "high",
+      "dependencies": [
+        "phase2-task-001-verification",
+        "phase2-task-002",
+        "phase2-task-003",
+        "phase2-task-004",
+        "phase2-task-005"
+      ],
+      "moleculeConfigurations": {
+        "lih_10qubits": {
+          "formula": "LiH",
+          "bond_length": 1.6,
+          "active_space": [2, 5],
+          "note": "2 electrons in 5 orbitals = 10 qubits (Jordan-Wigner mapping). active_space=(2,5) NOT (4,4) or (4,5).",
+          "basis_set": "sto-3g",
+          "transform": "jordan_wigner"
+        },
+        "lih_12qubits": {
+          "formula": "LiH",
+          "bond_length": 1.6,
+          "active_space": [2, 6],
+          "note": "2 electrons in 6 orbitals = 12 qubits (Jordan-Wigner mapping). active_space=(2,6) NOT (4,6).",
+          "basis_set": "sto-3g",
+          "transform": "jordan_wigner"
+        }
+      },
+      "acceptance_criteria": [
+        "Multi-algorithm comparison completes successfully on LiH with active_space=(2,5) 10 qubits",
+        "LiH active_space=(2,5) 10 qubits test MUST assert energy_error < 1.6e-3 Ha (chemical accuracy) with Jordan-Wigner transformation - test must FAIL if this threshold is not met",
+        "LiH active_space=(2,6) 12 qubits test MUST assert energy_error < 1.6e-3 Ha (chemical accuracy) with Jordan-Wigner transformation - test must FAIL if this threshold is not met",
+        "HEA search produces chemically accurate results on LiH active_space=(2,5) with EXPLICIT assertion energy_error < 1.6e-3 Ha",
+        "Framework correctly identifies which algorithm uses fewer excitation operators with quantitative comparison",
+        "Runtime environment adaptation successfully enhances Tencirchem parity support",
+        "All Phase 2 components integrate correctly and maintain >90% test coverage",
+        "Comprehensive test report generated with performance benchmarks",
+        "CRITICAL: All chemical accuracy assertions use assert statements (not just print/log), so tests actually FAIL when accuracy is not achieved"
+      ]
+    }
+  ],
+  "technicalSpecifications": {
+    "packageStructure": {
+      "basePackage": "rlqas.phase2",
+      "submodules": [
+        "rl (from Task 001)",
+        "sequential_tester (Task 002)",
+        "hea_search (Task 003)",
+        "experiment (Task 004)",
+        "adaptation (Task 005)"
+      ]
+    },
+    "fileStructure": {
+      "src/": [
+        "rlqas/phase2/ (core package)",
+        "rlqas/phase2/rl/ (Task 001 components)",
+        "rlqas/phase2/sequential_tester/ (Task 002)",
+        "rlqas/phase2/hea_search/ (Task 003)",
+        "rlqas/phase2/experiment/ (Task 004)",
+        "rlqas/phase2/adaptation/ (Task 005)"
+      ],
+      "tests/": [
+        "test_sequential_tester.py",
+        "test_hea_environment.py",
+        "test_experiment_manager.py",
+        "test_adaptation_framework.py",
+        "test_phase2_integration.py"
+      ],
+      "config/": [
+        "dqn_default.yaml (from Task 001)",
+        "hea_default.yaml",
+        "experiment_template.yaml"
+      ],
+      "docs/": [
+        "algorithm_comparison_guide.md",
+        "hea_search_guide.md",
+        "experiment_management_guide.md",
+        "autonomous_exploration_guide.md"
+      ]
+    },
+    "defaultConfigurations": {
+      "ppo": {
+        "learning_rate": 3e-4,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "clip_range": 0.2,
+        "entropy_coefficient": 0.01
+      },
+      "dqn": {
+        "learning_rate": 1e-3,
+        "gamma": 0.99,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.01,
+        "epsilon_decay": 0.995,
+        "replay_buffer_size": 10000,
+        "batch_size": 64
+      },
+      "hea": {
+        "entanglement_patterns": ["linear", "circular", "fully_connected"],
+        "rotation_gates": ["rx", "ry", "rz"],
+        "parameter_sharing": ["layer_wise", "global", "none"]
+      }
+    }
+  },
+  "constraints": {
+    "compatibilityRequirements": [
+      "Must build upon Phase 1 integrated package (Phase1/006)",
+      "Must integrate existing Phase 2 Task 001 code (../001)",
+      "No breaking changes to existing Phase 1 or Phase 2 Task 001 APIs",
+      "Must maintain compatibility with UCCSearchEnv and molecule processing",
+      "All new modules must follow Phase 1 code organization patterns"
+    ],
+    "qualityStandards": [
+      "Overall Phase 2 code coverage >90%",
+      "PEP8 compliance throughout with automated linting",
+      "Clear documentation and docstrings for all public APIs",
+      "Type hints coverage >80% for all new modules",
+      "Runtime adaptation components achieve >95% reliability in tests"
+    ],
+    "integrationPoints": {
+      "withPhase1": "All Phase 2 modules must work with Phase 1 components",
+      "withTask001": "Must properly integrate existing DQNAgent and AgentFactory",
+      "internal": "All Phase 2 modules must integrate with each other"
+    }
+  },
+  "deliverables": {
+    "code": [
+      "src/rlqas/phase2/sequential_tester.py - Sequential testing framework",
+      "src/rlqas/phase2/hea_search/ - HEA search module (environment, builder, controller)",
+      "src/rlqas/phase2/experiment/ - Experiment management system",
+      "src/rlqas/phase2/adaptation/ - Autonomous exploration and adaptation framework",
+      "tests/ - Comprehensive test suite for all Phase 2 components",
+      "config/ - Configuration files for all components"
+    ],
+    "documentation": [
+      "docs/algorithm_comparison_guide.md - Guide for comparing RL algorithms",
+      "docs/hea_search_guide.md - Guide for HEA architecture search",
+      "docs/experiment_management_guide.md - Guide for configuration-driven experiments",
+      "docs/autonomous_exploration_guide.md - Guide for RL algorithm exploration",
+      "docs/runtime_adaptation_guide.md - Guide for runtime environment enhancement"
+    ],
+    "testResults": [
+      "results/phase2_integration/ - Complete Phase 2 test results",
+      "results/algorithm_comparison/ - PPO vs DQN comparison results",
+      "results/hea_search/ - HEA search validation results",
+      "results/lih_10qubits/ - LiH (2,5) 10 qubits test results",
+      "results/lih_12qubits/ - LiH 12 qubits test results"
+    ]
+  },
+  "validationProcedure": {
+    "unitTesting": [
+      "Test all individual components in isolation",
+      "Verify interface compliance for all new classes",
+      "Test configuration loading and validation"
+    ],
+    "integrationTesting": [
+      "Test sequential execution of multiple agents",
+      "Test HEA search pipeline end-to-end",
+      "Test experiment management lifecycle",
+      "Test adaptive execution flow with capability detection"
+    ],
+    "systemTesting": [
+      "LiH active_space=(2,5) 10 qubits test with Jordan-Wigner transformation - NOTE: (2,5) means 2 electrons in 5 orbitals = 10 qubits; do NOT use (4,4) or (4,5)",
+      "LiH active_space=(2,6) 12 qubits test with Jordan-Wigner transformation - NOTE: (2,6) means 2 electrons in 6 orbitals = 12 qubits; do NOT use (4,6)",
+      "Multi-algorithm comparison on LiH molecules",
+      "HEA search validation on LiH molecules"
+    ],
+    "performanceValidation": [
+      "Benchmark algorithm comparison framework",
+      "Measure adaptation overhead (<5% performance degradation)",
+      "MANDATORY: assert energy_error < 1.6e-3 Ha (1.6 mHa chemical accuracy) in test code - tests must FAIL if not achieved, not just warn",
+      "Compare excitation operator counts across algorithms"
+    ]
+  },
+  "referenceMaterials": {
+    "phase1Code": "../../Phase1/006/src/rlqas/phase1/",
+    "phase2Task001": "../001/ (DQN implementation foundation)",
+    "phase2TaskSpec": "../../../ideas_pool/RLQAS_Phase2_Tasks.md",
+    "rlAgentInterface": "../../Phase1/006/src/rlqas/phase1/rl/base_agent.py",
+    "stableBaselines3": "https://stable-baselines3.readthedocs.io/"
+  },
+  "executionStrategy": {
+    "phaseOrder": [
+      "Phase 0: Verify and integrate Task 001 foundation",
+      "Phase 1: Implement Task 002 (Sequential Testing Framework)",
+      "Phase 2: Implement Task 003 (HEA Search Module)",
+      "Phase 3: Implement Task 004 (Experiment Management System)",
+      "Phase 4: Implement Task 005 (Agent Autonomous RL Exploration)",
+      "Phase 5: Implement Task 006 (Phase 2 Integration Test)"
+    ],
+    "dependencyManagement": "Follow natural task dependencies as specified in tasks array",
+    "checkpointStrategy": "Update progress.txt after each task completion",
+    "qualityGates": "Each task must pass all acceptance criteria before proceeding to next"
+  },
+  "successMetrics": {
+    "functional": [
+      "All 6 Phase 2 tasks completed and integrated",
+      "Multi-algorithm comparison framework operational",
+      "HEA search produces chemically accurate results",
+      "Experiment configuration system fully functional",
+      "Autonomous exploration framework capable of identifying new algorithms"
+    ],
+    "performance": [
+      "LiH (10 qubits) achieves chemical accuracy (<1.6 mHa error)",
+      "LiH (12 qubits) achieves chemical accuracy (<1.6 mHa error)",
+      "Framework identifies algorithm with fewest excitation operators",
+      "Adaptation overhead <5% performance degradation"
+    ],
+    "quality": [
+      "Overall code coverage >90%",
+      "All tests pass",
+      "Documentation complete for all components",
+      "Code follows PEP8 and type hint standards"
+    ]
+  },
+  "notes": [
+    "This PRD combines all 6 Phase 2 tasks into a single unified implementation plan",
+    "Task 001 code already exists and should be verified and integrated first",
+    "Key innovation is Task 005: Autonomous RL exploration with runtime adaptation",
+    "Focus on comparing which algorithm achieves chemical accuracy with fewer excitation operators",
+    "Maintain backward compatibility with Phase 1 throughout implementation",
+    "CRITICAL - Molecule active space notation: LiH (n_electrons, n_orbitals) where n_qubits = 2 * n_orbitals under Jordan-Wigner. active_space=(2,5) -> 10 qubits; active_space=(2,6) -> 12 qubits. Do NOT use (4,4) or (4,5) which correspond to different electron counts.",
+    "CRITICAL - Chemical accuracy tests: All integration tests for LiH molecules MUST use assert statements to verify energy_error < 1.6e-3 Ha. Tests that only print or log the error without asserting are INVALID and do not satisfy acceptance criteria."
+  ]
+}

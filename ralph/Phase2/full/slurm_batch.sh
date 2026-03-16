@@ -1,17 +1,17 @@
 #!/bin/bash
-#SBATCH --job-name=ralph-phase2-001
-#SBATCH --output=ralph_phase2_001_%j.out
-#SBATCH --error=ralph_phase2_001_%j.err
+#SBATCH --job-name=ralph-phase2-full
+#SBATCH --output=ralph_phase2_full_%j.out
+#SBATCH --error=ralph_phase2_full_%j.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gpus-per-task=1
-#SBATCH --mem=32G                # Phase 2 tasks may need less memory than integration tasks
-#SBATCH --time=48:00:00          # 48 hours for Phase 2 development
+#SBATCH --mem=64G                # Phase 2 full needs more memory (all 6 tasks)
+#SBATCH --time=72:00:00          # 72 hours for complete Phase 2 development
 #SBATCH --partition=4V100        # 根据集群调整
 #SBATCH --mail-type=NONE
 #SBATCH --qos=normal
 
-echo "=== RLQAS Ralph Phase 2 Task 001 Batch Job ==="
+echo "=== RLQAS Ralph Phase 2 Complete (All 6 Tasks) Batch Job ==="
 echo "Job ID: $SLURM_JOB_ID"
 echo "Started at: $(date)"
 echo "Running on node: $(hostname)"
@@ -46,7 +46,7 @@ export PYTHON_PATH
 
 # Check Python environment
 echo "Python version: $($PYTHON_PATH --version)"
-echo "Checking dependencies for RLQAS Phase 2 Task 001..."
+echo "Checking dependencies for RLQAS Phase 2 Complete Implementation..."
 
 # Check core dependencies
 $PYTHON_PATH -c "
@@ -65,9 +65,20 @@ try:
         sys.exit(1)
 except ImportError as e:
     print('✗ Phase 1 package not found:', str(e))
-    print('  Phase 2 Task 001 requires Phase 1 integrated package.')
+    print('  Phase 2 requires Phase 1 integrated package.')
     print('  Install Phase 1 first: pip install -e ../../Phase1/006')
     sys.exit(1)
+
+# Check Phase 2 Task 001 dependency (DQN implementation)
+try:
+    # Try to import Phase 2 Task 001 components
+    from rlqas.phase2.rl import DQNAgent, AgentFactory
+    print('✓ Phase 2 Task 001 components available')
+    print('  DQNAgent and AgentFactory found')
+except ImportError as e:
+    print('⚠ Phase 2 Task 001 components not found:', str(e))
+    print('  Phase 2 complete implementation will integrate Task 001 code from ../001/')
+    print('  If Task 001 not completed, the unified implementation will include it.')
 
 # Check quantum chemistry dependencies (same as Phase 1)
 try:
@@ -109,7 +120,7 @@ try:
         print('✓ DQN implementation available in stable-baselines3')
     except ImportError as e:
         print('✗ DQN import failed:', str(e))
-        print('  DQN is required for Phase 2 Task 001')
+        print('  DQN is required for Phase 2')
         sys.exit(1)
 except ImportError as e:
     print('✗ stable-baselines3 import failed:', str(e))
@@ -126,7 +137,15 @@ except ImportError as e:
     print('✗ PyTorch import failed:', str(e))
     sys.exit(1)
 
-# Check additional dependencies
+# Check additional dependencies for Phase 2 full
+try:
+    import yaml
+    print('✓ PyYAML available for configuration loading (Task 004)')
+except ImportError as e:
+    print('✗ PyYAML import failed:', str(e))
+    print('  Required for experiment configuration system (Task 004)')
+    sys.exit(1)
+
 try:
     import tensorcircuit
     print('✓ tensorcircuit version:', tensorcircuit.__version__)
@@ -135,10 +154,17 @@ except ImportError as e:
     sys.exit(1)
 
 try:
-    import yaml
-    print('✓ PyYAML available for configuration loading')
+    import numpy as np
+    print('✓ NumPy version:', np.__version__)
 except ImportError as e:
-    print('✗ PyYAML import failed:', str(e))
+    print('✗ NumPy import failed:', str(e))
+    sys.exit(1)
+
+try:
+    import scipy
+    print('✓ SciPy version:', scipy.__version__)
+except ImportError as e:
+    print('✗ SciPy import failed:', str(e))
     sys.exit(1)
 
 print('All dependency checks completed.')
@@ -152,11 +178,22 @@ for file in "${REQUIRED_FILES[@]}"; do
         echo "✓ Required file exists: $file"
     else
         echo "✗ Missing required file: $file"
-        exit 1
+        echo "Creating missing files..."
+        if [ "$file" == "progress.txt" ]; then
+            echo "# RLQAS Phase 2 Complete - Progress Log" > "$file"
+            echo "# Task: Complete Phase 2 Implementation (All 6 tasks)" >> "$file"
+            echo "" >> "$file"
+            echo "Started: $(date)" >> "$file"
+            echo "---" >> "$file"
+            echo "✓ Created: $file"
+        else
+            echo "  Error: $file is required but not found."
+            exit 1
+        fi
     fi
 done
 
-# Check that Phase 1 directory exists
+# Check Phase 1 dependency
 echo "Checking for Phase 1 dependency..."
 if [ -d "../../Phase1/006" ]; then
     echo "✓ Phase 1 Task 006 directory exists"
@@ -168,51 +205,84 @@ if [ -d "../../Phase1/006" ]; then
     fi
 else
     echo "✗ Phase 1 Task 006 directory not found"
-    echo "  Phase 2 Task 001 requires Phase 1 integrated package."
+    echo "  Phase 2 requires Phase 1 integrated package."
     echo "  Make sure ../../Phase1/006 exists and is properly set up."
     exit 1
 fi
 
+# Check Phase 2 Task 001 dependency (code should exist)
+echo "Checking for Phase 2 Task 001 dependency..."
+if [ -d "../001" ]; then
+    echo "✓ Phase 2 Task 001 directory exists"
+    if [ -f "../001/src/rlqas/phase2/rl/dqn_agent.py" ]; then
+        echo "✓ Phase 2 Task 001 DQN implementation exists"
+    else
+        echo "⚠ Phase 2 Task 001 DQN implementation not found"
+        echo "  Unified implementation will create it if needed."
+    fi
+else
+    echo "✗ Phase 2 Task 001 directory not found"
+    echo "  Phase 2 complete implementation will create Task 001 components."
+fi
+
 # Create output directory for logs
 mkdir -p slurm_logs
-if [ -f "ralph_phase2_001_${SLURM_JOB_ID}.out" ]; then
-    mv ralph_phase2_001_${SLURM_JOB_ID}.out slurm_logs/
+if [ -f "ralph_phase2_full_${SLURM_JOB_ID}.out" ]; then
+    mv ralph_phase2_full_${SLURM_JOB_ID}.out slurm_logs/
 fi
-if [ -f "ralph_phase2_001_${SLURM_JOB_ID}.err" ]; then
-    mv ralph_phase2_001_${SLURM_JOB_ID}.err slurm_logs/
+if [ -f "ralph_phase2_full_${SLURM_JOB_ID}.err" ]; then
+    mv ralph_phase2_full_${SLURM_JOB_ID}.err slurm_logs/
 fi
 
 # Start Ralph
-echo "Starting Ralph for RLQAS Phase 2 Task 001 at: $(date)"
+echo "Starting Ralph for RLQAS Phase 2 Complete Implementation at: $(date)"
 echo "========================================"
-echo "Maximum iterations: 25 (48 hour time limit)"
-echo "Task: RLQAS Phase 2 Task 001 - Multi-RL Algorithm Support (DQN Implementation)"
-echo "Ralph will implement:"
-echo "  1. DQN agent implementation conforming to RLAgent interface"
-echo "  2. Extended AgentFactory supporting both PPO and DQN agents"
-echo "  3. Configuration system with DQN-specific hyperparameters"
-echo "  4. Integration testing with Phase 1 components"
-echo "  5. Unit tests with >90% coverage"
-echo "  6. Documentation and examples"
+echo "Maximum iterations: 50 (72 hour time limit)"
+echo "Task: RLQAS Phase 2 Complete (All 6 Tasks)"
+echo "Ralph will implement in sequence:"
+echo "  Phase 0: Task 001 Verification and Integration"
+echo "  Phase 1: Task 002 - Sequential Testing Framework"
+echo "  Phase 2: Task 003 - HEA Search Module"
+echo "  Phase 3: Task 004 - Experiment Management System"
+echo "  Phase 4: Task 005 - Agent Autonomous RL Exploration"
+echo "  Phase 5: Task 006 - Phase 2 Integration Test"
 echo ""
 echo "Key dependencies:"
 echo "  - Phase 1 integrated package (../../Phase1/006)"
+echo "  - Phase 2 Task 001 DQN implementation (../001) - will be integrated"
 echo "  - Stable-Baselines3 with DQN support"
-echo "  - PyTorch (GPU optional)"
+echo "  - PyTorch (GPU recommended)"
 echo "  - Gymnasium environments"
+echo "  - PyYAML for configuration"
+echo ""
+echo "Expected deliverables:"
+echo "  - Complete multi-algorithm quantum architecture search system"
+echo "  - HEA support with configurable entanglement patterns"
+echo "  - Experiment management with configuration files"
+echo "  - Autonomous RL exploration framework (key innovation)"
+echo "  - Comprehensive integration tests"
+echo "  - >90% test coverage"
 echo "========================================"
 
 # Run Ralph
+echo "Starting Ralph execution..."
 ./ralph.sh
 
 echo ""
-echo "Ralph agent completed for Phase 2 Task 001."
+echo "Ralph agent completed for Phase 2 Complete Implementation."
 echo "End time: $(date)"
 echo ""
 echo "If Ralph completed successfully, check for:"
-echo "  - src/rlqas/phase2/ directory structure"
-echo "  - DQNAgent class implementation"
-echo "  - Extended AgentFactory"
-echo "  - Test suite with >90% coverage"
-echo "  - Integration with Phase 1 components"
+echo "  - Complete Phase 2 package structure (src/rlqas/phase2/)"
+echo "  - All 6 Phase 2 tasks implemented and integrated"
+echo "  - HEA search module with entanglement patterns"
+echo "  - Experiment management system"
+echo "  - Autonomous RL exploration framework"
+echo "  - Integration test results"
 echo "  - progress.txt with detailed implementation notes"
+echo ""
+echo "Validation steps:"
+echo "  1. Run integration tests: python -m pytest tests/integration/"
+echo "  2. Test LiH 10-qubit chemical accuracy"
+echo "  3. Test multi-algorithm comparison"
+echo "  4. Verify HEA search functionality"

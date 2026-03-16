@@ -1,0 +1,44 @@
+# DQN Default Configuration for RLQAS Phase 2
+# This configuration file provides optimized default hyperparameters
+# for DQN in quantum architecture search tasks.
+
+# Core DQN hyperparameters
+learning_rate: 0.001      # Learning rate (1e-3)
+gamma: 0.99               # Discount factor
+
+# Epsilon-greedy exploration schedule
+exploration_fraction: 0.1     # Fraction of training for epsilon decay
+exploration_final_eps: 0.01   # Final epsilon value after decay
+
+# Replay buffer configuration
+buffer_size: 10000        # Maximum replay buffer size
+batch_size: 64            # Batch size for learning updates
+
+# Target network update frequency
+target_network_update_freq: 100  # Steps between target network updates
+
+# Training frequency
+train_freq: 4             # Steps between training updates
+gradient_steps: 1         # Number of gradient steps per training
+
+# DQN architecture options
+double_q: true            # Use Double DQN (reduces overestimation bias)
+dueling: true             # Use Dueling DQN architecture
+
+# Policy network
+policy_type: "MlpPolicy"  # Multi-layer perceptron policy
+
+# Logging and debugging
+verbose: 1                # Verbosity level (0=silent, 1=info, 2=debug)
+tensorboard_log: null     # TensorBoard log directory (null to disable)
+
+# Reproducibility
+seed: 42                  # Random seed for reproducibility
+
+# Hardware configuration
+use_gpu: true             # Try to use GPU if available
+
+# Environment configuration
+n_envs: 1                 # Number of parallel environments
+monitor_dir: null         # Directory for monitoring logs
+wrapper_class: null       # Custom environment wrapper class

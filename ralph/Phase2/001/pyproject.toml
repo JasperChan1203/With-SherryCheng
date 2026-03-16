@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rlqas-phase2"
+version = "2.0.0"
+description = "RLQAS Phase 2: Multi-RL Algorithm Support (DQN Implementation)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "RLQAS Research Team"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "rlqas-phase1>=1.0.0",
+    "numpy>=1.21",
+    "gymnasium>=1.0.0",
+    "stable-baselines3>=2.0.0",
+    "torch>=1.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=22.0",
+    "flake8>=5.0",
+    "mypy>=0.900",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/rlqas"
+Documentation = "https://rlqas.readthedocs.io/"
+Repository = "https://github.com/your-org/rlqas.git"
+Issues = "https://github.com/your-org/rlqas/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["rlqas*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

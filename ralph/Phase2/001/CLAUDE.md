@@ -15,16 +15,16 @@ You are implementing **RLQAS Phase 2 Task 001**: Multi-RL Algorithm Support (DQN
 ## Files Available
 - `prd.json`: Project requirements document for Phase 2 Task 001
 - `progress.txt`: Progress log file (create if not exists)
-- **Phase 1 Integrated Code**: Complete Phase 1 package at `../Phase1/006/src/rlqas/phase1/`
+- **Phase 1 Integrated Code**: Complete Phase 1 package at `../../Phase1/006/src/rlqas/phase1/`
 - **Phase 2 Structure**: You will create Phase 2 package at `src/rlqas/phase2/`
 
 ## Instructions
 
 1. **Read the PRD**: Examine `prd.json` to understand Phase 2 Task 001 objectives
 2. **Analyze Phase 1 Dependencies**: Review Phase 1 RL agent structure before implementing
-   - Key files: `../Phase1/006/src/rlqas/phase1/rl/base_agent.py` (RLAgent interface)
-   - Key files: `../Phase1/006/src/rlqas/phase1/rl/ppo_agent.py` (PPO implementation reference)
-   - Key files: `../Phase1/006/src/rlqas/phase1/rl/config.py` (Configuration patterns)
+   - Key files: `../../Phase1/006/src/rlqas/phase1/rl/base_agent.py` (RLAgent interface)
+   - Key files: `../../Phase1/006/src/rlqas/phase1/rl/ppo_agent.py` (PPO implementation reference)
+   - Key files: `../../Phase1/006/src/rlqas/phase1/rl/config.py` (Configuration patterns)
 3. **Select Objective**: Choose highest priority objective from PRD
 4. **Implement Phase 2 Extension**: Create DQN agent and extend agent factory
 5. **Verify Integration**: Test compatibility with Phase 1 components
@@ -147,7 +147,7 @@ config/
 5. Test basic import: `from rlqas.phase2.rl.dqn_agent import DQNAgent`
 
 ### Dependency Management:
-Phase 2 uses same dependencies as Phase 1. Verify `../Phase1/006/requirements.txt` and `../Phase1/006/pyproject.toml`.
+Phase 2 uses same dependencies as Phase 1. Verify `../../Phase1/006/requirements.txt` and `../../Phase1/006/pyproject.toml`.
 
 ## Progress Tracking
 
