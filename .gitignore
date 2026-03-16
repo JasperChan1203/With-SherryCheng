@@ -1,3 +1,6 @@
+# Internal branch tracking files
+.last-branch
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
