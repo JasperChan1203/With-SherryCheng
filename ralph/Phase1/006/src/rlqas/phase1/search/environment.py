@@ -172,9 +172,11 @@ class UCCSearchEnv(gym.Env):
         # Get parameter index for this excitation
         param_idx = self.excitation_to_param_idx[excitation]
 
-        # If parameter not already active, activate it and initialize with random value
+        # Always read init_strategy so it is in scope for the classical-opt check below
+        init_strategy = self.config.get("param_init_strategy", "random")
+
+        # If parameter not already active, activate it and initialize
         if not self.active_parameters[param_idx]:
-            init_strategy = self.config.get("param_init_strategy", "random")
             random_val = self.circuit_builder.initialize_parameters(1, strategy=init_strategy)[0]
             self.current_params[param_idx] = random_val
             self.active_parameters[param_idx] = True
@@ -185,7 +187,41 @@ class UCCSearchEnv(gym.Env):
         )
 
         # Evaluate energy using simulator with molecule Hamiltonian (ensures mapping consistency)
+        # CRITICAL: For 'zeros' init strategy, run classical optimization to find optimal params
+        # This is the VQE inner loop - RL selects architecture, classical optimizer tunes params
         try:
+            # Check if we should run classical optimization
+            run_classical_opt = self.config.get("run_classical_opt", False)
+            if run_classical_opt and init_strategy == "zeros":
+                # Run classical optimization ONLY over active parameters.
+                # BUG FIX: Previously the optimizer was given ALL n_params which, starting
+                # from zeros, allowed L-BFGS-B to find the full-UCCSD minimum regardless
+                # of which operators the agent selected — making architecture search trivial.
+                # Correct fix: only optimise the parameter slots for selected excitations;
+                # all other slots remain at 0 (correct partial-circuit energy invariant).
+                from scipy.optimize import minimize
+
+                # Unique active parameter indices (order-preserving deduplication)
+                active_param_indices = list(dict.fromkeys(
+                    self.excitation_to_param_idx[exc] for exc in self.current_excitations
+                ))
+
+                def energy_func_partial(theta):
+                    p = self.current_params.copy()
+                    for i, idx in enumerate(active_param_indices):
+                        p[idx] = theta[i]
+                    return self.circuit_builder.evaluate_energy(None, p)
+
+                x0 = [self.current_params[idx] for idx in active_param_indices]
+                result = minimize(
+                    energy_func_partial, x0, method='L-BFGS-B',
+                    options={'maxiter': 200, 'ftol': 1e-14, 'gtol': 1e-10}
+                )
+                # Write back ONLY active parameter slots; all others stay at 0.
+                for i, idx in enumerate(active_param_indices):
+                    self.current_params[idx] = result.x[i]
+                circuit = self.circuit_builder.build_circuit(self.current_excitations, self.current_params)
+
             self.current_energy = self.simulator.compute_energy(
                 circuit, self.molecule_data.hamiltonian, initial_state=self.molecule_data.reference_state
             )

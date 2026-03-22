@@ -1,0 +1,199 @@
+{
+  "project": "RLQAS Phase 3: Hybrid Architecture Search, Performance Optimization, Qubit Operator Extension",
+  "version": "3.0",
+  "branchName": "ralph/Phase3/full",
+  "description": "Complete Phase 3 implementation: hybrid HEA-UCC architecture search, batch evaluation performance optimization, circuit encoding module, and qubit operator extension for UCC search. Validates on medium-to-large molecules: BeH2, H4, H6. Builds directly on Phase 1 (Phase1/006) and Phase 2 (Phase2/full) foundations.",
+  "phaseDependencies": {
+    "phase1": "RLQAS Phase 1 integrated package (Phase1/006) — molecule processing, CI vector simulator, PPO agent, UCCSearchEnv, UCCSearchController",
+    "phase2": "RLQAS Phase 2 complete package (Phase2/full) — DQN/A2C/SAC agents, AgentFactory, SequentialRLTester, HEASearchEnv, ExperimentManager, AdaptationFramework",
+    "prerequisite": "Phase 1 (Phase1/006) and Phase 2 (Phase2/full) must be fully installed and all their integration tests passing before starting Phase 3"
+  },
+  "overallGoal": "Implement complete Phase 3 functionality in a single development session, producing: (1) a hybrid HEA-UCC search system, (2) batch evaluation with >=1.5x throughput improvement, (3) a circuit encoding module supporting matrix/sparse/one-hot encodings, (4) a qubit operator extension enabling qubit-space excitations in UCC search, and (5) integration tests validating chemical accuracy on BeH2, H4, H6.",
+  "tasks": [
+    {
+      "id": "phase3-task-001",
+      "title": "Hybrid Circuit Builder (RLQAS_Phase3_001)",
+      "priority": "high",
+      "passes": true,
+      "dependencies": [],
+      "description": "Implement HybridFusionStrategy and HybridCircuitBuilder that fuse HEA and UCC sub-circuits according to configurable fusion templates (sequential, parallel, conditional). This is the foundational building block for the hybrid architecture search.",
+      "acceptance_criteria": [
+        "HybridFusionStrategy implements all three fusion modes: sequential, parallel, conditional",
+        "HybridFusionStrategy.generate_fusion_template() respects min_ucc_components and max_ucc_components bounds",
+        "HybridCircuitBuilder.build_hybrid_circuit() produces valid circuits for H2 and LiH",
+        "Fusion config save/load round-trip produces identical circuits",
+        "All unit and integration tests pass with >85% coverage",
+        "Code follows PEP8; type hints on all public methods"
+      ],
+      "files_to_create": [
+        "src/rlqas/phase3/__init__.py",
+        "src/rlqas/phase3/hybrid_search/__init__.py",
+        "src/rlqas/phase3/hybrid_search/circuit_builder.py",
+        "tests/unit/test_hybrid_circuit_builder.py",
+        "tests/integration/test_hybrid_circuit_integration.py"
+      ]
+    },
+    {
+      "id": "phase3-task-002",
+      "title": "Hybrid Search Environment (RLQAS_Phase3_002)",
+      "priority": "high",
+      "passes": true,
+      "dependencies": ["phase3-task-001"],
+      "description": "Implement HybridSearchEnv as a gym.Env-compatible environment combining HEA and UCC action spaces. Supports composite action space (block type + block-specific sub-action), matrix-based state encoding with configurable encoding_method, and HybridRewardFunction balancing energy accuracy, circuit depth, gate count, and architecture complexity.",
+      "acceptance_criteria": [
+        "HybridSearchEnv passes gym.Env interface compliance check (observation_space, action_space, step, reset)",
+        "Matrix encoding produces state vector of consistent dimension across episodes",
+        "encoding_method config field successfully switches between matrix and sparse representations",
+        "HybridRewardFunction produces finite, non-NaN rewards for valid circuits",
+        "10 complete random-policy episodes on H2 complete without errors",
+        "ANTI-HOLLOW TEST A: Single-step HybridSearchEnv on LiH 10q with run_classical_opt=True gives energy_error > 1.6e-3 (single block cannot cheat to chemical accuracy — same test as Phase 2 does_not_cheat)",
+        "ANTI-HOLLOW TEST B: After single step, energy must be below approximate HF level (-7.862 Ha for LiH) — verifies classical optimization is running",
+        "All tests pass with >85% coverage"
+      ],
+      "files_to_create": [
+        "src/rlqas/phase3/hybrid_search/environment.py",
+        "tests/unit/test_hybrid_environment.py"
+      ]
+    },
+    {
+      "id": "phase3-task-003",
+      "title": "Hybrid Search Controller (RLQAS_Phase3_003)",
+      "priority": "high",
+      "passes": true,
+      "dependencies": ["phase3-task-001", "phase3-task-002"],
+      "description": "Implement HybridSearchController that orchestrates the complete hybrid architecture search. Mirrors UCCSearchController API for consistency. Integrates with Phase 2 ExperimentManager by adding 'HYBRID' as a valid ansatz_type. Accepts any RLAgent from AgentFactory.",
+      "acceptance_criteria": [
+        "HybridSearchController.search() runs without error on LiH (4 qubits) for 50 episodes",
+        "SearchResult contains fusion_template field identifying block sequence of best circuit",
+        "HybridSearchController.from_config() correctly instantiates from ExperimentManager config dict",
+        "Phase 2 ExperimentManager correctly dispatches to HybridSearchController for ansatz_type='HYBRID'",
+        "Result JSON is loadable by Phase 2 ResultsDatabase",
+        "All tests pass with >85% coverage"
+      ],
+      "files_to_create": [
+        "src/rlqas/phase3/hybrid_search/controller.py",
+        "src/rlqas/phase3/hybrid_search/config.py",
+        "tests/unit/test_hybrid_controller.py",
+        "config/phase3_beh2_experiment.yaml",
+        "config/phase3_h4_experiment.yaml"
+      ],
+      "files_to_modify": [
+        "Phase2/full/src/rlqas/phase2/experiment/manager.py — add HYBRID ansatz_type dispatch"
+      ]
+    },
+    {
+      "id": "phase3-task-004",
+      "title": "Batch Evaluation & Performance Optimization (RLQAS_Phase3_004)",
+      "priority": "medium",
+      "passes": true,
+      "dependencies": ["phase3-task-003"],
+      "description": "Implement BatchEvaluator for evaluating multiple quantum circuits in a single call (replacing per-step compute_energy calls). Also implement CIVectorBenchmark for measuring energy evaluation times across qubit counts, MemoryManager for preventing OOM, and a checkpoint system for long-running jobs. Performance target: >=1.5x throughput vs sequential on 8-qubit circuits with batch_size=16.",
+      "acceptance_criteria": [
+        "BatchEvaluator.evaluate_batch() produces energies matching individual compute_energy() calls within 1e-8",
+        "Batch evaluation achieves >=1.5x throughput vs sequential on 8-qubit circuits (documented in test output and saved to results/phase3_integration/batch_benchmark.json)",
+        "CIVectorBenchmark runs successfully for 4-12 qubits; results saved to benchmarks/ci_vector_benchmark_results.json",
+        "MemoryManager prevents OOM by adapting batch size (tested with memory limit mock)",
+        "Checkpoint save/load preserves training state across resume",
+        "All tests pass with >80% coverage"
+      ],
+      "files_to_create": [
+        "src/rlqas/phase3/performance/__init__.py",
+        "src/rlqas/phase3/performance/batch_evaluator.py",
+        "src/rlqas/phase3/performance/benchmarking.py",
+        "src/rlqas/phase3/performance/memory_manager.py",
+        "src/rlqas/phase3/performance/checkpoint.py",
+        "tests/unit/test_batch_evaluator.py",
+        "tests/unit/test_benchmarking.py",
+        "tests/unit/test_memory_manager.py",
+        "benchmarks/ci_vector_benchmark_results.json"
+      ]
+    },
+    {
+      "id": "phase3-task-005",
+      "title": "Circuit Encoding Module (RLQAS_Phase3_005)",
+      "priority": "medium",
+      "passes": true,
+      "dependencies": ["phase3-task-003"],
+      "description": "Implement standalone CircuitEncoder module converting QuantumCircuit objects to fixed-size state vectors for RL consumption. Three implementations: MatrixEncoder (primary, gate-type matrix n_qubits x max_depth), SparseEncoder (COO sparse flattened), OneHotEncoder (one-hot per gate position). EncoderFactory for creation by name. Integrate encoding_method config into UCCSearchEnv, HEASearchEnv, and HybridSearchEnv.",
+      "acceptance_criteria": [
+        "MatrixEncoder, SparseEncoder, OneHotEncoder all implement CircuitEncoder ABC",
+        "output_dim() always matches actual encode() output length",
+        "Encoding is deterministic: same circuit always produces same vector",
+        "EncoderFactory creates all three encoder types by name",
+        "UCCSearchEnv, HEASearchEnv, HybridSearchEnv all accept encoding_method config and delegate to CircuitEncoder",
+        "EncodingBenchmark records timing and output sizes; results saved to results/phase3_integration/encoding_benchmark.json",
+        "All tests pass with >85% coverage"
+      ],
+      "files_to_create": [
+        "src/rlqas/phase3/encoding/__init__.py",
+        "src/rlqas/phase3/encoding/base_encoder.py",
+        "src/rlqas/phase3/encoding/matrix_encoder.py",
+        "src/rlqas/phase3/encoding/sparse_encoder.py",
+        "src/rlqas/phase3/encoding/one_hot_encoder.py",
+        "src/rlqas/phase3/encoding/encoder_factory.py",
+        "src/rlqas/phase3/encoding/benchmark.py",
+        "tests/unit/test_matrix_encoder.py",
+        "tests/unit/test_sparse_encoder.py",
+        "tests/unit/test_encoder_factory.py"
+      ]
+    },
+    {
+      "id": "phase3-task-006",
+      "title": "Phase 3 Integration Tests (RLQAS_Phase3_006)",
+      "priority": "high",
+      "passes": true,
+      "dependencies": ["phase3-task-001", "phase3-task-002", "phase3-task-003", "phase3-task-004", "phase3-task-005", "phase3-task-007"],
+      "description": "Comprehensive integration tests validating all Phase 3 components on medium-to-large molecular systems: BeH2 (8-14 qubits), H4 (8 qubits), H6 (12 qubits). Covers hybrid search, batch evaluation performance, circuit encoding comparison, and qubit vs fermion operator comparison. ALL molecule tests MUST assert energy_error < 1.6e-3 (except H6 which uses relaxed threshold 5.0e-3).",
+      "acceptance_criteria": [
+        "LiH (4 qubits) smoke test: HybridSearchController runs 100 episodes; asserts energy_error < 1.6e-3",
+        "ANTI-HOLLOW: test_hybrid_env_single_step_does_not_cheat PASSES — single action step on LiH 10q must give energy_error > 1.6e-3 (mirrors Phase 2 does_not_cheat; if this fails, energy evaluation is broken)",
+        "ANTI-HOLLOW: test_hybrid_env_energy_below_hf PASSES — after single step with run_classical_opt=True, energy < -7.862 Ha (verifies scipy classical optimization runs)",
+        "ANTI-HOLLOW: test_search_result_is_real_training PASSES — training_history has len >= 2, energies are not all identical",
+        "BeH2 8-qubit: PPO and DQN both achieve energy_error < 1.6e-3; results saved to results/phase3_integration/algorithm_comparison.json",
+        "Batch evaluation: >=1.5x throughput measured and asserted on BeH2 8-qubit circuits; each batch result matches sequential within 1e-8",
+        "Circuit encoding: all three methods produce identical energies within 1e-6 under same random seed",
+        "BeH2 10-qubit: asserts energy_error < 1.6e-3 with Jordan-Wigner active_space=(4,5)",
+        "BeH2 12-qubit: asserts energy_error < 1.6e-3 with Jordan-Wigner active_space=(6,6)",
+        "H4 8-qubit: asserts energy_error < 1.6e-3 with Jordan-Wigner active_space=(4,4)",
+        "H6 12-qubit: asserts energy_error < 1.6e-3 with full space (no active_space restriction; STO-3G H6 naturally has 6 electrons in 6 orbitals → 12 qubits)",
+        "ExperimentManager end-to-end with ansatz_type='HYBRID' YAML config completes without error",
+        "progress.txt updated with Phase 3 completion summary"
+      ],
+      "files_to_create": [
+        "tests/integration/test_phase3_integration.py",
+        "tests/integration/test_hybrid_search.py",
+        "tests/integration/test_batch_performance.py",
+        "tests/integration/test_encoding_comparison.py",
+        "tests/integration/test_beh2_scalability.py",
+        "tests/integration/test_hydrogen_chain.py",
+        "results/phase3_integration/.gitkeep"
+      ]
+    },
+    {
+      "id": "phase3-task-007",
+      "title": "Qubit Operator Extension for UCC Search (RLQAS_Phase3_007)",
+      "priority": "medium",
+      "passes": true,
+      "dependencies": ["phase3-task-001", "phase3-task-002", "phase3-task-003"],
+      "autonomy_note": "Ralph must first investigate the Tencirchem qubit operator API (inspect tencirchem.ucc for QubitUCC, qubit excitation lists, Pauli string inputs). If not natively supported, implement an adapter. Document findings in progress.txt under 'Qubit Operator API Investigation'.",
+      "description": "Extend the UCC and Hybrid search frameworks to optionally use qubit-space excitation operators (Pauli strings) instead of the default fermion operators. Implement QubitOperatorPool, extend UCCSearchEnv and HybridSearchEnv with operator_type config field, and implement QubitUCCSearchController. Compare fermion vs qubit operator search on LiH 10q.",
+      "acceptance_criteria": [
+        "QubitOperatorPool generates a non-empty qubit operator pool for H2 (>=1 operator) and LiH (>=5 operators)",
+        "UCCSearchEnv with operator_type='qubit' runs 10 complete episodes on LiH 10q without error",
+        "QubitUCCSearchController.search() returns a SearchResult with populated best_energy field",
+        "Comparison JSON qubit_vs_fermion_lih_10q.json saved to results/phase3_integration/",
+        "If qubit operators achieve chemical accuracy: assert energy_error < 1.6e-3; otherwise document the gap",
+        "progress.txt contains 'Qubit Operator API Investigation' section documenting Tencirchem qubit operator API",
+        "All tests pass with >80% coverage"
+      ],
+      "files_to_create": [
+        "src/rlqas/phase3/qubit_ops/__init__.py",
+        "src/rlqas/phase3/qubit_ops/operator_pool.py",
+        "src/rlqas/phase3/qubit_ops/controller.py",
+        "src/rlqas/phase3/qubit_ops/adapter.py",
+        "tests/unit/test_qubit_operator_pool.py",
+        "tests/integration/test_qubit_ucc_search.py"
+      ]
+    }
+  ]
+}
