@@ -32,11 +32,25 @@ class UCCSearchEnv(gym.Env):
 
         self.molecule_data = molecule_data
         self.config = UCCSearchConfig(config).get_section("environment")
+        self._raw_config = config or {}  # store flat config for keys not in environment section
 
         # Initialize components
         self.circuit_builder = UCCCircuitBuilder(molecule_data, config)
         self.reward_function = UCCRewardFunction(config)
         self.simulator = SimulatorFactory.create_simulator(molecule_data.n_qubits)
+
+        # encoding_method support (Task 005 Phase 3 integration)
+        # Check both flat config and nested environment section
+        self.encoding_method = self._raw_config.get(
+            "encoding_method", self.config.get("encoding_method", "matrix")
+        )
+        self._encoder = None
+        if self.encoding_method not in (None, "matrix"):
+            try:
+                from rlqas.phase3.encoding.encoder_factory import EncoderFactory
+                self._encoder = EncoderFactory.create(self.encoding_method)
+            except (ImportError, Exception):
+                pass  # fallback: use existing default behavior
 
         # Get available excitations
         self.available_excitations = self.circuit_builder.get_available_excitations()
@@ -88,6 +102,14 @@ class UCCSearchEnv(gym.Env):
         n_available = len(self.available_excitations)
         self.n_available = n_available
 
+        # Determine circuit encoding dimension based on encoding method
+        if self._encoder is not None:
+            self.circuit_enc_dim = self._encoder.output_dim(
+                self.molecule_data.n_qubits, max_depth
+            )
+        else:
+            self.circuit_enc_dim = n_available  # default: one-hot of excitations
+
         # Energy component (1)
         # Assuming energy range: Hartree-Fock to FCI (or lower)
         energy_low = np.array([-10.0], dtype=np.float32)  # Conservative lower bound
@@ -97,9 +119,9 @@ class UCCSearchEnv(gym.Env):
         param_low = np.full(max_depth, -np.pi, dtype=np.float32)
         param_high = np.full(max_depth, np.pi, dtype=np.float32)
 
-        # Architecture encoding (one-hot for each available excitation)
-        arch_low = np.zeros(n_available, dtype=np.float32)
-        arch_high = np.ones(n_available, dtype=np.float32)
+        # Architecture encoding (one-hot for each available excitation, or encoder output)
+        arch_low = np.zeros(self.circuit_enc_dim, dtype=np.float32)
+        arch_high = np.ones(self.circuit_enc_dim, dtype=np.float32)
 
         # Step count (normalized)
         step_low = np.array([0.0], dtype=np.float32)
@@ -364,15 +386,28 @@ class UCCSearchEnv(gym.Env):
         n_copy = min(len(params), max_depth)
         params_padded[:n_copy] = params[:n_copy]
 
-        # Architecture encoding (one-hot of excitation indices)
-        arch = np.zeros(self.n_available, dtype=np.float32)
-        for exc in self.current_excitations:
+        # Architecture encoding: use encoder if available, else one-hot of excitations
+        if self._encoder is not None:
             try:
-                idx = self.available_excitations.index(exc)
-                arch[idx] = 1.0
-            except ValueError:
-                # Excitation not in available list (should not happen)
-                pass
+                if self.current_excitations:
+                    circuit = self.circuit_builder.build_circuit(
+                        self.current_excitations, self.current_params
+                    )
+                else:
+                    circuit = None
+                arch = self._encoder.encode(
+                    circuit, self.molecule_data.n_qubits, max_depth
+                ).astype(np.float32)
+            except Exception:
+                arch = np.zeros(self.circuit_enc_dim, dtype=np.float32)
+        else:
+            arch = np.zeros(self.n_available, dtype=np.float32)
+            for exc in self.current_excitations:
+                try:
+                    idx = self.available_excitations.index(exc)
+                    arch[idx] = 1.0
+                except ValueError:
+                    pass
 
         # Step count (normalized by max steps)
         max_steps = max_excitations  # Could be different

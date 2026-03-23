@@ -145,7 +145,7 @@
       "dependencies": ["phase3-task-001", "phase3-task-002", "phase3-task-003", "phase3-task-004", "phase3-task-005", "phase3-task-007"],
       "description": "Comprehensive integration tests validating all Phase 3 components on medium-to-large molecular systems: BeH2 (8-14 qubits), H4 (8 qubits), H6 (12 qubits). Covers hybrid search, batch evaluation performance, circuit encoding comparison, and qubit vs fermion operator comparison. ALL molecule tests MUST assert energy_error < 1.6e-3 (except H6 which uses relaxed threshold 5.0e-3).",
       "acceptance_criteria": [
-        "LiH (4 qubits) smoke test: HybridSearchController runs 100 episodes; asserts energy_error < 1.6e-3",
+        "LiH full space smoke test: HybridSearchController (RLQAS) runs 100 episodes on LiH full space (no active_space restriction; STO-3G LiH has 4 electrons in 6 orbitals → 12 qubits); asserts energy_error < 1.6e-3. UCC/UCCSD results appear only as comparison benchmarks, not as standalone test targets.",
         "ANTI-HOLLOW: test_hybrid_env_single_step_does_not_cheat PASSES — single action step on LiH 10q must give energy_error > 1.6e-3 (mirrors Phase 2 does_not_cheat; if this fails, energy evaluation is broken)",
         "ANTI-HOLLOW: test_hybrid_env_energy_below_hf PASSES — after single step with run_classical_opt=True, energy < -7.862 Ha (verifies scipy classical optimization runs)",
         "ANTI-HOLLOW: test_search_result_is_real_training PASSES — training_history has len >= 2, energies are not all identical",

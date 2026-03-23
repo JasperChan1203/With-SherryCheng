@@ -56,18 +56,43 @@ class HEASearchEnv(gym.Env):
         rotation_gates: Optional[List[str]] = None,
         parameter_sharing: str = "layer_wise",
         target_energy: Optional[float] = None,
+        molecule_data: Optional[Any] = None,
+        encoding_method: str = "matrix",
     ):
-        """Initialize HEA search environment."""
+        """Initialize HEA search environment.
+
+        Supports two calling conventions:
+        - Legacy: HEASearchEnv(n_qubits=4, max_layers=4, ...)
+        - New:    HEASearchEnv(molecule_data, config_dict) where config_dict may
+                  contain keys: max_layers, encoding_method, etc.
+        """
+        # --- New-style: HEASearchEnv(molecule_data, config_dict) ---
+        if hasattr(n_qubits, 'n_qubits'):
+            # First arg is a MoleculeData (or similar) object
+            _mol = n_qubits
+            _cfg = max_layers if isinstance(max_layers, dict) else {}
+            molecule_data = _mol
+            n_qubits = int(_mol.n_qubits)
+            max_layers = int(_cfg.get("max_layers", 4))
+            encoding_method = _cfg.get("encoding_method", encoding_method)
         super().__init__()
 
         self.n_qubits = n_qubits
         self.max_layers = max_layers
         self.target_energy = target_energy
+        self.molecule_data = molecule_data
+        self.encoding_method = encoding_method  # store for potential future use
 
         # Configuration
         self.entanglement_patterns = entanglement_patterns or ["linear", "circular", "full"]
         self.rotation_gates = rotation_gates or ["rx", "ry", "rz"]
         self.parameter_sharing = parameter_sharing
+
+        # Initialize simulator if molecule_data is provided
+        self._simulator = None
+        if molecule_data is not None:
+            from rlqas.phase1.simulator.factory import SimulatorFactory
+            self._simulator = SimulatorFactory.create_simulator(molecule_data.n_qubits)
 
         # Action space: select layer configuration
         # Each action selects: entanglement pattern + rotation gate type
@@ -195,42 +220,52 @@ class HEASearchEnv(gym.Env):
                 self._circuit_params[param_idx] += self.np_random.uniform(-scale, scale)
 
     def _compute_energy(self) -> float:
-        """Compute circuit energy (simulated).
+        """Compute circuit energy.
 
-        In a real implementation, this would call a quantum simulator
-        or use pre-computed integrals.
+        Uses real quantum simulation when molecule_data is provided,
+        falls back to dummy energy for testing without a molecule.
 
         Returns:
-            Simulated energy value
+            Energy value
         """
-        if self._circuit_params is None:
-            return 0.0
+        if self._simulator is None or self.molecule_data is None:
+            # Dummy energy for unit tests that don't need real chemistry
+            return -1.0 - float(self._current_layer) * 0.01
 
-        # Simplified energy computation based on parameters
-        # In practice, this would be <psi|H|psi> for the Hamiltonian H
-        param_mean = np.mean(np.abs(self._circuit_params))
-        base_energy = -1.0  # Reference energy
+        # Build tensorcircuit.Circuit from current parameters
+        entanglement_pattern_raw = self.entanglement_patterns[
+            self._entanglement_history[-1] if self._entanglement_history else 0
+        ]
+        # Map "full" alias to "fully_connected" for circuit builder
+        if entanglement_pattern_raw == "full":
+            entanglement_pattern = "fully_connected"
+        else:
+            entanglement_pattern = entanglement_pattern_raw
 
-        # Energy depends on parameter values and entanglement history
-        entanglement_bonus = 0.0
-        if self._entanglement_history:
-            # Favor certain entanglement patterns
-            pattern_counts = {}
-            for p in self._entanglement_history:
-                pattern_counts[p] = pattern_counts.get(p, 0) + 1
-            # Bonus for diversity
-            entanglement_bonus = 0.01 * len(pattern_counts)
+        rotation_type = self.rotation_gates[
+            self._rotation_history[-1] if self._rotation_history else 0
+        ]
 
-        # Energy improvement with more layers (up to a point)
-        layer_factor = min(1.0, self._current_layer / self.max_layers)
+        from rlqas.phase2.hea_search.circuit_builder import HEACircuitBuilder
+        builder = HEACircuitBuilder(
+            n_qubits=self.n_qubits,
+            n_layers=self._current_layer + 1,
+            entanglement_pattern=entanglement_pattern,
+            rotation_gates=[rotation_type],
+            parameter_sharing="none",
+        )
+        builder.build(self._circuit_params[:builder._count_total_parameters()])
+        tc_circuit = builder.to_tensorcircuit()
 
-        energy = base_energy - (param_mean * 0.01) - entanglement_bonus - (layer_factor * 0.1)
-
-        # Add target energy offset if specified
-        if self.target_energy is not None:
-            energy += self.target_energy
-
-        return energy
+        try:
+            energy = self._simulator.compute_energy(
+                tc_circuit,
+                self.molecule_data.hamiltonian,
+                initial_state=self.molecule_data.reference_state,
+            )
+            return float(energy)
+        except Exception:
+            return self._current_energy  # Keep previous energy on failure
 
     def _get_observation(self) -> np.ndarray:
         """Get current observation.

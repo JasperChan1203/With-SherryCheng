@@ -1,0 +1,16 @@
+{
+  "fermion": {
+    "best_energy": -7.881072039657328,
+    "energy_error_mha": 1.0245602616283378,
+    "chemical_accuracy_reached": true,
+    "operator_count": 14
+  },
+  "qubit": {
+    "best_energy": -7.875516478729911,
+    "energy_error_mha": 6.580121189045052,
+    "chemical_accuracy_reached": false,
+    "operator_count": 100
+  },
+  "comparison": "fermion_wins",
+  "notes": "PPO 200 episodes each. Fermion: UCCSD excitations. Qubit: ADAPT-VQE Hamiltonian X/Y term operators. Fermion error=1.0246 mHa, Qubit error=6.5801 mHa."
+}
