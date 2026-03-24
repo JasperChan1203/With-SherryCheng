@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rlqas-phase2"
+version = "2.0.0"
+description = "RLQAS Phase 2: Multi-algorithm support and HEA search"
+requires-python = ">=3.8"
+
+[tool.setuptools.packages.find]
+where = ["src"]

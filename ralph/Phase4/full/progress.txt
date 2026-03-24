@@ -1,0 +1,72 @@
+# RLQAS Phase 4 - Progress Log
+# Task: Internal Research Tool (Python API + CLI + Examples)
+
+Started: (not yet started)
+---
+
+## Known Prerequisites
+- Phase 1 (../../Phase1/006): has pyproject.toml (name=rlqas-phase1) — OK
+- Phase 2 (../../Phase2/full): NO pyproject.toml — Ralph must create it before Task 001
+- Phase 3 (../../Phase3/full): NO pyproject.toml — Ralph must create it before Task 001
+
+## Codebase Patterns
+- Phase 1 path: ../../Phase1/006/src/rlqas/phase1/
+- Phase 2 path: ../../Phase2/full/src/rlqas/phase2/
+- Phase 3 path: ../../Phase3/full/src/rlqas/phase3/
+- Phase 4 is a WRAPPER — never re-implement quantum or RL logic
+- run_classical_opt=True always (disabling breaks energy evaluation)
+- complexity_penalty=0.0 always (non-zero is 62x too large vs chemical accuracy threshold)
+- param_init_strategy='zeros'
+- Valid ansatz_type values: UCC, HEA, HYBRID
+- Valid agent_type values: ppo, dqn, a2c, sac_discrete
+
+## Prerequisite
+- Status: COMPLETE
+- Created ../../Phase2/full/pyproject.toml (name=rlqas-phase2, version=2.0.0)
+- Created ../../Phase3/full/pyproject.toml (name=rlqas-phase3, version=3.0.0)
+- Removed conflicting src/rlqas/__init__.py from Phase 1/2/3 (namespace package conflict fix)
+- Verified: python -c "import rlqas.phase2, rlqas.phase3; print('Phase 2/3 installed OK')" passes
+---
+
+## [2026-03-24 17:00] - Task 001: Unified Package Setup + Top-level Python API
+- Status: COMPLETE
+- Files created: setup.py, src/rlqas/__init__.py, src/rlqas/api.py, tests/smoke/test_api_smoke.py
+- Anti-hollow checks: PASS
+  - H2 UCC: 0.463 mHa | 4 qubits (energy_error_mha > 0, < 50)
+  - 9/9 smoke tests pass
+- Key implementation notes:
+  - pkgutil.extend_path in __init__.py required for namespace coexistence with Phase 1/2/3
+  - n_episodes must be passed in ctrl_config["controller"] section, not top-level
+  - float()/bool() conversion needed for JSON serialization (numpy types)
+  - UCC+PPO → UCCSearchController (Phase 1); all other combos → HybridSearchController (Phase 3)
+  - Phase 2 HEASearchController._best_energy stays inf (SB3 learn doesn't update it)
+- [TOKEN LOG] Estimated tokens this task: N/A — check session stats
+---
+
+## [2026-03-24 17:30] - Task 002: CLI Entry Point
+- Status: COMPLETE
+- Files created: src/rlqas/cli.py, tests/smoke/test_cli_smoke.py
+- Anti-hollow checks: PASS
+  - 7/7 CLI smoke tests pass
+  - rlqas search --molecule H2 --bond-length 0.74 --ansatz UCC --agent ppo --episodes 50 → exit 0
+  - rlqas experiment --config <yaml> → exit 0
+  - rlqas search --ansatz INVALID → exit non-zero
+  - --output flag saves JSON correctly
+- [TOKEN LOG] Estimated tokens this task: N/A — check session stats
+---
+
+## [2026-03-24 18:00] - Task 003: Example Scripts
+- Status: COMPLETE
+- Files created: examples/01_ucc_search_lih.py, examples/02_hea_search_beh2.py,
+  examples/03_hybrid_search_beh2.py, examples/04_multi_algorithm_comparison.py,
+  tests/smoke/test_examples_smoke.py
+- Anti-hollow checks: PASS
+  - 4/4 examples smoke tests pass
+- Key implementation notes:
+  - Example 01 (LiH UCC 200 eps): reports chemical accuracy status without hard-assert
+    (200 episodes not reliably sufficient for convergence)
+  - Example 02 (BeH2 HEA): routes to HybridSearchController for real energy eval
+  - Example 03 (BeH2 HYBRID): achieves chemical accuracy, prints fusion_template
+  - Example 04 (multi-algo): uses HYBRID ansatz (supports ppo/dqn/a2c); UCC only supports PPO
+- [TOKEN LOG] Estimated tokens this task: N/A — check session stats
+---

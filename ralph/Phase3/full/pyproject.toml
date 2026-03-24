@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rlqas-phase3"
+version = "3.0.0"
+description = "RLQAS Phase 3: Hybrid architecture search and performance optimization"
+requires-python = ">=3.8"
+
+[tool.setuptools.packages.find]
+where = ["src"]

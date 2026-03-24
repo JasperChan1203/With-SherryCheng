@@ -1,0 +1,88 @@
+{
+  "project": "RLQAS Phase 4: Internal Research Tool — Unified Package, Python API, CLI, and Example Scripts",
+  "version": "4.0",
+  "branchName": "ralph/Phase4/full",
+  "description": "Phase 4 unifies Phase 1-3 into a single installable package 'rlqas' and adds a convenience layer on top. One 'pip install -e .' installs everything. Users write 'import rlqas; rlqas.search(...)' without knowing which phase provides what. No new quantum algorithms are implemented.",
+  "phaseDependencies": {
+    "phase1": "RLQAS Phase 1 (Phase1/006) — UCCSearchController, process_molecule, TencirchemCISimulator, PPOAgent",
+    "phase2": "RLQAS Phase 2 (Phase2/full) — HEASearchController, AgentFactory, ExperimentManager, SequentialRLTester",
+    "phase3": "RLQAS Phase 3 (Phase3/full) — HybridSearchController, BatchEvaluator, EncoderFactory, QubitUCCSearchController",
+    "prerequisite": "All three phases must already exist on disk at ../../Phase1/006, ../../Phase2/full, ../../Phase3/full"
+  },
+  "overallGoal": "Single 'pip install -e .' command installs all four phases. Users import via top-level 'import rlqas' namespace. Deliver: (1) unified setup.py with Phase 1-3 as file:// dependencies, (2) top-level rlqas.search() / rlqas.Experiment API, (3) rlqas CLI, (4) runnable example scripts.",
+  "tasks": [
+    {
+      "id": "phase4-task-001",
+      "title": "Unified Package Setup + Top-level Python API (RLQAS_Phase4_001)",
+      "priority": "high",
+      "passes": true,
+      "dependencies": [],
+      "description": "Create setup.py that lists Phase 1-3 as local file:// dependencies so one pip install covers everything. Then implement src/rlqas/__init__.py (top-level namespace) and src/rlqas/api.py (search + Experiment). The rlqas namespace must coexist with existing rlqas.phase1 / rlqas.phase2 / rlqas.phase3 sub-packages via Python implicit namespace packages.",
+      "acceptance_criteria": [
+        "setup.py exists with name='rlqas', version='4.0.0', and install_requires listing rlqas-phase1, rlqas-phase2, rlqas-phase3 as local file:// paths",
+        "After 'pip install -e .', all four phases are importable in a single Python session: rlqas, rlqas.phase1, rlqas.phase2, rlqas.phase3",
+        "src/rlqas/__init__.py exports search and Experiment at the top level",
+        "rlqas.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=50) returns dict with keys: best_energy, fci_energy, energy_error_mha, chemical_accuracy, n_operators, fusion_template, molecule, ansatz_type, agent_type, n_episodes_run",
+        "rlqas.search dispatches correctly: 'UCC'+PPO -> UCCSearchController, others -> HybridSearchController",
+        "rlqas.Experiment(molecule_config, search_config, rl_config).run() returns the same result dict",
+        "rlqas.Experiment.save(path) / .load(path) round-trip works correctly",
+        "rlqas.search with invalid ansatz_type raises ValueError listing valid options",
+        "ANTI-HOLLOW: rlqas.search('H2', 0.74, 'UCC', n_episodes=50) returns energy_error_mha > 0 and < 50",
+        "Smoke test in tests/smoke/test_api_smoke.py passes on H2 (50 episodes)"
+      ],
+      "files_to_create": [
+        "setup.py",
+        "src/rlqas/__init__.py",
+        "src/rlqas/api.py",
+        "tests/smoke/test_api_smoke.py"
+      ]
+    },
+    {
+      "id": "phase4-task-002",
+      "title": "CLI Entry Point (RLQAS_Phase4_002)",
+      "priority": "high",
+      "passes": true,
+      "dependencies": ["phase4-task-001"],
+      "description": "Implement src/rlqas/cli.py using argparse with two subcommands: 'rlqas search' (inline args) and 'rlqas experiment' (YAML config). Registered as console_scripts entry point. Both subcommands delegate to rlqas.search() — no duplicated logic.",
+      "acceptance_criteria": [
+        "'rlqas search --molecule H2 --bond-length 0.74 --ansatz UCC --agent ppo --episodes 50' exits 0 and prints result table",
+        "'rlqas experiment --config <yaml_path>' runs and prints result table",
+        "'rlqas search --help' and 'rlqas experiment --help' print usage",
+        "'rlqas search --ansatz INVALID' exits 1 with a clear error message",
+        "--output <path> flag saves result JSON when provided",
+        "setup.py entry_points console_scripts registers 'rlqas=rlqas.cli:main'",
+        "Smoke test: subprocess.run(['rlqas', 'search', '--molecule', 'H2', ...], check=True) succeeds"
+      ],
+      "files_to_create": [
+        "src/rlqas/cli.py",
+        "tests/smoke/test_cli_smoke.py"
+      ],
+      "files_to_modify": [
+        "setup.py — add entry_points console_scripts"
+      ]
+    },
+    {
+      "id": "phase4-task-003",
+      "title": "Example Scripts (RLQAS_Phase4_003)",
+      "priority": "medium",
+      "passes": true,
+      "dependencies": ["phase4-task-001"],
+      "description": "Four standalone example scripts in examples/. Each is self-contained, runnable as 'python examples/<script>.py', and uses the top-level rlqas API. These are the primary reference for future use of this codebase.",
+      "acceptance_criteria": [
+        "examples/01_ucc_search_lih.py: LiH (2,5) 10q, PPO 200 episodes, asserts chemical accuracy",
+        "examples/02_hea_search_beh2.py: BeH2 (4,4) 8q, DQN 200 episodes, prints result",
+        "examples/03_hybrid_search_beh2.py: BeH2 (4,4) 8q, PPO 200 episodes, prints fusion_template",
+        "examples/04_multi_algorithm_comparison.py: PPO/DQN/A2C on LiH (2,5) 100 episodes each, prints comparison table",
+        "All four run without error via subprocess in tests/smoke/test_examples_smoke.py",
+        "Each script has a header comment: molecule, ansatz, agent, expected output"
+      ],
+      "files_to_create": [
+        "examples/01_ucc_search_lih.py",
+        "examples/02_hea_search_beh2.py",
+        "examples/03_hybrid_search_beh2.py",
+        "examples/04_multi_algorithm_comparison.py",
+        "tests/smoke/test_examples_smoke.py"
+      ]
+    }
+  ]
+}
