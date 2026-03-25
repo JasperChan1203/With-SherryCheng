@@ -45,6 +45,12 @@ class HEASearchController:
         verbose: int = 1,
     ):
         """Initialize HEA search controller."""
+        # Support new-style: HEASearchController(molecule_data)
+        self._molecule_data = None
+        if hasattr(n_qubits, 'n_qubits'):
+            self._molecule_data = n_qubits
+            n_qubits = int(n_qubits.n_qubits)
+
         self.n_qubits = n_qubits
         self.max_layers = max_layers
         self.entanglement_patterns = entanglement_patterns or ["linear", "circular", "full"]
@@ -65,12 +71,14 @@ class HEASearchController:
 
     def setup_environment(
         self,
+        molecule_data: Optional[Any] = None,
         target_energy: Optional[float] = None,
         parameter_sharing: str = "layer_wise",
     ) -> HEASearchEnv:
         """Set up the HEA search environment.
 
         Args:
+            molecule_data: Optional molecule data for real energy computation
             target_energy: Optional target energy for the search
             parameter_sharing: Parameter sharing strategy
 
@@ -84,6 +92,7 @@ class HEASearchController:
             rotation_gates=self.rotation_gates,
             parameter_sharing=parameter_sharing,
             target_energy=target_energy,
+            molecule_data=molecule_data,
         )
 
         if self.verbose >= 2:
@@ -131,6 +140,7 @@ class HEASearchController:
         total_timesteps: int = 10000,
         target_energy: Optional[float] = None,
         checkpoint_interval: int = 10,
+        molecule_data: Optional[Any] = None,
     ) -> Dict[str, Any]:
         """Run the HEA search process.
 
@@ -154,7 +164,8 @@ class HEASearchController:
             print(f"{'='*60}\n")
 
         # Set up environment and agent
-        self.setup_environment(target_energy=target_energy)
+        mol_data = molecule_data if molecule_data is not None else self._molecule_data
+        self.setup_environment(molecule_data=mol_data, target_energy=target_energy)
         self.setup_agent(agent_type=agent_type, config=agent_config)
 
         # Training loop
@@ -164,6 +175,10 @@ class HEASearchController:
 
         # Use total_timesteps for training
         train_metrics = self._agent.learn(total_timesteps=total_timesteps)
+
+        # Read best energy from env (updated by env.step() during SB3's internal loop)
+        if self._env is not None and hasattr(self._env, 'best_energy'):
+            self._best_energy = self._env.best_energy
 
         # Collect final results
         results = {

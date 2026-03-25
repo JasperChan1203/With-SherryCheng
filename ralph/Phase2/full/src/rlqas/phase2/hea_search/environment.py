@@ -114,6 +114,7 @@ class HEASearchEnv(gym.Env):
         self._episode_reward: float = 0.0
         self._entanglement_history: List[int] = []
         self._rotation_history: List[int] = []
+        self.best_energy: float = float("inf")
 
     def reset(self, seed: Optional[int] = None, options: Optional[Dict] = None) -> Tuple[np.ndarray, Dict]:
         """Reset the environment to initial state.
@@ -174,6 +175,10 @@ class HEASearchEnv(gym.Env):
         self._current_energy = new_energy
         self._episode_reward += reward
         self._current_layer += 1
+
+        # Track global best across all episodes (only when real simulation is active)
+        if new_energy < self.best_energy and self.molecule_data is not None:
+            self.best_energy = new_energy
 
         # Check if episode is done
         done = self._current_layer >= self.max_layers
