@@ -117,106 +117,34 @@ class UCCSearchController:
         Returns:
             Dictionary containing search results
         """
-        # Override config with function arguments if provided
         n_episodes = self.config.get("n_episodes", n_episodes)
         early_stop_threshold = self.config.get("early_stop_threshold", early_stop_threshold)
+        max_steps = self.config.get("max_excitations", 20)
+        total_timesteps = n_episodes * max_steps
 
-        print(f"Starting UCC search for {n_episodes} episodes")
+        print(f"Starting UCC search for {n_episodes} episodes ({total_timesteps} timesteps)")
         print(f"Early stop threshold: {early_stop_threshold} Hartree")
 
-        for episode in range(n_episodes):
-            # Reset environment (gymnasium returns observation and info)
-            obs, _ = self.env.reset()
-            done = False
-            episode_reward = 0.0
-            episode_energy = self.env.current_energy
-            episode_depth = 0
+        self.agent.learn(total_timesteps=total_timesteps)
 
-            while not done:
-                try:
-                    # Agent selects action
-                    action = self.agent.select_action(obs)
+        # Read results from env's global tracking (updated by env.step() during learn())
+        self.best_overall_energy = self.env.global_best_energy
+        self.best_overall_excitations = (
+            self.env.global_best_excitations.copy()
+            if self.env.global_best_excitations else []
+        )
+        self.best_overall_params = (
+            self.env.global_best_params.copy()
+            if self.env.global_best_params is not None else None
+        )
 
-                    # Environment step (gymnasium returns 5 values)
-                    obs, reward, terminated, truncated, info = self.env.step(action)
-                    done = terminated or truncated
-
-                except Exception as e:
-                    # Handle unexpected errors (e.g., simulator crash, agent failure)
-                    print(f"Error during episode {episode}: {e}")
-                    reward = -10.0
-                    done = True
-                    info = {"error": str(e), "termination_reason": "unexpected_error"}
-                    # Break out of while loop
-                    break
-
-                # Update agent with experience
-                self.agent.store_experience(obs, reward, done, info)
-
-                # Accumulate episode metrics
-                episode_reward += reward
-                episode_energy = info.get('energy', episode_energy)
-                episode_depth = len(info.get('excitations', []))
-
-                # Check for terminal state due to error (negative reward)
-                if reward <= -10.0 and done:
-                    # Invalid action or simulator failure - skip episode
-                    break
-
-            # End of episode
-            # Train agent on collected experiences
-            train_freq = self.config.get("train_frequency", 1)
-            if train_freq > 0 and episode % train_freq == 0:
-                try:
-                    self.agent.train()
-                except Exception as e:
-                    print(f"Error during agent training at episode {episode}: {e}")
-
-            # Record episode results
-            self.results['episode_rewards'].append(episode_reward)
-            self.results['episode_energies'].append(episode_energy)
-            self.results['episode_depths'].append(episode_depth)
-
-            # Update best overall results from environment's global best
-            if self.env.global_best_energy is not None and (self.best_overall_energy is None or self.env.global_best_energy < self.best_overall_energy):
-                self.best_overall_energy = self.env.global_best_energy
-                self.best_overall_excitations = self.env.global_best_excitations.copy()
-                self.best_overall_params = self.env.global_best_params.copy() if self.env.global_best_params is not None else None
-                # Store circuit? Could store the circuit builder's circuit
-                # For simplicity, store excitations and parameters
-                self.results['best_energy'] = self.best_overall_energy
-                self.results['best_excitations'] = self.best_overall_excitations.copy()
-                self.results['best_params'] = self.best_overall_params.copy() if self.best_overall_params is not None else None
-                self.results['best_circuit'] = None  # placeholder
-                # Save checkpoint for new best
-                self._save_checkpoint(episode, force=True)
-
-            # Record training history
-            self.results['training_history'].append({
-                'episode': episode,
-                'reward': episode_reward,
-                'energy': episode_energy,
-                'depth': episode_depth,
-                'best_energy': self.best_overall_energy,
-            })
-
-            # Log progress
-            if episode % self.config.get("log_frequency", 10) == 0:
-                print(f"Episode {episode}: reward={episode_reward:.3f}, "
-                      f"energy={episode_energy:.6f}, best={self.best_overall_energy:.6f}")
-            # Save checkpoint if configured
-            self._save_checkpoint(episode)
-
-            # Check early stopping condition
-            if self._check_convergence(early_stop_threshold):
-                self.results['convergence_reached'] = True
-                print(f"Convergence reached at episode {episode}")
-                break
-
-        # Finalize
-        print(f"Search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
+        self.results['best_energy'] = self.best_overall_energy
+        self.results['best_excitations'] = self.best_overall_excitations
+        self.results['best_params'] = self.best_overall_params
         self.results['convergence_reached'] = self._check_convergence(early_stop_threshold)
 
+        print(f"Search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
+        print(f"Best excitations: {len(self.best_overall_excitations)} operators")
         return self.results
 
     def _check_convergence(self, threshold: float) -> bool:

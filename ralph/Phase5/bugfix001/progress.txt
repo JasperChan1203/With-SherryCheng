@@ -1,0 +1,42 @@
+# RLQAS Phase 5 - Bugfix 001 Progress Log
+
+Started: 2026-03-25
+
+## Codebase Patterns
+- Python env: /curie-home/jpchen/.conda/envs/llm/bin/python3
+- Phase 1 controller: ../../Phase1/006/src/rlqas/phase1/search/controller.py
+- Phase 2 controller: ../../Phase2/full/src/rlqas/phase2/hea_search/controller.py
+- IMPORTANT: Phase 1/2 were NOT installed as editable — had to run `pip install -e .` in Phase1/006 and Phase2/full before edits took effect
+- run_classical_opt=True always; complexity_penalty=0.0 always
+- Chemical accuracy: < 1.6 mHa = 1.6e-3 Ha
+---
+
+## 2026-03-25 - US-001: Fix UCCSearchController to use SB3 PPO training loop
+- Status: COMPLETE
+- Files modified:
+  - ../../Phase1/006/src/rlqas/phase1/search/controller.py (replaced manual loop with self.agent.learn())
+  - ../../Phase1/006/src/rlqas/phase1/search/environment.py (fixed global_best not persisting across episode resets)
+- Anti-hollow results:
+  - H2 UCC: 0.308 mHa, operators=1 ✓
+  - LiH UCC: 6.661 mHa, operators=2 ✓ (n_operators >= 2 satisfied)
+  - Phase 1 tests: 4 passed, 0 failed
+- Learnings:
+  - Phase 1 package was installed as a COPY in site-packages, not editable. Had to `pip install -e .` to activate edits.
+  - UCCSearchEnv.reset() was clearing global_best_energy on every episode reset, so after learn() completes the global_best only reflected the last episode. Fixed by not resetting global_best_* in reset() unless they haven't been initialized yet.
+  - The "Episode X: reward=..." logs in old run were from the OLD controller code in site-packages, not the new code.
+---
+
+## 2026-03-25 - US-002: Fix HEASearchController._best_energy stays float('inf')
+- Status: COMPLETE
+- Files modified:
+  - ../../Phase2/full/src/rlqas/phase2/hea_search/environment.py (added best_energy attribute, update in step() for real simulation only)
+  - ../../Phase2/full/src/rlqas/phase2/hea_search/controller.py (handle MoleculeData in __init__, read best_energy from env after learn())
+- Anti-hollow results:
+  - HEA H2: best_energy=-1.558415 Ha ✓ (not float('inf'))
+  - Phase 2 HEA integration tests: 8 passed, 1 skipped (LiH 10-qubit correctly skips — no molecule_data in that test path)
+- Learnings:
+  - HEASearchEnv had no best_energy tracking; added it in step() guarded by `self.molecule_data is not None` to prevent dummy energies from polluting best_energy when no real simulation is active.
+  - HEASearchController.__init__ didn't handle MoleculeData objects passed as first arg; added the same duck-typing detection that HEASearchEnv already had.
+  - Phase 2 was also not installed as editable; `pip install -e .` in Phase2/full needed.
+  - Long-running chemistry tests (test_lih_molecule.py, test_multi_algorithm.py) are slow (>5 min each) but not affected by these changes.
+---

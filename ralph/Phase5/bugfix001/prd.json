@@ -1,0 +1,37 @@
+{
+  "project": "RLQAS Phase 5: RL Training Bugfix",
+  "branchName": "ralph/Phase5/bugfix001",
+  "description": "Fix two RL training bugs discovered after Phase 4 integration. Bug 1 (critical): Phase 1 UCCSearchController PPO policy is never trained — train() is a no-op so the policy stays at random initialization for all 500+ episodes, causing architecture search to degrade to random operator sampling with only 1 operator per episode. Bug 2 (minor): Phase 2 HEASearchController._best_energy stays float('inf') after SB3 learn() because the controller reads from _run_episode() (not called during learn()). Phase 4 already works around Bug 2 by routing HEA to Phase 3 HybridSearchController.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Fix UCCSearchController to use SB3 PPO training loop",
+      "description": "As a researcher, I want UCCSearchController.search() to actually train the PPO policy so that architecture search genuinely learns which excitation operators to select, instead of using a frozen random policy for all episodes.",
+      "acceptanceCriteria": [
+        "UCCSearchController.search() calls self.agent.learn(total_timesteps=n_episodes * max_steps) instead of the broken manual episode while-loop",
+        "After learn() completes, results['best_energy'] is populated from self.env.global_best_energy",
+        "After learn() completes, results['best_excitations'] is populated from self.env.global_best_excitations",
+        "results dict still contains keys: best_energy, best_excitations, best_params, convergence_reached",
+        "Anti-hollow: rlqas.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=50) returns energy_error_mha > 0 and < 50",
+        "Anti-hollow: rlqas.search('LiH', 1.6, ansatz_type='UCC', agent_type='ppo', n_episodes=300) returns n_operators >= 2 (PPO must explore more than 1 operator)",
+        "Tests pass: python -m pytest tests/ -x -q from Phase 1 directory"
+      ],
+      "passes": true,
+      "notes": "Root cause: UCCPPOAgent.train() at Phase1/006/src/rlqas/phase1/search/controller.py:38-42 is a no-op. The manual loop calls agent.train() but never agent.learn(). Fix: replace the episode loop in UCCSearchController.search() (lines 127-214) with self.agent.learn(total_timesteps=n_episodes * self.config.get('max_excitations', 20)), then extract results from self.env. PPOAgent.learn() at Phase1/006/src/rlqas/phase1/rl/ppo_agent.py:169-201 already calls self.model.learn(total_timesteps=...) correctly."
+    },
+    {
+      "id": "US-002",
+      "title": "Fix HEASearchController._best_energy stays float('inf')",
+      "description": "As a researcher, I want HEASearchController.search() to return the actual best energy found during training, not float('inf'), so that Phase 2 HEA results are usable directly.",
+      "acceptanceCriteria": [
+        "After HEASearchController.search() completes, results['best_energy'] != float('inf')",
+        "Fix reads best energy from self._env after learn() completes (inspect self._env for best_energy tracking attribute, add it if missing)",
+        "Anti-hollow: HEASearchController(mol).search(n_episodes=50) on H2 (4q) returns best_energy < -1.0 Ha",
+        "Tests pass: python -m pytest tests/ -x -q from Phase 2 directory"
+      ],
+      "priority": 2,
+      "passes": true,
+      "notes": "Root cause: HEASearchController._best_energy (Phase2/full/src/rlqas/phase2/hea_search/controller.py line 59) is initialized to float('inf') and only updated in _run_episode() (line 227). But search() calls self._agent.learn(total_timesteps=...) which uses SB3's internal episode loop — _run_episode() is never called. Fix: after learn(), read best_energy from self._env (inspect the HEASearchEnv class to find or add best_energy tracking). Note: Phase 4 already routes HEA to HybridSearchController as a workaround, so this is lower priority."
+    }
+  ]
+}

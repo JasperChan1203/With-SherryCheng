@@ -314,9 +314,13 @@ class UCCSearchEnv(gym.Env):
         self.active_parameters = np.zeros(self.n_params, dtype=bool)
         self.current_energy = self._get_hf_energy()
         self.best_energy = self._get_hf_energy()
-        self.global_best_energy = self._get_hf_energy()
-        self.global_best_excitations = []
-        self.global_best_params = np.zeros(self.n_params, dtype=np.float32)
+        # global_best_* tracks best across ALL episodes — do NOT reset on episode reset
+        if self.global_best_energy is None:
+            self.global_best_energy = self._get_hf_energy()
+        if not self.global_best_excitations:
+            self.global_best_excitations = []
+        if self.global_best_params is None:
+            self.global_best_params = np.zeros(self.n_params, dtype=np.float32)
         self.step_count = 0
         self.done = False
 
