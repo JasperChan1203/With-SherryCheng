@@ -21,37 +21,113 @@ class _AgentAdapter:
     ``save()``, and ``load()``.  The search loop in this module requires
     ``select_action(obs)``, ``store_experience(...)``, and ``train()`` —
     this adapter bridges the gap without modifying the agent classes.
+
+    This adapter also implements REINFORCE (Monte Carlo policy gradient) so
+    that the policy genuinely improves over episodes rather than remaining
+    at random initialization.
     """
 
-    def __init__(self, base_agent):
+    def __init__(self, base_agent, env=None):
         self._agent = base_agent
+        self._env = env
+        # Episode data buffers for REINFORCE
+        self._ep_states: List[np.ndarray] = []
+        self._ep_actions: List[int] = []
+        self._ep_rewards: List[float] = []
+        # Policy network (initialized lazily on first select_action call)
+        self._policy = None
+        self._optimizer = None
+
+    def _init_policy(self, obs_dim: int) -> None:
+        """Initialize the REINFORCE policy network."""
+        import torch
+        import torch.nn as nn
+
+        n_actions = (
+            int(self._env.action_space.n)
+            if self._env is not None
+            else 4  # fallback
+        )
+        self._policy = nn.Sequential(
+            nn.Linear(obs_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, n_actions),
+            nn.Softmax(dim=-1),
+        )
+        self._optimizer = torch.optim.Adam(self._policy.parameters(), lr=1e-3)
 
     def select_action(self, obs: np.ndarray) -> int:
-        """Select action via the underlying agent's ``act()`` method.
+        """Select action using the REINFORCE policy; store state for training."""
+        import torch
 
-        For DQN agents: SB3's ``predict(deterministic=False)`` is greedy (epsilon-greedy
-        only applies inside ``collect_rollouts``).  We apply our own epsilon-greedy so
-        that DQN explores the action space when used with a custom episode loop.
-        """
         if obs.ndim == 1:
             obs = obs[np.newaxis, :]
-        # DQN-specific epsilon-greedy: decay epsilon from 1.0 → 0.05 over training
-        agent_model = getattr(self._agent, "model", None)
-        if agent_model is not None and hasattr(agent_model, "exploration_rate"):
-            n_actions = int(agent_model.action_space.n)
-            eps = float(getattr(self, "_dqn_epsilon", 1.0))
-            if np.random.random() < eps:
-                # Decay epsilon per step: 1.0 → 0.05 over 2000 calls
-                self._dqn_epsilon = max(0.05, eps - (1.0 - 0.05) / 2000.0)
-                return int(np.random.randint(n_actions))
-        action, _ = self._agent.act(obs)
-        return int(action)
+        obs_flat = obs[0]
 
-    def store_experience(self, *args, **kwargs) -> None:  # noqa: ARG002
-        """No-op: PPO is on-policy and does not use a replay buffer."""
+        if self._policy is None:
+            self._init_policy(obs_flat.shape[0])
+
+        # Sample action from REINFORCE policy
+        with torch.no_grad():
+            obs_t = torch.tensor(obs_flat, dtype=torch.float32).unsqueeze(0)
+            action_probs = self._policy(obs_t)
+        action = int(torch.multinomial(action_probs[0], 1).item())
+
+        # Cache state and action for REINFORCE update
+        self._ep_states.append(obs_flat.copy())
+        self._ep_actions.append(action)
+        return action
+
+    def store_experience(self, obs: np.ndarray, reward: float, done: bool, info: dict) -> None:
+        """Store reward for REINFORCE update."""
+        self._ep_rewards.append(float(reward))
 
     def train(self) -> None:
-        """No-op: SB3 PPO training is driven by ``model.learn()`` internally."""
+        """REINFORCE: Monte Carlo policy gradient update over completed episode."""
+        import torch
+
+        if not self._ep_states or self._policy is None:
+            # Clear buffers and return
+            self._ep_states = []
+            self._ep_actions = []
+            self._ep_rewards = []
+            return
+
+        states = self._ep_states
+        actions = self._ep_actions
+        rewards = self._ep_rewards
+
+        # Compute discounted returns
+        gamma = 0.99
+        G = 0.0
+        returns = []
+        for r in reversed(rewards):
+            G = r + gamma * G
+            returns.insert(0, G)
+        returns = torch.tensor(returns, dtype=torch.float32)
+
+        # Normalize returns for stability
+        if len(returns) > 1:
+            returns = (returns - returns.mean()) / (returns.std() + 1e-8)
+
+        # Policy gradient loss: L = -E[G_t * log pi(a_t|s_t)]
+        self._optimizer.zero_grad()
+        loss_terms = []
+        for state, action, G_t in zip(states, actions, returns):
+            state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
+            action_probs = self._policy(state_tensor)
+            log_prob = torch.log(action_probs[0, action] + 1e-8)
+            loss_terms.append(-G_t * log_prob)
+
+        if loss_terms:
+            total_loss = torch.stack(loss_terms).sum()
+            total_loss.backward()
+            self._optimizer.step()
+
+        # Clear episode buffers
+        self._ep_states = []
+        self._ep_actions = []
+        self._ep_rewards = []
 
     # Delegate attribute access to the underlying agent for compatibility
     def __getattr__(self, name: str):
@@ -133,7 +209,7 @@ class HybridSearchController:
         base_agent = AgentFactory.create_agent(
             agent_type, config=agent_config, env=self.env
         )
-        self.agent = _AgentAdapter(base_agent)
+        self.agent = _AgentAdapter(base_agent, env=self.env)
 
         # Persistent best-result tracking across all episodes
         self._best_energy: float = float("inf")
