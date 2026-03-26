@@ -74,7 +74,7 @@ class UCCSearchController:
                 "gamma": self.config.get("gamma", 0.99),
                 "gae_lambda": self.config.get("gae_lambda", 0.95),
                 "clip_range": self.config.get("clip_range", 0.2),
-                "ent_coef": self.config.get("ent_coef", 0.0),
+                "ent_coef": self.config.get("ent_coef", 0.01),
                 "vf_coef": self.config.get("vf_coef", 0.5),
                 "max_grad_norm": self.config.get("max_grad_norm", 0.5),
                 "verbose": self.config.get("verbose", 1),
