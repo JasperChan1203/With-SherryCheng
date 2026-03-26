@@ -154,22 +154,21 @@ class UCCSearchEnv(gym.Env):
 
         # Check for duplicate excitation (invalid action)
         if excitation in self.current_excitations:
-            # Duplicate excitation: give negative reward but don't terminate
-            # Increment step count and check termination conditions
-            reward = -1.0  # smaller penalty than -10
+            # Duplicate excitation: terminate episode immediately with penalty
+            # This creates a clean incentive: repeating an operator ends the episode
+            reward = -1.0
+            self.done = True
+            terminated = True
+            truncated = False
             info = {
                 "error": "duplicate_excitation",
-                "termination_reason": None,
+                "termination_reason": "duplicate_action",
                 "energy": self.current_energy,
                 "best_energy": self.best_energy,
                 "excitations": self.current_excitations.copy(),
                 "params": self.current_params.copy() if self.current_params is not None else None,
                 "step": self.step_count,
             }
-            self.step_count += 1
-            self.done = self._check_termination()
-            terminated = self.done
-            truncated = False
             return self._get_observation(), reward, terminated, truncated, info
 
         # Check max depth and max excitations
