@@ -20,6 +20,7 @@ class UCCRewardFunction:
         """
         # Extract reward-specific configuration using UCCSearchConfig
         self.config = UCCSearchConfig(config).get_section("reward_function")
+        _raw = config or {}
 
         # Baseline energy tracking
         self.best_energy = None  # for 'current_best' baseline type
@@ -28,9 +29,11 @@ class UCCRewardFunction:
         self.rolling_window = []
         self.window_size = self.config.get("rolling_window_size", 10)
 
-        # Reward parameters
-        self.energy_weight = self.config.get("energy_weight", 1.0)
-        self.complexity_penalty = self.config.get("complexity_penalty", 0.01)
+        # Reward parameters — check flat raw config first (takes priority over section defaults)
+        self.energy_weight = _raw.get("energy_weight",
+                                      self.config.get("energy_weight", 1.0))
+        self.complexity_penalty = _raw.get("complexity_penalty",
+                                           self.config.get("complexity_penalty", 0.01))
         self.baseline_type = self.config.get("baseline_type", "current_best")
         self.use_shaping = self.config.get("shaping_rewards", False)
 

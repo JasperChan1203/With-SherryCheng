@@ -194,7 +194,11 @@ class UCCSearchEnv(gym.Env):
         param_idx = self.excitation_to_param_idx[excitation]
 
         # Always read init_strategy so it is in scope for the classical-opt check below
-        init_strategy = self.config.get("param_init_strategy", "random")
+        # Check _raw_config first (flat keys from API), then fall back to environment section
+        init_strategy = self._raw_config.get(
+            "param_init_strategy",
+            self.config.get("param_init_strategy", "random")
+        )
 
         # If parameter not already active, activate it and initialize
         if not self.active_parameters[param_idx]:
@@ -212,7 +216,11 @@ class UCCSearchEnv(gym.Env):
         # This is the VQE inner loop - RL selects architecture, classical optimizer tunes params
         try:
             # Check if we should run classical optimization
-            run_classical_opt = self.config.get("run_classical_opt", False)
+            # Check _raw_config first (flat keys from API), then fall back to environment section
+            run_classical_opt = self._raw_config.get(
+                "run_classical_opt",
+                self.config.get("run_classical_opt", False)
+            )
             if run_classical_opt and init_strategy == "zeros":
                 # Run classical optimization ONLY over active parameters.
                 # BUG FIX: Previously the optimizer was given ALL n_params which, starting
