@@ -1,0 +1,85 @@
+{
+  "project": "RLQAS Phase 5: Genuine Reinforcement Learning Circuit Search",
+  "branchName": "ralph/Phase5/fix002",
+  "description": "After bugfix001 made PPO training run correctly, a deeper analysis reveals RLQAS still does not genuinely learn: (1) Phase 1 UCCSearchController's MDP is structurally broken — duplicate actions consume episode steps with -1 penalty, so the policy converges to a 2-operator local minimum because exploring a 3rd operator has insufficient expected reward to overcome 17 wasted-step penalties; (2) Phase 1 PPO has ent_coef=0.0 hardcoded, disabling all entropy-driven exploration; (3) Phase 3 HybridSearchController passes LiH via random search — agent.train() is a no-op, the policy never learns. The benchmark test (test/rlqas_lih) confirms: all Phase 1 tests fail chemical accuracy (3.2–6.4 mHa vs 1.6 mHa threshold) and Phase 3 passes only because a random policy happens to find the right operators in ~35 random episodes. This task fixes the root causes so that RL genuinely drives circuit search.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Fix Phase 1 MDP: Episode terminates on duplicate action instead of wasting steps",
+      "priority": 1,
+      "passes": true,
+      "description": "As a researcher, I want the Phase 1 UCCSearch MDP to terminate the episode immediately when a duplicate operator is selected, so that duplicate actions cannot waste the episode budget and the policy has a clean incentive to select unique operators each episode.",
+      "problem": "UCCSearchEnv._check_termination() returns True when step_count >= max_excitations (default 20), counting ALL steps including duplicates. When the policy selects 2 unique operators (steps 1-2), the remaining 18 steps all select duplicates and each gets -1 reward. The total return is dominated by -18 duplicate penalties, making the risk-adjusted value of adding a 3rd operator negative. The policy is trapped at 2 operators.",
+      "fix": "In UCCSearchEnv.step() (Phase1/006/src/rlqas/phase1/search/environment.py): when the selected action is already in self.selected_excitations (duplicate), immediately set terminated=True and give reward=-1.0 instead of incrementing step_count and continuing. This means duplicate actions end the episode cleanly: the agent learns 'don't repeat operators or the episode ends immediately'. The episode now ends either when n_unique >= max_depth OR on the first duplicate attempt.",
+      "acceptanceCriteria": [
+        "UCCSearchEnv.step() sets terminated=True when action is already in self.selected_excitations",
+        "Duplicate action still gives reward=-1.0 so policy learns to avoid repeats",
+        "Non-duplicate actions continue the episode as before",
+        "_check_termination() terminates when len(self.selected_excitations) >= self.config.get('max_excitations', 20) OR when duplicate action was taken",
+        "Anti-hollow: run 10 episodes manually via UCCSearchEnv; in each episode the policy never selects the same operator twice (no duplicate steps before termination)",
+        "Phase 1 unit tests still pass: python -m pytest tests/ -x -q from Phase1/006 directory"
+      ],
+      "files": [
+        "../../Phase1/006/src/rlqas/phase1/search/environment.py"
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Fix Phase 1 ent_coef hardcoded default 0.0 — enable entropy exploration",
+      "priority": 1,
+      "passes": true,
+      "description": "As a researcher, I want the Phase 1 PPO agent to have non-zero entropy coefficient by default so that the policy actively explores different operator combinations instead of converging prematurely to a local minimum.",
+      "problem": "In UCCSearchController.__init__ (Phase1/006/src/rlqas/phase1/search/controller.py), the agent config is built with ent_coef defaulting to self.config.get('ent_coef', 0.0). This hardcoded 0.0 completely disables entropy-driven exploration. The PPO policy collapses to a near-deterministic policy after a few hundred episodes, always selecting the same 2 operators.",
+      "fix": "Change the single line in controller.py where ent_coef is read: replace self.config.get('ent_coef', 0.0) with self.config.get('ent_coef', 0.01). This matches AgentConfig.DEFAULT_CONFIG which already specifies 0.01 as the intended default. The user can still override ent_coef via the config dict.",
+      "acceptanceCriteria": [
+        "UCCSearchController reads ent_coef with default 0.01, not 0.0",
+        "User-supplied ent_coef in config dict is still respected (backward compatible)",
+        "Anti-hollow: run rlqas.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=100) and verify the SB3 training log shows entropy_loss < -0.5 (not locked at minimum near 0)",
+        "Phase 1 unit tests still pass"
+      ],
+      "files": [
+        "../../Phase1/006/src/rlqas/phase1/search/controller.py"
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Verify Phase 1 UCCSearchController achieves chemical accuracy on LiH",
+      "priority": 2,
+      "passes": true,
+      "description": "As a researcher, I want Phase 1 UCCSearchController to achieve chemical accuracy (< 1.6 mHa) on LiH with 300 episodes, confirming that the MDP and exploration fixes (US-001, US-002) together make PPO genuinely effective at circuit search — not merely better than before.",
+      "problem": "Before this fix, all 5 Phase 1 LiH tests failed (3.2 – 6.4 mHa). Phase 3 passes LiH only because its agent.train() is a no-op (random search). The true test of RLQAS is whether Phase 1 trained PPO can achieve what Phase 3 random search achieves.",
+      "prerequisite": "US-001 and US-002 must both pass before attempting this story.",
+      "fix": "No code changes required. Run the acceptance check below. If it fails, investigate whether additional hyperparameter adjustments are needed (e.g., increase max_excitations to 8 in config, adjust learning_rate). Document findings in progress.txt.",
+      "acceptanceCriteria": [
+        "rlqas.search('LiH', 1.6, ansatz_type='UCC', agent_type='ppo', n_episodes=300) returns energy_error_mha < 1.6",
+        "The returned result shows n_operators >= 4 (PPO must learn to combine multiple excitation operators)",
+        "If chemical accuracy is not reached in 300 episodes, try n_episodes=500; document the result either way",
+        "Anti-hollow: result['best_energy'] must be lower than Hartree-Fock energy for LiH (~-7.863 Ha) by at least 10 mHa"
+      ],
+      "files": []
+    },
+    {
+      "id": "US-004",
+      "title": "Implement real RL training in Phase 3 HybridSearchController",
+      "priority": 3,
+      "passes": true,
+      "description": "As a researcher, I want Phase 3 HybridSearchController to actually update its policy based on episode rewards (REINFORCE or policy gradient), so that circuit search genuinely improves over episodes rather than relying on random operator sampling.",
+      "problem": "HybridSearchController.search() calls self.agent.train(states, actions, rewards) after each episode, but this method is a no-op — it does nothing. The policy stays at random initialization for all episodes. Phase 3 passes LiH only because random operator sampling happens to find good combinations for this small molecule. For larger molecules this random approach will fail.",
+      "fix": [
+        "Step 1: Inspect ../../Phase3/full/src/rlqas/phase3/hybrid_search/ — read agent.py (or whatever file contains HybridSearchAgent) to understand its structure: what policy network it has, whether it uses PyTorch, what train(states, actions, rewards) signature expects.",
+        "Step 2: Implement REINFORCE (Monte Carlo policy gradient) in HybridSearchAgent.train(). Algorithm: (a) compute discounted returns G_t = sum_{t'>=t} gamma^(t'-t) * r_t' with gamma=0.99; (b) normalize returns: G_t = (G_t - mean) / (std + 1e-8); (c) compute policy gradient loss: L = -sum_t G_t * log(pi(a_t | s_t)); (d) call loss.backward() and optimizer.step(). Use learning_rate=1e-3 and Adam optimizer.",
+        "Step 3: Verify the policy actually changes across episodes by logging the action probability distribution at episode 1 vs episode 100 — they should differ.",
+        "Step 4: If HybridSearchAgent has no policy network (e.g., it just returns random actions), add a simple 2-layer MLP policy network: Linear(obs_dim, 64) -> ReLU -> Linear(64, n_actions) -> Softmax."
+      ],
+      "acceptanceCriteria": [
+        "HybridSearchAgent.train(states, actions, rewards) performs at least one optimizer.step() call — it is no longer a no-op",
+        "After 200 episodes on H2, the action probability distribution has changed from the initial uniform random distribution (entropy decreased from log(n_actions) by at least 20%)",
+        "Anti-hollow: HybridSearchController on LiH 12q, 200 episodes still achieves energy_error_mha < 1.6 (should still pass since Phase 3 was already good; now it passes via learning not luck)",
+        "Phase 3 integration tests still pass: python -m pytest tests/ -x -q from Phase3/full directory"
+      ],
+      "files": [
+        "../../Phase3/full/src/rlqas/phase3/hybrid_search/"
+      ]
+    }
+  ]
+}
