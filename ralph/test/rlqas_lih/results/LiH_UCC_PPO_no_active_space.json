@@ -1,0 +1,33 @@
+{
+  "name": "LiH_UCC_PPO_no_active_space",
+  "description": "LiH UCC+PPO 12-qubit, no active space, 500 episodes",
+  "config": {
+    "name": "LiH_UCC_PPO_no_active_space",
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "ansatz_type": "UCC",
+    "agent_type": "ppo",
+    "n_episodes": 500,
+    "active_space": null,
+    "description": "LiH UCC+PPO 12-qubit, no active space, 500 episodes"
+  },
+  "best_energy_ha": -7.877577683102921,
+  "energy_error_mha": 4.746695780580623,
+  "n_operators": 2,
+  "elapsed_s": 485.0170896053314,
+  "chemical_accuracy_pass": false,
+  "raw_result": {
+    "best_energy": -7.877577683102921,
+    "fci_energy": -7.882324378883502,
+    "energy_error_mha": 4.746695780580623,
+    "chemical_accuracy": false,
+    "n_operators": 2,
+    "fusion_template": null,
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "ansatz_type": "UCC",
+    "agent_type": "ppo",
+    "n_episodes_run": 500,
+    "n_qubits": 12
+  }
+}

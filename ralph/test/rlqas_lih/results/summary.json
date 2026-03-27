@@ -1,0 +1,208 @@
+[
+  {
+    "name": "LiH_UCC_PPO_baseline_12q",
+    "description": "Baseline: 12-qubit, no active space, default hyperparams",
+    "config": {
+      "name": "LiH_UCC_PPO_baseline_12q",
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes": 500,
+      "active_space": null,
+      "config": null,
+      "description": "Baseline: 12-qubit, no active space, default hyperparams"
+    },
+    "best_energy_ha": -7.881744976883369,
+    "energy_error_mha": 0.5794020001257394,
+    "n_operators": 9,
+    "elapsed_s": 1425.046282529831,
+    "chemical_accuracy_pass": true,
+    "raw_result": {
+      "best_energy": -7.881744976883369,
+      "fci_energy": -7.882324378883495,
+      "energy_error_mha": 0.5794020001257394,
+      "chemical_accuracy": true,
+      "n_operators": 9,
+      "fusion_template": null,
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes_run": 500,
+      "n_qubits": 12
+    }
+  },
+  {
+    "name": "LiH_UCC_PPO_baseline_10q",
+    "description": "Baseline: active_space=(2,5) 10-qubit, default hyperparams",
+    "config": {
+      "name": "LiH_UCC_PPO_baseline_10q",
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes": 500,
+      "active_space": [
+        2,
+        5
+      ],
+      "config": null,
+      "description": "Baseline: active_space=(2,5) 10-qubit, default hyperparams"
+    },
+    "best_energy_ha": -7.882096595916304,
+    "energy_error_mha": 4.0026524317227086e-06,
+    "n_operators": 9,
+    "elapsed_s": 387.412150144577,
+    "chemical_accuracy_pass": true,
+    "raw_result": {
+      "best_energy": -7.882096595916304,
+      "fci_energy": -7.882096599918956,
+      "energy_error_mha": 4.0026524317227086e-06,
+      "chemical_accuracy": true,
+      "n_operators": 9,
+      "fusion_template": null,
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes_run": 500,
+      "n_qubits": 10
+    }
+  },
+  {
+    "name": "LiH_UCC_PPO_tuned_12q",
+    "description": "Tuned: 12-qubit, hf-baseline, energy_weight=100, ent_coef=0.05",
+    "config": {
+      "name": "LiH_UCC_PPO_tuned_12q",
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes": 500,
+      "active_space": null,
+      "config": {
+        "reward_function": {
+          "baseline_type": "hartree_fock",
+          "energy_weight": 100.0
+        },
+        "controller": {
+          "ent_coef": 0.05,
+          "n_steps": 4096
+        }
+      },
+      "description": "Tuned: 12-qubit, hf-baseline, energy_weight=100, ent_coef=0.05"
+    },
+    "best_energy_ha": -7.8816226710466575,
+    "energy_error_mha": 0.701707836844534,
+    "n_operators": 10,
+    "elapsed_s": 1652.984860420227,
+    "chemical_accuracy_pass": true,
+    "raw_result": {
+      "best_energy": -7.8816226710466575,
+      "fci_energy": -7.882324378883502,
+      "energy_error_mha": 0.701707836844534,
+      "chemical_accuracy": true,
+      "n_operators": 10,
+      "fusion_template": null,
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes_run": 500,
+      "n_qubits": 12
+    }
+  },
+  {
+    "name": "LiH_UCC_PPO_tuned_10q",
+    "description": "Tuned: active_space=(2,5) 10-qubit, hf-baseline, energy_weight=100, ent_coef=0.05",
+    "config": {
+      "name": "LiH_UCC_PPO_tuned_10q",
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes": 500,
+      "active_space": [
+        2,
+        5
+      ],
+      "config": {
+        "reward_function": {
+          "baseline_type": "hartree_fock",
+          "energy_weight": 100.0
+        },
+        "controller": {
+          "ent_coef": 0.05,
+          "n_steps": 4096
+        }
+      },
+      "description": "Tuned: active_space=(2,5) 10-qubit, hf-baseline, energy_weight=100, ent_coef=0.05"
+    },
+    "best_energy_ha": -7.882096595916304,
+    "energy_error_mha": 4.0026524317227086e-06,
+    "n_operators": 8,
+    "elapsed_s": 408.5292270183563,
+    "chemical_accuracy_pass": true,
+    "raw_result": {
+      "best_energy": -7.882096595916304,
+      "fci_energy": -7.882096599918956,
+      "energy_error_mha": 4.0026524317227086e-06,
+      "chemical_accuracy": true,
+      "n_operators": 8,
+      "fusion_template": null,
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes_run": 500,
+      "n_qubits": 10
+    }
+  },
+  {
+    "name": "LiH_UCC_PPO_tuned_10q_highent",
+    "description": "Tuned: active_space=(2,5) 10-qubit, hf-baseline, energy_weight=100, ent_coef=0.1",
+    "config": {
+      "name": "LiH_UCC_PPO_tuned_10q_highent",
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes": 500,
+      "active_space": [
+        2,
+        5
+      ],
+      "config": {
+        "reward_function": {
+          "baseline_type": "hartree_fock",
+          "energy_weight": 100.0
+        },
+        "controller": {
+          "ent_coef": 0.1,
+          "n_steps": 4096
+        }
+      },
+      "description": "Tuned: active_space=(2,5) 10-qubit, hf-baseline, energy_weight=100, ent_coef=0.1"
+    },
+    "best_energy_ha": -7.882096595916302,
+    "energy_error_mha": 4.002655984436387e-06,
+    "n_operators": 10,
+    "elapsed_s": 511.22568464279175,
+    "chemical_accuracy_pass": true,
+    "raw_result": {
+      "best_energy": -7.882096595916302,
+      "fci_energy": -7.882096599918958,
+      "energy_error_mha": 4.002655984436387e-06,
+      "chemical_accuracy": true,
+      "n_operators": 10,
+      "fusion_template": null,
+      "molecule": "LiH",
+      "bond_length": 1.6,
+      "ansatz_type": "UCC",
+      "agent_type": "ppo",
+      "n_episodes_run": 500,
+      "n_qubits": 10
+    }
+  }
+]

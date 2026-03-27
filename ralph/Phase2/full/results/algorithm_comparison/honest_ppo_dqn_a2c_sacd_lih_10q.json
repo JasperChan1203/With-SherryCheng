@@ -1,0 +1,153 @@
+{
+  "ppo": {
+    "best_energy": -7.880732406288532,
+    "fci_energy": -7.882096599918957,
+    "energy_error_ha": 0.00136419363042517,
+    "energy_error_mha": 1.36419363042517,
+    "chemical_accuracy_reached": true,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        6,
+        4,
+        0,
+        5
+      ],
+      [
+        9,
+        5
+      ],
+      [
+        4,
+        9,
+        5,
+        0
+      ],
+      [
+        1,
+        6,
+        5,
+        0
+      ]
+    ],
+    "operator_count": 4
+  },
+  "dqn": {
+    "best_energy": -7.880678904598163,
+    "fci_energy": -7.882096599918957,
+    "energy_error_ha": 0.0014176953207938325,
+    "energy_error_mha": 1.4176953207938325,
+    "chemical_accuracy_reached": true,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        4,
+        0
+      ],
+      [
+        3,
+        8,
+        5,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        9,
+        5,
+        0
+      ],
+      [
+        1,
+        9,
+        5,
+        0
+      ]
+    ],
+    "operator_count": 5
+  },
+  "a2c": {
+    "best_energy": -7.880678904598167,
+    "fci_energy": -7.882096599918957,
+    "energy_error_ha": 0.0014176953207902798,
+    "energy_error_mha": 1.4176953207902798,
+    "chemical_accuracy_reached": true,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        2,
+        0
+      ],
+      [
+        4,
+        9,
+        5,
+        0
+      ],
+      [
+        6,
+        4,
+        0,
+        5
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        8,
+        5,
+        0
+      ]
+    ],
+    "operator_count": 6
+  },
+  "sac_discrete": {
+    "best_energy": -7.880188838353321,
+    "fci_energy": -7.882096599918957,
+    "energy_error_ha": 0.0019077615656355462,
+    "energy_error_mha": 1.9077615656355462,
+    "chemical_accuracy_reached": false,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        3,
+        0
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        4,
+        9,
+        5,
+        0
+      ],
+      [
+        7,
+        5
+      ],
+      [
+        1,
+        9,
+        5,
+        0
+      ]
+    ],
+    "operator_count": 5
+  },
+  "winner": {
+    "agent_type": "ppo",
+    "reason": "Chemical accuracy reached with 4 operators (error=1.3642 mHa)",
+    "operator_count": 4
+  }
+}

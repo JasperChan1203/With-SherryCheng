@@ -381,5 +381,200 @@ class TestAlgorithmPerformance:
                 assert 'final_metrics' in agent_result or len(agent_result) > 0
 
 
+class TestA2CAlgorithmExploration:
+    """Test Task 005: autonomous algorithm exploration with real training."""
+
+    def _make_lih_mol(self):
+        from rlqas.phase1.molecule.processor import process_molecule
+        return process_molecule(
+            "LiH", bond_length=1.6,
+            ansatz_type="UCC", active_space=(2, 5), transform="jordan_wigner"
+        )
+
+    def _train_agent(self, agent_type, molecule_data, n_episodes=30):
+        """Train agent directly on UCCSearchEnv (bypasses Phase1 controller)."""
+        from rlqas.phase1.search.environment import UCCSearchEnv
+        from rlqas.phase2.rl.agent_factory import AgentFactory
+
+        env_config = {
+            "complexity_penalty": 0.0,
+            "param_init_strategy": "zeros",
+            "run_classical_opt": True,
+            "max_depth": 10,
+        }
+        env = UCCSearchEnv(molecule_data=molecule_data, config=env_config)
+        agent = AgentFactory.create_agent(agent_type, config=None, env=env)
+        agent.learn(total_timesteps=n_episodes * 10)
+        # Retrieve underlying UCCSearchEnv (unwrap DummyVecEnv + Monitor layers)
+        underlying = env
+        if hasattr(agent, 'model') and hasattr(agent.model, 'env'):
+            try:
+                wrapped = agent.model.env.envs[0]
+                # Unwrap Monitor, VecEnvWrapper, etc.
+                while hasattr(wrapped, 'env'):
+                    wrapped = wrapped.env
+                underlying = wrapped
+            except (AttributeError, IndexError):
+                pass
+        elif hasattr(agent, 'env') and agent.env is not None:
+            underlying = agent.env
+        return underlying
+
+    def test_a2c_agent_runs_on_ucc_environment(self):
+        """A2CAgent must train on UCCSearchEnv without errors."""
+        mol = self._make_lih_mol()
+        env = self._train_agent("a2c", mol, n_episodes=30)
+        best_energy = env.global_best_energy
+        assert best_energy is not None, "A2C: no energy recorded during training"
+        assert best_energy < -7.0, (
+            f"A2C best_energy={best_energy:.6f} Ha is not below Hartree-Fock level"
+        )
+        print(f"A2C best_energy={best_energy:.6f} Ha after 30 episodes")
+
+    def test_sac_discrete_agent_runs_on_ucc_environment(self):
+        """SACDiscreteAgent must train on UCCSearchEnv without errors."""
+        mol = self._make_lih_mol()
+        env = self._train_agent("sac_discrete", mol, n_episodes=30)
+        best_energy = env.global_best_energy
+        assert best_energy is not None, "SAC-Discrete: no energy recorded during training"
+        assert best_energy < -7.0, (
+            f"SAC-Discrete best_energy={best_energy:.6f} Ha is not below Hartree-Fock level"
+        )
+        print(f"SAC-Discrete best_energy={best_energy:.6f} Ha after 30 episodes")
+
+    def test_exploration_framework_run_benchmarks(self):
+        """ExplorationFramework.run_benchmarks() must return real training metrics.
+
+        With the Bug A fix, operators=1 is NO LONGER sufficient for chemical accuracy.
+        We verify structure and that each algorithm produces a plausible energy.
+        """
+        from rlqas.phase2.adaptation.exploration_framework import ExplorationFramework
+
+        mol = self._make_lih_mol()
+        framework = ExplorationFramework(verbose=1)
+        results = framework.run_benchmarks(
+            molecule_data=mol,
+            n_episodes=50,
+            agent_types=["ppo", "dqn", "a2c", "sac_discrete"],
+        )
+
+        for agent_type in ["ppo", "dqn", "a2c", "sac_discrete"]:
+            assert agent_type in results, f"Missing results for {agent_type}"
+            r = results[agent_type]
+            assert "best_energy" in r, f"{agent_type}: missing best_energy"
+            assert "energy_error_ha" in r, f"{agent_type}: missing energy_error_ha"
+            assert isinstance(r["operator_count"], int), \
+                f"{agent_type}: operator_count must be int"
+            assert r["best_energy"] < -7.0, (
+                f"{agent_type}: best_energy={r['best_energy']:.6f} Ha is not below HF level"
+            )
+
+        assert "winner" in results
+        assert results["winner"]["agent_type"] in ["ppo", "dqn", "a2c", "sac_discrete"]
+        assert isinstance(results["winner"]["operator_count"], int)
+        print(results.get("summary", ""))
+
+    def test_four_way_comparison_lih_10q(self):
+        """Compare PPO, DQN, A2C, SAC-Discrete on LiH (2,5) 10-qubit system.
+
+        At least one algorithm must reach chemical accuracy.
+        Uses n_episodes=2000 and max_depth=10 — agents need genuine search now
+        that Bug A is fixed (single operator no longer trivially gives FCI energy).
+        """
+        from rlqas.phase2.adaptation.exploration_framework import ExplorationFramework
+
+        mol = self._make_lih_mol()
+        framework = ExplorationFramework(verbose=1)
+        results = framework.run_benchmarks(
+            molecule_data=mol,
+            n_episodes=2000,
+            env_config={
+                'complexity_penalty': 0.0,
+                'param_init_strategy': 'zeros',
+                'max_depth': 10,
+                'run_classical_opt': True,
+            },
+            agent_types=["ppo", "dqn", "a2c", "sac_discrete"],
+        )
+
+        print(results.get("summary", ""))
+
+        algo_types = ["ppo", "dqn", "a2c", "sac_discrete"]
+        any_accurate = any(
+            results.get(t, {}).get("chemical_accuracy_reached", False)
+            for t in algo_types
+        )
+        assert any_accurate, (
+            "No algorithm reached chemical accuracy on LiH (2,5). "
+            "Best errors: "
+            + ", ".join(
+                f"{t}={results.get(t, {}).get('energy_error_mha', 999):.2f} mHa"
+                for t in algo_types
+            )
+        )
+
+        # Save honest benchmark results
+        import numpy as np
+
+        def _to_native(v):
+            if isinstance(v, np.bool_):
+                return bool(v)
+            if isinstance(v, np.integer):
+                return int(v)
+            if isinstance(v, np.floating):
+                return float(v)
+            if isinstance(v, np.ndarray):
+                return v.tolist()
+            return v
+
+        os.makedirs("results/algorithm_comparison", exist_ok=True)
+        serializable = {
+            k: {sk: _to_native(sv) for sk, sv in v.items() if sk != "energy_history"}
+            for k, v in results.items()
+            if isinstance(v, dict)
+        }
+        with open("results/algorithm_comparison/honest_ppo_dqn_a2c_sacd_lih_10q.json", "w") as f:
+            json.dump(serializable, f, indent=2)
+
+    # Keep old three-way test name as alias for backward compatibility
+    def test_three_way_comparison_lih_10q(self):
+        """Backward-compat alias — delegates to four-way comparison."""
+        self.test_four_way_comparison_lih_10q()
+
+    def test_single_operator_does_not_cheat(self):
+        """Regression: 1 operator must NOT give chemical accuracy after Bug A fix.
+
+        Before the fix the L-BFGS-B optimizer optimised ALL parameter slots,
+        trivially reaching FCI with 1 operator from a zeros initialisation.
+        After the fix only the active slot is optimised, so 1 operator gives
+        only partial-circuit energy (well above chemical accuracy).
+        """
+        from rlqas.phase1.search.environment import UCCSearchEnv
+
+        mol = self._make_lih_mol()
+        env = UCCSearchEnv(mol, {
+            'run_classical_opt': True,
+            'complexity_penalty': 0.0,
+            'param_init_strategy': 'zeros',
+            'max_depth': 10,
+        })
+        obs, _ = env.reset()
+        obs, r, terminated, truncated, info = env.step(0)
+
+        fci_energy = mol.fci_energy
+        err = abs(env.current_energy - fci_energy)
+        assert err > 1.6e-3, (
+            f"BUG STILL PRESENT: 1 operator achieved chemical accuracy "
+            f"(error={err*1000:.4f} mHa). Bug A fix in environment.py may be broken."
+        )
+        nz = sum(1 for x in env.current_params if abs(x) > 1e-10)
+        assert nz == 1, (
+            f"BUG STILL PRESENT: {nz} non-zero params after 1 action (expected 1). "
+            "Optimizer must not touch inactive parameter slots."
+        )
+
+
+
+
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])

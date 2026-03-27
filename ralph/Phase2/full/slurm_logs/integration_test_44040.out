@@ -1,0 +1,218 @@
+=== Phase 2 Integration Tests (post-fix001 verification) ===
+Job ID: 44040
+Started at: Fri Mar 20 02:35:41 PM CST 2026
+Node: curie-gpu003
+Python: Python 3.10.13
+
+================================================================
+[Step 1] 回归验证：Bug A/B 修复确认（单算符不能达到化学精度）
+================================================================
+2026-03-20 14:35:58 - root - INFO - Logging configured with level INFO
+2026-03-20 14:36:05 - rlqas.phase1.molecule.processor - INFO - Processed molecule LiH with active space (2, 5), transform jordan_wigner, qubits=10, FCI energy=-7.882097
+2026-03-20 14:36:05 - rlqas.phase1.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+  1-operator error : 20.2355 mHa  (must be > 1.6 mHa)
+  Non-zero params  : 1             (must be == 1)
+  [PASS] Bug A/B are fixed.
+
+================================================================
+[Step 2] LiH active_space=(2,5) 10-qubit 化学精度测试
+================================================================
+============================= test session starts ==============================
+collecting ... collected 1 item
+
+tests/integration/test_lih_molecule.py::TestLiH10Qubits::test_lih_10q_chemical_accuracy_with_full_training PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96: DeprecationWarning: qiskit.__qiskit_version__ is deprecated since Qiskit Terra 0.25.0, and will be removed 3 months or more later. Instead, you should use qiskit.__version__. The other packages listed in former qiskit.__qiskit_version__ have their own __version__ module level dunder, as standard in PEP 8.
+    warnings.warn(
+
+tests/integration/test_lih_molecule.py::TestLiH10Qubits::test_lih_10q_chemical_accuracy_with_full_training
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+    warnings.warn(
+
+tests/integration/test_lih_molecule.py: 10 warnings
+  /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/Phase2/full/../../Phase1/006/src/rlqas/phase1/rl/ppo_agent.py:157: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    action = int(action) if action.size == 1 else action
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 1 passed, 13 warnings in 10.88s ========================
+
+================================================================
+[Step 3] LiH active_space=(2,6) 12-qubit 化学精度测试
+================================================================
+============================= test session starts ==============================
+collecting ... collected 1 item
+
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96: DeprecationWarning: qiskit.__qiskit_version__ is deprecated since Qiskit Terra 0.25.0, and will be removed 3 months or more later. Instead, you should use qiskit.__version__. The other packages listed in former qiskit.__qiskit_version__ have their own __version__ module level dunder, as standard in PEP 8.
+    warnings.warn(
+
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+    warnings.warn(
+
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training
+tests/integration/test_lih_molecule.py::TestLiH12Qubits::test_lih_12q_chemical_accuracy_with_full_training
+  /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/Phase2/full/../../Phase1/006/src/rlqas/phase1/rl/ppo_agent.py:157: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    action = int(action) if action.size == 1 else action
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 1 passed, 9 warnings in 6.63s =========================
+
+================================================================
+[Step 4] 多算法比较 + does_not_cheat 回归测试
+================================================================
+============================= test session starts ==============================
+collecting ... collected 15 items
+
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_comparison_with_h2_4qubits PASSED [  6%]
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_lih_10qubits_ppo_vs_dqn PASSED [ 13%]
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_comparison_metrics_collection PASSED [ 20%]
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_comparison_report_generation PASSED [ 26%]
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_chemical_accuracy_tracking PASSED [ 33%]
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_convergence_analysis PASSED [ 40%]
+tests/integration/test_multi_algorithm.py::TestAlgorithmPerformance::test_ppo_training_efficiency PASSED [ 46%]
+tests/integration/test_multi_algorithm.py::TestAlgorithmPerformance::test_dqn_training_efficiency PASSED [ 53%]
+tests/integration/test_multi_algorithm.py::TestAlgorithmPerformance::test_algorithm_comparison_excitation_operators PASSED [ 60%]
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_a2c_agent_runs_on_ucc_environment PASSED [ 66%]
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_sac_discrete_agent_runs_on_ucc_environment PASSED [ 73%]
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_exploration_framework_run_benchmarks PASSED [ 80%]
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_four_way_comparison_lih_10q PASSED [ 86%]
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_three_way_comparison_lih_10q PASSED [ 93%]
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_single_operator_does_not_cheat PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96: DeprecationWarning: qiskit.__qiskit_version__ is deprecated since Qiskit Terra 0.25.0, and will be removed 3 months or more later. Instead, you should use qiskit.__version__. The other packages listed in former qiskit.__qiskit_version__ have their own __version__ module level dunder, as standard in PEP 8.
+    warnings.warn(
+
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_comparison_with_h2_4qubits
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_lih_10qubits_ppo_vs_dqn
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_comparison_metrics_collection
+tests/integration/test_multi_algorithm.py::TestMultiAlgorithmComparison::test_comparison_report_generation
+tests/integration/test_multi_algorithm.py::TestAlgorithmPerformance::test_ppo_training_efficiency
+tests/integration/test_multi_algorithm.py::TestAlgorithmPerformance::test_algorithm_comparison_excitation_operators
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_exploration_framework_run_benchmarks
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_four_way_comparison_lih_10q
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_three_way_comparison_lih_10q
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+    warnings.warn(
+
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_a2c_agent_runs_on_ucc_environment
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_exploration_framework_run_benchmarks
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_four_way_comparison_lih_10q
+tests/integration/test_multi_algorithm.py::TestA2CAlgorithmExploration::test_three_way_comparison_lih_10q
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run A2C on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================= 15 passed, 15 warnings in 2076.07s (0:34:36) =================
+
+================================================================
+[Step 5] HEA 集成测试
+================================================================
+============================= test session starts ==============================
+collecting ... collected 9 items
+
+tests/integration/test_hea_integration.py::TestHEAIntegration::test_hea_circuit_builder_all_patterns PASSED [ 11%]
+tests/integration/test_hea_integration.py::TestHEAIntegration::test_hea_environment_step_execution PASSED [ 22%]
+tests/integration/test_hea_integration.py::TestHEAIntegration::test_hea_controller_search PASSED [ 33%]
+tests/integration/test_hea_integration.py::TestHEAIntegration::test_hea_parameter_sharing_strategies PASSED [ 44%]
+tests/integration/test_hea_integration.py::TestHEAIntegration::test_hea_rotation_types PASSED [ 55%]
+tests/integration/test_hea_integration.py::TestHEAIntegration::test_hea_real_energy PASSED [ 66%]
+tests/integration/test_hea_integration.py::TestHEAWithMolecules::test_hea_h2_molecule PASSED [ 77%]
+tests/integration/test_hea_integration.py::TestHEAWithMolecules::test_hea_lih_10qubits_chemical_accuracy SKIPPED [ 88%]
+tests/integration/test_hea_integration.py::TestHEAWithMolecules::test_hea_configuration_validation PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96: DeprecationWarning: qiskit.__qiskit_version__ is deprecated since Qiskit Terra 0.25.0, and will be removed 3 months or more later. Instead, you should use qiskit.__version__. The other packages listed in former qiskit.__qiskit_version__ have their own __version__ module level dunder, as standard in PEP 8.
+    warnings.warn(
+
+tests/integration/test_hea_integration.py::TestHEAIntegration::test_hea_controller_search
+tests/integration/test_hea_integration.py::TestHEAWithMolecules::test_hea_h2_molecule
+tests/integration/test_hea_integration.py::TestHEAWithMolecules::test_hea_lih_10qubits_chemical_accuracy
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============= 8 passed, 1 skipped, 5 warnings in 76.61s (0:01:16) ==============
+
+================================================================
+[Step 6] Phase 2 全量集成测试
+================================================================
+============================= test session starts ==============================
+collecting ... collected 9 items
+
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_all_phase2_modules_importable PASSED [ 11%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_rl_agents_with_environment PASSED [ 22%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_sequential_tester_with_agents PASSED [ 33%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_hea_search_pipeline PASSED [ 44%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_experiment_management_pipeline PASSED [ 55%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_adaptation_framework_integration PASSED [ 66%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_cross_component_compatibility PASSED [ 77%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_full_rl_search_cycle PASSED [ 88%]
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_hea_full_pipeline PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+../../../../../../../.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96: DeprecationWarning: qiskit.__qiskit_version__ is deprecated since Qiskit Terra 0.25.0, and will be removed 3 months or more later. Instead, you should use qiskit.__version__. The other packages listed in former qiskit.__qiskit_version__ have their own __version__ module level dunder, as standard in PEP 8.
+    warnings.warn(
+
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_rl_agents_with_environment
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_sequential_tester_with_agents
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_cross_component_compatibility
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_full_rl_search_cycle
+tests/integration/test_phase2_integration.py::TestPhase2Integration::test_hea_full_pipeline
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 9 passed, 7 warnings in 19.76s ========================
+
+================================================================
+[Step 7] fix001 新增测试（Phase1/006/tests/integration/test_circuit_fix.py）
+================================================================
+============================= test session starts ==============================
+collecting ... collected 4 items
+
+../../Phase1/006/tests/integration/test_circuit_fix.py::test_single_operator_does_not_cheat PASSED [ 25%]
+../../Phase1/006/tests/integration/test_circuit_fix.py::test_optimizer_only_touches_active_params PASSED [ 50%]
+../../Phase1/006/tests/integration/test_circuit_fix.py::test_full_uccsd_matches_fci PASSED [ 75%]
+../../Phase1/006/tests/integration/test_circuit_fix.py::test_two_operators_improve_over_one PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/integration/test_circuit_fix.py::test_single_operator_does_not_cheat
+tests/integration/test_circuit_fix.py::test_single_operator_does_not_cheat
+  /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/qiskit/version.py:96: DeprecationWarning: qiskit.__qiskit_version__ is deprecated since Qiskit Terra 0.25.0, and will be removed 3 months or more later. Instead, you should use qiskit.__version__. The other packages listed in former qiskit.__qiskit_version__ have their own __version__ module level dunder, as standard in PEP 8.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 4 passed, 2 warnings in 22.59s ========================
+
+================================================================
+测试结果汇总
+================================================================
+  Bug A/B 回归检查    : PASS（已在 Step 1 确认）
+  LiH 10-qubit        : PASS
+  LiH 12-qubit        : PASS
+  多算法比较          : PASS
+  HEA 集成            : PASS
+  Phase2 全量集成     : PASS
+  fix001 circuit tests: PASS
+
+Finished at: Fri Mar 20 03:14:31 PM CST 2026
+✅ 所有测试通过 — Phase 2 完全验证完成

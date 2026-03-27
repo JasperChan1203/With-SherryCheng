@@ -82,7 +82,7 @@ def search(
         },
     }
     if config:
-        ctrl_config.update(config)
+        _deep_merge(ctrl_config, config)
 
     if ansatz_type == "UCC" and agent_type in _UCC_AGENTS:
         # Phase 1: UCCSearchController — PPO only, best UCC energy tracking
@@ -122,6 +122,15 @@ def search(
         "n_episodes_run": n_episodes,
         "n_qubits": mol.n_qubits,
     }
+
+
+def _deep_merge(base: dict, override: dict):
+    """Deep-merge override into base in-place."""
+    for k, v in override.items():
+        if k in base and isinstance(base[k], dict) and isinstance(v, dict):
+            _deep_merge(base[k], v)
+        else:
+            base[k] = v
 
 
 def _extract(result, key, default=None):

@@ -1,0 +1,8 @@
+=== RLQAS Phase 2 Fix001: Correct Partial-Circuit Architecture Search ===
+Job ID: 43883
+Started at: Thu Mar 19 04:31:38 PM CST 2026
+Running on node: curie-gpu002
+Current directory: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/Phase2/fix001
+Conda environment activated: /curie-home/jpchen/.conda/envs/llm/bin/python3
+Python: Python 3.10.13
+Dependency check failed

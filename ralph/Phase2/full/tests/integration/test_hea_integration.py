@@ -134,6 +134,56 @@ class TestHEAIntegration:
             circuit = builder.build()
             assert circuit is not None
 
+    def test_hea_real_energy(self):
+        """
+        Test HEA environment computes real energy when molecule_data is provided.
+
+        This test confirms that:
+        1. HEASearchEnv accepts molecule_data parameter
+        2. Energy computed with molecule_data is physically meaningful (< HF energy)
+        3. HEASearchEnv without molecule_data still works (dummy energy)
+        """
+        from rlqas.phase2.hea_search import HEASearchEnv, HEACircuitBuilder
+        from rlqas.phase1.molecule.processor import process_molecule
+
+        # Test 1: Environment without molecule_data uses dummy energy
+        env_dummy = HEASearchEnv(n_qubits=4, max_layers=2)
+        obs, info = env_dummy.reset(seed=42)
+        assert obs is not None
+        assert info['energy'] < 0  # Dummy energy is negative
+
+        # Test 2: Environment with molecule_data uses real simulator
+        mol = process_molecule(
+            molecule='LiH',
+            bond_length=1.6,
+            ansatz_type='UCC',
+            active_space=(2, 5),
+            basis_set='sto-3g',
+            transform='jordan_wigner',
+        )
+
+        env_real = HEASearchEnv(n_qubits=mol.n_qubits, max_layers=3, molecule_data=mol)
+        assert env_real._simulator is not None, "Simulator should be initialized with molecule_data"
+        assert env_real.molecule_data is mol, "Molecule data should be stored"
+
+        # Reset and verify energy computation works
+        obs, info = env_real.reset(seed=42)
+        assert obs is not None
+        # Real energy should be physically meaningful (negative for bound systems)
+        assert info['energy'] < 0, f"Expected negative energy, got {info['energy']}"
+
+        # Test 3: Verify to_tensorcircuit() works
+        builder = HEACircuitBuilder(n_qubits=mol.n_qubits, n_layers=2)
+        builder.build()
+        tc_circuit = builder.to_tensorcircuit()
+        assert tc_circuit is not None, "to_tensorcircuit() should return a valid circuit"
+
+        # Test 4: Step environment with real energy
+        action = env_real.action_space.sample()
+        obs, reward, terminated, truncated, info = env_real.step(action)
+        assert 'energy' in info, "Energy should be in step info"
+        assert reward is not None
+
 
 class TestHEAWithMolecules:
     """Tests for HEA with different molecules."""

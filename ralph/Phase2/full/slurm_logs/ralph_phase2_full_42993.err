@@ -1,0 +1,20 @@
+All 3 core Phase 7 tests pass. Phase 7 is fully implemented and working:
+
+**Implementation Summary:**
+
+| Component | Status |
+|-----------|--------|
+| `A2CAgent` (SB3-backed, `a2c_agent.py`) | ✅ Implemented |
+| `SACDiscreteAgent` (custom PyTorch, `sac_discrete_agent.py`) | ✅ Implemented |
+| `AgentFactory._AGENT_REGISTRY` (`"a2c"`, `"sac_discrete"`) | ✅ Registered |
+| `__init__.py` exports for both new agents | ✅ Exported |
+| `ExplorationFramework.run_benchmarks()` with real training | ✅ Implemented |
+| Integration tests (3 tests passing in ~63s) | ✅ All pass |
+
+**Algorithm Selection Rationale (from `progress.txt`):**
+- **A2C**: On-policy actor-critic baseline for direct comparison to PPO; faster per-update, no clipping
+- **SAC-Discrete** (Christodoulou 2019): Best fit for RLQAS's sparse-reward discrete problem — maximum entropy objective encourages exploring diverse operator combinations, off-policy replay gives sample efficiency for expensive quantum energy evaluations, twin critics reduce Q-value overestimation bias, automatic temperature tuning
+
+**Rejected:** TD3/DDPG (continuous only), HER (requires goal-conditioned env), Rainbow (sb3_contrib not installed), TRPO (not in SB3, high complexity)
+
+<promise>COMPLETE</promise>

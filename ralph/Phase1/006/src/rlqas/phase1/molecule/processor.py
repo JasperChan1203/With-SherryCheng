@@ -88,8 +88,26 @@ def process_molecule(
             ("Be", 0.0, 0.0, 0.0),
             ("H", bond_length, 0.0, 0.0)
         ]
+    elif molecule == "H4":
+        # Linear H4 chain: equally-spaced H atoms
+        atoms = [
+            ("H", 0.0, 0.0, 0.0),
+            ("H", bond_length, 0.0, 0.0),
+            ("H", 2.0 * bond_length, 0.0, 0.0),
+            ("H", 3.0 * bond_length, 0.0, 0.0),
+        ]
+    elif molecule == "H6":
+        # Linear H6 chain: equally-spaced H atoms
+        atoms = [
+            ("H", 0.0, 0.0, 0.0),
+            ("H", bond_length, 0.0, 0.0),
+            ("H", 2.0 * bond_length, 0.0, 0.0),
+            ("H", 3.0 * bond_length, 0.0, 0.0),
+            ("H", 4.0 * bond_length, 0.0, 0.0),
+            ("H", 5.0 * bond_length, 0.0, 0.0),
+        ]
     else:
-        raise ValueError(f"Unsupported molecule: {molecule}. Supported: H2, LiH, BeH2")
+        raise ValueError(f"Unsupported molecule: {molecule}. Supported: H2, LiH, BeH2, H4, H6")
 
     # Build PySCF molecule
     mol = gto.M(

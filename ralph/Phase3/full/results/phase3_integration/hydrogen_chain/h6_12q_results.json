@@ -1,0 +1,10 @@
+{
+  "molecule": "H6",
+  "n_qubits": 12,
+  "fci_energy": -3.142365499013711,
+  "best_energy": -3.1421509245951293,
+  "energy_error_mha": 0.21457441858174775,
+  "chemical_accuracy_reached": true,
+  "threshold_mha": 1.6,
+  "method": "full_uccsd_lbfgsb"
+}

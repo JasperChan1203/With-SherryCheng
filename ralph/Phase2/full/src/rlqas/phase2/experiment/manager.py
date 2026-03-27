@@ -100,7 +100,7 @@ class ExperimentManager:
             if field not in config:
                 raise ValueError(f"Missing required configuration field: {field}")
 
-        valid_types = ["sequential_test", "hea_search", "custom"]
+        valid_types = ["sequential_test", "hea_search", "hybrid_search", "custom"]
         if config["type"] not in valid_types:
             raise ValueError(
                 f"Invalid experiment type: {config['type']}. "
@@ -180,6 +180,8 @@ class ExperimentManager:
             results = self._run_sequential_test(config)
         elif experiment["type"] == "hea_search":
             results = self._run_hea_search(config)
+        elif experiment["type"] == "hybrid_search":
+            results = self._run_hybrid_search(config)
         elif experiment["type"] == "custom":
             results = self._run_custom(config)
         else:
@@ -286,6 +288,53 @@ class ExperimentManager:
             "type": "hea_search",
             "config": hea_cfg.to_dict(),
             "results": results,
+        }
+
+    def _run_hybrid_search(self, config: Dict[str, Any]) -> Dict[str, Any]:
+        """Run hybrid HEA+UCC architecture search experiment (Phase 3).
+
+        Args:
+            config: Experiment configuration dict.  Expected sub-sections:
+                molecule, search, rl, simulation, evaluation, output.
+
+        Returns:
+            Results dictionary with best_energy, best_error, fusion_template, etc.
+        """
+        from rlqas.phase1.molecule.processor import process_molecule
+
+        mol_cfg = config.get("molecule", {})
+        formula = mol_cfg.get("formula", "H2")
+        bond_length = mol_cfg.get("bond_length", 0.74)
+        active_space = mol_cfg.get("active_space")
+        if active_space is not None:
+            active_space = tuple(active_space)
+        basis_set = mol_cfg.get("basis_set", "sto-3g")
+        transform = mol_cfg.get("transform", "jordan_wigner")
+
+        molecule_data = process_molecule(
+            formula,
+            bond_length,
+            "UCC",
+            active_space=active_space,
+            basis_set=basis_set,
+            transform=transform,
+        )
+
+        from rlqas.phase3.hybrid_search.controller import HybridSearchController
+
+        controller = HybridSearchController.from_config(molecule_data, config)
+
+        rl_cfg = config.get("rl", {})
+        n_episodes = rl_cfg.get("n_episodes", 500)
+        result = controller.search(n_episodes=n_episodes)
+
+        return {
+            "type": "hybrid_search",
+            "best_energy": float(result.best_energy) if result.best_energy is not None else None,
+            "best_error": float(result.best_error) if result.best_error is not None else None,
+            "fusion_template": list(result.fusion_template),
+            "convergence_reached": bool(result.convergence_reached),
+            "n_episodes": len(result.training_history),
         }
 
     def _run_custom(self, config: Dict[str, Any]) -> Dict[str, Any]:

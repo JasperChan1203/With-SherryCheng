@@ -1,0 +1,15 @@
+{
+  "n_qubits": 4,
+  "max_layers": 4,
+  "agent_type": "ppo",
+  "n_episodes": 50,
+  "total_timesteps": 500,
+  "best_energy": -1.5584149205205047,
+  "best_circuit": null,
+  "training_metrics": {
+    "total_timesteps": 500,
+    "learning_rate": 0.0003
+  },
+  "training_history": [],
+  "timestamp": "2026-03-25T18:58:09.681392"
+}

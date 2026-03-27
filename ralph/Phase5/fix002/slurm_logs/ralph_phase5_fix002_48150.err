@@ -1,0 +1,4 @@
+Already retrieved — this was the LiH timing test showing **10 episodes in 318s, energy_error=1.077 mHa, n_ops=10**. No action needed.
+All 4 user stories already have `passes: true` in `prd.json` and all are documented as COMPLETE in `progress.txt`. The work for this phase is already done.
+
+<promise>COMPLETE</promise>

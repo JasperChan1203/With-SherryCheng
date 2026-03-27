@@ -1,0 +1,261 @@
+{
+  "project": "RLQAS-CHEM: Standalone Python Package",
+  "branchName": "ralph/Phase5/打包",
+  "description": "Consolidate all Phase 1–5 functionality into a single, self-contained Python package called 'rlqas-chem'. The package must be installable via 'pip install -e .' with no dependency on Phase 1–4 source paths. It must include all Phase 5 fixes (duplicate-action MDP fix, ent_coef=0.01, REINFORCE training) baked directly into its source code. The public API mirrors Phase 4 (rlqas_chem.search(), rlqas_chem.Experiment, CLI), but the package is fully standalone.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Create rlqas-chem package scaffold",
+      "priority": 1,
+      "passes": false,
+      "description": "As a developer, I want a properly structured Python package skeleton for rlqas-chem, so that subsequent stories can fill in the implementation without needing to restructure.",
+      "fix": [
+        "Create the directory tree at ./rlqas-chem/ (relative to this CLAUDE.md):",
+        "  rlqas-chem/",
+        "  ├── pyproject.toml",
+        "  ├── README.md",
+        "  └── src/",
+        "      └── rlqas_chem/",
+        "          ├── __init__.py",
+        "          ├── molecule/  __init__.py",
+        "          ├── simulator/ __init__.py",
+        "          ├── rl/        __init__.py",
+        "          ├── search/",
+        "          │   ├── __init__.py",
+        "          │   ├── ucc/   __init__.py",
+        "          │   ├── hea/   __init__.py",
+        "          │   └── hybrid/__init__.py",
+        "          ├── experiment/__init__.py",
+        "          ├── api.py",
+        "          └── cli.py",
+        "pyproject.toml must declare: name='rlqas-chem', version='1.0.0', requires-python='>=3.9'",
+        "Dependencies: numpy, tencirchem, openfermion, torch, stable-baselines3, gymnasium, scipy, click",
+        "Entry point: rlqas-chem = rlqas_chem.cli:main",
+        "src/rlqas_chem/__init__.py: export search, Experiment, __version__='1.0.0'",
+        "Run: pip install -e ./rlqas-chem/ -q (this will fail since modules are empty stubs, but package must be importable)"
+      ],
+      "acceptanceCriteria": [
+        "cd rlqas-chem && pip install -e . -q succeeds",
+        "python3 -c \"import rlqas_chem; print(rlqas_chem.__version__)\" prints '1.0.0'",
+        "python3 -c \"from rlqas_chem import molecule, simulator, rl, search, experiment\" imports without error"
+      ],
+      "files": ["./rlqas-chem/"]
+    },
+    {
+      "id": "US-002",
+      "title": "Implement molecule and simulator modules",
+      "priority": 1,
+      "passes": false,
+      "description": "As a researcher, I want rlqas_chem.molecule and rlqas_chem.simulator to provide the same molecule processing and quantum simulation capabilities as Phase 1, so I can process any supported molecule and evaluate circuit energies.",
+      "fix": [
+        "Copy and adapt files from Phase 1 source (../../../Phase1/006/src/rlqas/phase1/):",
+        "  molecule/processor.py  → rlqas_chem/molecule/processor.py",
+        "  molecule/constants.py  → rlqas_chem/molecule/constants.py",
+        "  simulator/base.py      → rlqas_chem/simulator/base.py",
+        "  simulator/tencirchem.py→ rlqas_chem/simulator/tencirchem.py",
+        "  simulator/factory.py   → rlqas_chem/simulator/factory.py",
+        "  utils/transforms.py    → rlqas_chem/utils/transforms.py (create utils/ subpackage)",
+        "  utils/chemistry.py     → rlqas_chem/utils/chemistry.py",
+        "Change all internal imports from 'rlqas.phase1.X' to 'rlqas_chem.X'",
+        "Update rlqas_chem/molecule/__init__.py to export: process_molecule, MoleculeData",
+        "Update rlqas_chem/simulator/__init__.py to export: TencirchemCISimulator, SimulatorFactory"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.molecule import process_molecule, MoleculeData",
+        "mol = process_molecule('LiH', 1.6, 'UCC', active_space=(2,5))",
+        "assert mol.n_qubits == 10",
+        "from rlqas_chem.simulator import TencirchemCISimulator"
+      ],
+      "files": [
+        "../../../Phase1/006/src/rlqas/phase1/molecule/",
+        "../../../Phase1/006/src/rlqas/phase1/simulator/",
+        "../../../Phase1/006/src/rlqas/phase1/utils/",
+        "./rlqas-chem/src/rlqas_chem/molecule/",
+        "./rlqas-chem/src/rlqas_chem/simulator/"
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Implement RL agent modules (PPO, DQN, A2C, SAC-Discrete, factory)",
+      "priority": 1,
+      "passes": false,
+      "description": "As a researcher, I want rlqas_chem.rl to provide all RL agent implementations from Phase 1 and Phase 2, including the multi-agent factory, so any algorithm can be selected via a string name.",
+      "fix": [
+        "Copy from Phase 1 (../../../Phase1/006/src/rlqas/phase1/rl/):",
+        "  base_agent.py → rlqas_chem/rl/base_agent.py",
+        "  ppo_agent.py  → rlqas_chem/rl/ppo_agent.py",
+        "  config.py     → rlqas_chem/rl/config.py",
+        "Copy from Phase 2 (../../../Phase2/full/src/rlqas/phase2/rl/):",
+        "  dqn_agent.py         → rlqas_chem/rl/dqn_agent.py",
+        "  a2c_agent.py         → rlqas_chem/rl/a2c_agent.py",
+        "  sac_discrete_agent.py→ rlqas_chem/rl/sac_discrete_agent.py",
+        "  agent_factory.py     → rlqas_chem/rl/agent_factory.py",
+        "Change all internal imports to 'rlqas_chem.rl.X'",
+        "Update rlqas_chem/rl/__init__.py to export: RLAgent, PPOAgent, DQNAgent, A2CAgent, SACDiscreteAgent, AgentFactory, AgentConfig"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.rl import AgentFactory, PPOAgent, DQNAgent, A2CAgent, SACDiscreteAgent",
+        "from rlqas_chem.rl import AgentFactory; supported = AgentFactory.supported_agents(); assert 'ppo' in supported and 'dqn' in supported"
+      ],
+      "files": [
+        "../../../Phase1/006/src/rlqas/phase1/rl/",
+        "../../../Phase2/full/src/rlqas/phase2/rl/",
+        "./rlqas-chem/src/rlqas_chem/rl/"
+      ]
+    },
+    {
+      "id": "US-004",
+      "title": "Implement UCC search module with Phase 5 fixes baked in",
+      "priority": 1,
+      "passes": false,
+      "description": "As a researcher, I want rlqas_chem.search.ucc to provide PPO-based UCC circuit search with the Phase 5 MDP and entropy fixes already incorporated, so UCC search genuinely learns without requiring external patches.",
+      "fix": [
+        "Copy from Phase 1 (../../../Phase1/006/src/rlqas/phase1/search/):",
+        "  environment.py     → rlqas_chem/search/ucc/environment.py",
+        "  circuit_builder.py → rlqas_chem/search/ucc/circuit_builder.py",
+        "  reward_function.py → rlqas_chem/search/ucc/reward_function.py",
+        "  controller.py      → rlqas_chem/search/ucc/controller.py",
+        "  config.py          → rlqas_chem/search/ucc/config.py",
+        "Apply Phase 5 fix US-001 in environment.py: in UCCSearchEnv.step(), when action is already in self.selected_excitations, set terminated=True immediately with reward=-1.0 and return without incrementing step_count",
+        "Apply Phase 5 fix US-002 in controller.py: change ent_coef default from 0.0 to 0.01",
+        "Change all internal imports to 'rlqas_chem.X'",
+        "Update rlqas_chem/search/ucc/__init__.py to export: UCCSearchController, UCCSearchEnv, UCCSearchConfig"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.search.ucc import UCCSearchController, UCCSearchEnv",
+        "Duplicate-terminates-episode: env.step(0); obs,r,term,_,_ = env.step(0); assert term==True and r==-1.0",
+        "ent_coef default: controller source reads self.config.get('ent_coef', 0.01)"
+      ],
+      "files": [
+        "../../../Phase1/006/src/rlqas/phase1/search/",
+        "./rlqas-chem/src/rlqas_chem/search/ucc/"
+      ]
+    },
+    {
+      "id": "US-005",
+      "title": "Implement HEA search module",
+      "priority": 2,
+      "passes": false,
+      "description": "As a researcher, I want rlqas_chem.search.hea to provide Hardware-Efficient Ansatz (HEA) circuit search supporting all RL algorithms, so I can compare UCC and HEA approaches from the same package.",
+      "fix": [
+        "Copy from Phase 2 (../../../Phase2/full/src/rlqas/phase2/hea_search/):",
+        "  environment.py     → rlqas_chem/search/hea/environment.py",
+        "  circuit_builder.py → rlqas_chem/search/hea/circuit_builder.py",
+        "  controller.py      → rlqas_chem/search/hea/controller.py",
+        "  config.py          → rlqas_chem/search/hea/config.py",
+        "Change all internal imports to 'rlqas_chem.X'",
+        "Update rlqas_chem/search/hea/__init__.py to export: HEASearchController, HEASearchEnv"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.search.hea import HEASearchController, HEASearchEnv",
+        "python3 -c \"from rlqas_chem.molecule import process_molecule; from rlqas_chem.search.hea import HEASearchController; mol=process_molecule('H2',0.74,'HEA'); ctrl=HEASearchController(mol,config={}); print('HEA controller OK')\""
+      ],
+      "files": [
+        "../../../Phase2/full/src/rlqas/phase2/hea_search/",
+        "./rlqas-chem/src/rlqas_chem/search/hea/"
+      ]
+    },
+    {
+      "id": "US-006",
+      "title": "Implement Hybrid search module with Phase 5 REINFORCE fix baked in",
+      "priority": 2,
+      "passes": false,
+      "description": "As a researcher, I want rlqas_chem.search.hybrid to provide HEA-UCC hybrid circuit search with real RL policy gradient training (REINFORCE), so hybrid search genuinely learns over episodes.",
+      "fix": [
+        "Copy from Phase 3 (../../../Phase3/full/src/rlqas/phase3/hybrid_search/):",
+        "  environment.py     → rlqas_chem/search/hybrid/environment.py",
+        "  circuit_builder.py → rlqas_chem/search/hybrid/circuit_builder.py",
+        "  controller.py      → rlqas_chem/search/hybrid/controller.py",
+        "  config.py          → rlqas_chem/search/hybrid/config.py",
+        "  agent.py (or equivalent) → rlqas_chem/search/hybrid/agent.py",
+        "Apply Phase 5 fix US-004: ensure HybridSearchAgent.train(states, actions, rewards) implements REINFORCE:",
+        "  - Compute discounted returns G_t with gamma=0.99",
+        "  - Normalize returns",
+        "  - Compute policy gradient loss L = -sum G_t * log(pi(a_t|s_t))",
+        "  - Call loss.backward() and optimizer.step()",
+        "  - If no policy network exists, add a 2-layer MLP: Linear(obs_dim,64)->ReLU->Linear(64,n_actions)->Softmax",
+        "Change all internal imports to 'rlqas_chem.X'",
+        "Update rlqas_chem/search/hybrid/__init__.py to export: HybridSearchController, HybridSearchEnv, HybridFusionStrategy"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.search.hybrid import HybridSearchController, HybridFusionStrategy",
+        "HybridSearchAgent.train() must call optimizer.step() (not a no-op)",
+        "python3 -c \"from rlqas_chem.molecule import process_molecule; from rlqas_chem.search.hybrid import HybridSearchController; mol=process_molecule('H2',0.74,'HYBRID'); ctrl=HybridSearchController(mol,config={}); r=ctrl.search(n_episodes=20); print(f'Hybrid search OK: {r[\\\"best_energy\\\"]:.4f} Ha')\""
+      ],
+      "files": [
+        "../../../Phase3/full/src/rlqas/phase3/hybrid_search/",
+        "./rlqas-chem/src/rlqas_chem/search/hybrid/"
+      ]
+    },
+    {
+      "id": "US-007",
+      "title": "Implement unified top-level API and CLI",
+      "priority": 2,
+      "passes": false,
+      "description": "As a user, I want to call rlqas_chem.search() with a molecule name and get the best circuit energy back, and optionally use a CLI command 'rlqas-chem search', without needing to know about internal module structure.",
+      "fix": [
+        "Implement rlqas_chem/api.py with search() function:",
+        "  def search(molecule, bond_length, ansatz_type='UCC', agent_type='ppo', n_episodes=500,",
+        "             active_space=None, basis_set='sto-3g', transform='jordan_wigner',",
+        "             early_stop_threshold=1.6e-3, config=None) -> dict",
+        "  Routing logic (same as Phase 4):",
+        "    ansatz_type=='UCC' and agent_type=='ppo'  → UCCSearchController (search.ucc)",
+        "    ansatz_type=='HEA'                         → HEASearchController (search.hea)",
+        "    ansatz_type=='HYBRID'                      → HybridSearchController (search.hybrid)",
+        "    ansatz_type=='UCC' and other agents        → HybridSearchController with UCC mode",
+        "  Return dict: best_energy, fci_energy, energy_error_mha, chemical_accuracy (bool),",
+        "               n_operators, fusion_template, molecule, bond_length, ansatz_type,",
+        "               agent_type, n_episodes_run, n_qubits",
+        "Implement Experiment class in rlqas_chem/experiment/manager.py:",
+        "  __init__(molecule_config, search_config, rl_config)",
+        "  run() -> dict",
+        "  save(path: str)",
+        "Implement rlqas_chem/cli.py using Click:",
+        "  rlqas-chem search --molecule LiH --bond-length 1.6 --ansatz UCC --agent ppo --episodes 300",
+        "  rlqas-chem experiment --config experiment.yaml",
+        "Update rlqas_chem/__init__.py: from .api import search; from .experiment.manager import Experiment; __version__='1.0.0'"
+      ],
+      "acceptanceCriteria": [
+        "import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=50)",
+        "assert 'best_energy' in r and 'energy_error_mha' in r and 'chemical_accuracy' in r",
+        "rlqas-chem search --molecule H2 --bond-length 0.74 --ansatz UCC --agent ppo --episodes 20 (exits 0)"
+      ],
+      "files": [
+        "./rlqas-chem/src/rlqas_chem/api.py",
+        "./rlqas-chem/src/rlqas_chem/cli.py",
+        "./rlqas-chem/src/rlqas_chem/experiment/manager.py",
+        "./rlqas-chem/src/rlqas_chem/__init__.py"
+      ]
+    },
+    {
+      "id": "US-008",
+      "title": "Tests, examples, and LiH benchmark validation",
+      "priority": 3,
+      "passes": false,
+      "description": "As a developer, I want a comprehensive test suite and usage examples for rlqas-chem, and I want the LiH benchmark (300 episodes, UCC+PPO, active_space=(2,5)) to pass chemical accuracy, confirming the Phase 5 fixes are correctly baked in.",
+      "fix": [
+        "Create rlqas-chem/tests/ with pytest test files:",
+        "  test_molecule.py: test process_molecule for H2, LiH, BeH2",
+        "  test_ucc_env.py: test duplicate-terminates-episode (Phase5 US-001 fix)",
+        "  test_api.py: test rlqas_chem.search() returns correct keys, H2 energy < -1.0 Ha",
+        "  test_cli.py: test CLI with subprocess or Click test runner",
+        "Create rlqas-chem/examples/:",
+        "  01_ucc_lih.py: LiH UCC PPO active_space=(2,5) 300 episodes",
+        "  02_hea_h2.py: H2 HEA PPO 100 episodes",
+        "  03_hybrid_h2.py: H2 HYBRID PPO 100 episodes",
+        "  04_multi_agent.py: H2 UCC comparison PPO vs DQN",
+        "Run LiH benchmark: rlqas_chem.search('LiH', 1.6, ansatz_type='UCC', agent_type='ppo', active_space=(2,5), n_episodes=300)",
+        "Assert energy_error_mha < 1.6"
+      ],
+      "acceptanceCriteria": [
+        "cd rlqas-chem && python3 -m pytest tests/ -x -q: all tests pass",
+        "rlqas_chem.search('LiH', 1.6, ansatz_type='UCC', agent_type='ppo', active_space=(2,5), n_episodes=300) returns energy_error_mha < 1.6",
+        "examples/01_ucc_lih.py runs to completion without error"
+      ],
+      "files": [
+        "./rlqas-chem/tests/",
+        "./rlqas-chem/examples/"
+      ]
+    }
+  ]
+}

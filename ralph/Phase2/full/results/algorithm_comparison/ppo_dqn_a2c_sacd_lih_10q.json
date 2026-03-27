@@ -1,0 +1,71 @@
+{
+  "WARNING": "This file contains results from a buggy implementation. See honest_ppo_dqn_a2c_sacd_lih_10q.json for correct results.",
+  "superseded_by": "honest_ppo_dqn_a2c_sacd_lih_10q.json",
+  "ppo": {
+    "best_energy": -7.882096595844979,
+    "fci_energy": -7.882096599918956,
+    "energy_error_ha": 4.0739767115383074e-09,
+    "energy_error_mha": 4.0739767115383074e-06,
+    "chemical_accuracy_reached": true,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        6,
+        5
+      ]
+    ],
+    "operator_count": 1
+  },
+  "dqn": {
+    "best_energy": -7.882096595845373,
+    "fci_energy": -7.882096599918956,
+    "energy_error_ha": 4.07358324849838e-09,
+    "energy_error_mha": 4.07358324849838e-06,
+    "chemical_accuracy_reached": true,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        4,
+        0
+      ]
+    ],
+    "operator_count": 1
+  },
+  "a2c": {
+    "best_energy": -7.882096595843897,
+    "fci_energy": -7.882096599918956,
+    "energy_error_ha": 4.075059401031922e-09,
+    "energy_error_mha": 4.075059401031922e-06,
+    "chemical_accuracy_reached": true,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        1,
+        6,
+        5,
+        0
+      ]
+    ],
+    "operator_count": 1
+  },
+  "sac_discrete": {
+    "best_energy": -7.88209659584423,
+    "fci_energy": -7.882096599918956,
+    "energy_error_ha": 4.074726334124534e-09,
+    "energy_error_mha": 4.074726334124534e-06,
+    "chemical_accuracy_reached": true,
+    "episodes_to_convergence": null,
+    "best_operators": [
+      [
+        3,
+        0
+      ]
+    ],
+    "operator_count": 1
+  },
+  "winner": {
+    "agent_type": "ppo",
+    "reason": "Chemical accuracy reached with 1 operators (error=0.0000 mHa)",
+    "operator_count": 1
+  }
+}

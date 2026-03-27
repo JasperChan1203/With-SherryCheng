@@ -308,6 +308,40 @@ class HEACircuitBuilder:
             self.build()
         return self._parameters.copy()
 
+    def to_tensorcircuit(self) -> "tc.Circuit":
+        """Convert built circuit dict to tensorcircuit.Circuit for simulation.
+
+        Must call build() before calling this method.
+
+        Returns:
+            tensorcircuit.Circuit with all gates applied
+        """
+        import tensorcircuit as tc
+
+        if not self._layers:
+            self.build()
+
+        c = tc.Circuit(self.n_qubits)
+
+        for layer in self._layers:
+            # Apply rotation gates
+            for gate in layer["rotation_gates"]:
+                qubit = gate["qubit"]
+                angle = gate["parameter"]
+                gate_type = gate["type"]
+                if gate_type == "rx":
+                    c.rx(qubit, theta=angle)
+                elif gate_type == "ry":
+                    c.ry(qubit, theta=angle)
+                elif gate_type == "rz":
+                    c.rz(qubit, theta=angle)
+
+            # Apply entanglement (CNOT) gates
+            for gate in layer["entanglement_gates"]:
+                c.cnot(gate["control"], gate["target"])
+
+        return c
+
 
 def create_hea_circuit(
     n_qubits: int,

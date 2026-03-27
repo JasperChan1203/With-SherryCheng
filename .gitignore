@@ -1,6 +1,12 @@
 # Internal branch tracking files
 .last-branch
 
+# ML checkpoints and model binaries
+*.pkl
+*.pt
+*.pth
+checkpoints/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

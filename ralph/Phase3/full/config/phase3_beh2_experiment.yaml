@@ -1,0 +1,47 @@
+# Phase 3 BeH2 hybrid architecture search experiment
+# Experiment type: hybrid_search (Phase 3 HEA+UCC ansatz)
+name: "phase3_beh2_hybrid"
+type: "hybrid_search"
+
+experiment:
+  name: "phase3_beh2_hybrid"
+  description: "BeH2 hybrid architecture search - Phase 3 integration"
+
+molecule:
+  formula: "BeH2"
+  bond_length: 1.3
+  active_space: [4, 4]
+  basis_set: "sto-3g"
+  transform: "jordan_wigner"
+
+search:
+  ansatz_type: "HYBRID"
+  max_depth: 15
+  max_blocks: 6
+  fusion_mode: "sequential"
+  encoding_method: "matrix"
+
+rl:
+  agent_type: "ppo"
+  n_episodes: 500
+
+simulation:
+  engine: "ci_vector"
+  precision: 1.0e-8
+  max_memory_gb: 32
+  use_batch_evaluator: true
+  batch_size: 16
+
+evaluation:
+  n_repeats: 3
+  metrics_to_collect:
+    - "energy_error"
+    - "circuit_depth"
+    - "n_blocks"
+    - "fusion_template"
+    - "training_time"
+
+output:
+  directory: "./results/phase3_integration/beh2_hybrid"
+  save_circuits: true
+  save_training_logs: true

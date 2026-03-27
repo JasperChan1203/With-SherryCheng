@@ -1,0 +1,31 @@
+{
+  "ppo": {
+    "molecule": "BeH2",
+    "active_space": [
+      4,
+      4
+    ],
+    "n_qubits": 8,
+    "agent": "ppo",
+    "best_energy": -15.567158221514497,
+    "fci_energy": -15.567233454427333,
+    "energy_error_mha": 0.07523291283639821,
+    "chemical_accuracy_reached": true,
+    "n_episodes": 12
+  },
+  "dqn": {
+    "molecule": "BeH2",
+    "active_space": [
+      4,
+      4
+    ],
+    "n_qubits": 8,
+    "agent": "dqn",
+    "best_energy": -15.567158221514491,
+    "fci_energy": -15.567233454427333,
+    "energy_error_mha": 0.07523291284172728,
+    "chemical_accuracy_reached": true,
+    "n_episodes": 11
+  },
+  "notes": "Both PPO and DQN on BeH2 (4,4) 8q hybrid search"
+}

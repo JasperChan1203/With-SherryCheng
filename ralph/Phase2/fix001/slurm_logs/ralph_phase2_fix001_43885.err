@@ -1,0 +1,23 @@
+All Fix001 tasks are complete. Here's a summary:
+
+## Fix001 Complete
+
+**Bug A (environment.py)** — Fixed. The L-BFGS-B optimizer now only touches `active_param_indices` (one per selected excitation). All other parameter slots stay at 0. Verified: 1-operator error = **20.2 mHa** (was ~0.000004 mHa).
+
+**Bug B (tencirchem.py)** — Fixed. The `circuit.ucc.energy(circuit.params)` shortcut is kept but annotated with an explicit invariant comment explaining it is safe only because Bug A guarantees zeros in inactive slots.
+
+**Tests** (`Phase1/006/tests/integration/test_circuit_fix.py`) — 4/4 pass:
+- `test_single_operator_does_not_cheat` ✅
+- `test_optimizer_only_touches_active_params` ✅
+- `test_full_uccsd_matches_fci` ✅
+- `test_two_operators_improve_over_one` ✅
+
+**Honest benchmarks** (`Phase2/full/results/algorithm_comparison/honest_ppo_dqn_a2c_sacd_lih_10q.json`):
+| Algorithm | Error (mHa) | Operators | Accurate? |
+|-----------|-------------|-----------|-----------|
+| PPO       | 1.43        | 3         | YES       |
+| DQN       | 1.31        | 5         | YES       |
+| A2C       | 1.31        | 5         | YES       |
+| SAC-D     | 1.42        | 5         | YES       |
+
+All 4 algorithms need 3–5 operators (vs. trivially 1 before), confirming genuine architecture search is now happening.

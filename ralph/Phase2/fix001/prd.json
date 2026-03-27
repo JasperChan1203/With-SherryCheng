@@ -1,0 +1,152 @@
+{
+  "project": "RLQAS Phase 2 Fix001: Correct Partial-Circuit Architecture Search",
+  "version": "1.0",
+  "branchName": "ralph/Phase2/fix001",
+  "description": "Fix a critical bug in UCCSearchEnv where the RL agent's excitation-operator selection has no effect on the reported energy. All agents currently receive near-FCI energy after their first action regardless of which operator they choose, because (a) the classical optimizer inside step() is free to vary ALL UCCSD parameters, not just those corresponding to the selected operators, and (b) the circuit returned by build_circuit() always carries the full UCCSD object so the simulator bypasses the partial circuit. Fix these two bugs, re-validate that genuine architecture-search benchmarks (where the agent must discover good operators to achieve chemical accuracy) still pass, and generate honest benchmark results comparing PPO/DQN/A2C/SAC-Discrete on LiH.",
+
+  "phaseDependencies": {
+    "phase1": "RLQAS_Phase1_006 (Integrated package) — Phase 1 environment code is the primary target of the fix",
+    "phase2_full": "RLQAS_Phase2_full — all six Phase 2 tasks are complete; this fix corrects the evaluation logic without restructuring them"
+  },
+
+  "background": {
+    "summary": "Two interlocking bugs make UCCSearchEnv report full-UCCSD energy regardless of agent actions.",
+    "bug_A": {
+      "location": "Phase1/006/src/rlqas/phase1/search/environment.py — UCCSearchEnv.step()",
+      "lines": "run_classical_opt block (~line 120-135)",
+      "description": "When run_classical_opt=True, the code minimizes energy_func(p) = circuit_builder.evaluate_energy(build_circuit(selected_ops, p), p). Both build_circuit and evaluate_energy internally call self.ucc.energy(params), which evaluates the FULL UCCSD ansatz over ALL n_params parameters. The optimizer (L-BFGS-B) is free to vary every element of p — including those for operators the RL agent has NOT selected. Starting from all-zeros, it converges to the full-UCCSD minimum, achieving near-FCI accuracy regardless of the agent's choice.",
+      "correct_behavior": "The optimizer must only vary parameters for the excitation operators currently in self.current_excitations. All other parameters must be held at zero. This way the objective being minimized is the VQE energy of the partial circuit (only the selected operators), not the full UCCSD."
+    },
+    "bug_B": {
+      "location": "Phase1/006/src/rlqas/phase1/simulator/tencirchem.py — TencirchemCISimulator.compute_energy()",
+      "lines": "shortcut block at top of compute_energy (~line 70-78)",
+      "description": "build_circuit() attaches circuit.ucc = self.ucc and circuit.params = params to every circuit object. compute_energy() detects these attributes and returns circuit.ucc.energy(circuit.params) — the full UCCSD energy with whatever params are stored on the circuit object. Because bug A has already placed full-UCCSD-optimal params on the circuit, this shortcut compounds the error. Even if bug A is fixed, this shortcut could silently reintroduce full-UCCSD evaluation if circuit.params is not masked properly.",
+      "correct_behavior": "compute_energy() must NOT use the circuit.ucc shortcut. It should evaluate the energy of the actual circuit that was constructed, which represents only the selected operators with their optimized (partial) parameters."
+    },
+    "consequence": "Every RL agent (PPO, DQN, A2C, SAC-Discrete) reports operator_count=1 and energy_error≈4e-9 Ha — well below FCI — after picking any single operator. The benchmark in results/algorithm_comparison/ppo_dqn_a2c_sacd_lih_10q.json is therefore meaningless: the agents are not doing architecture search."
+  },
+
+  "objectives": [
+    {
+      "id": "fix-bug-A-partial-optimization",
+      "description": "Fix the classical optimizer in UCCSearchEnv.step() to optimize only the active parameters",
+      "priority": "critical",
+      "file": "Phase1/006/src/rlqas/phase1/search/environment.py",
+      "acceptance_criteria": [
+        "When run_classical_opt=True, identify active_param_indices = unique set of parameter indices for operators in self.current_excitations (use self.excitation_to_param_idx)",
+        "Define energy_func_partial(theta) where theta has length len(active_param_indices); construct full-length params p = self.current_params.copy() then set p[active_param_indices[i]] = theta[i]; return circuit_builder.evaluate_energy(None, p)",
+        "Pass x0 = [self.current_params[idx] for idx in active_param_indices] as the initial point to minimize()",
+        "After optimization, write result.x back ONLY into self.current_params[active_param_indices], leaving all other positions unchanged (= 0)",
+        "Build the final circuit with the updated self.current_params before calling simulator.compute_energy()",
+        "Unit test: with a 1-operator circuit and run_classical_opt=True, the optimizer must only vary 1 parameter; other params in self.current_params must remain 0 after the step"
+      ]
+    },
+    {
+      "id": "fix-bug-B-simulator-shortcut",
+      "description": "Remove or bypass the circuit.ucc shortcut in TencirchemCISimulator.compute_energy()",
+      "priority": "critical",
+      "file": "Phase1/006/src/rlqas/phase1/simulator/tencirchem.py",
+      "acceptance_criteria": [
+        "Delete or disable the early-return block that calls circuit.ucc.energy(circuit.params) when hasattr(circuit, 'ucc')",
+        "compute_energy() must evaluate the energy using the actual circuit object that represents the selected operators, OR call ucc.energy(params) where params is the properly masked partial-params vector (zeros for non-selected operators)",
+        "The preferred implementation: compute_energy() should call circuit.ucc.energy(circuit.params) ONLY if circuit.params is guaranteed to have zeros for non-active operators — ensure this invariant is documented and tested",
+        "Unit test: create a circuit object manually with ucc attached and full-UCCSD-optimal params; compute_energy() must NOT return the full-UCCSD energy; it must instead evaluate only the operators encoded in the circuit's partial params"
+      ]
+    },
+    {
+      "id": "verify-partial-circuit-energy",
+      "description": "Verify that ucc.energy(partial_params) correctly computes energy for the selected-operator sub-circuit",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Write a unit test that directly calls ucc.energy(p) for LiH active_space=(2,5) with p having only ONE non-zero entry (the most important doubles operator, typically the HOMO-LUMO doubles)",
+        "Assert that the 1-operator VQE energy (optimized over that single parameter only) is better than HF but NOT at chemical accuracy (energy_error > 1.6e-3 Ha is expected for a single operator)",
+        "Write a second test with ALL parameters free (full UCCSD) and assert energy_error < 1.6e-3 Ha",
+        "This pair of tests documents the physical expectation: 1 operator alone is not sufficient; the RL agent must find a good sequence of operators"
+      ]
+    },
+    {
+      "id": "rerun-benchmarks-honest",
+      "description": "Re-run the multi-algorithm benchmark with the corrected environment and save honest results",
+      "priority": "high",
+      "acceptance_criteria": [
+        "Re-run ExplorationFramework.run_benchmarks() for PPO, DQN, A2C, SAC-Discrete on LiH active_space=(2,5) with n_episodes >= 500",
+        "Use run_classical_opt=True (this is still a valid config — partial-circuit VQE per step is the correct use), complexity_penalty=0.0, param_init_strategy='zeros', max_depth=10",
+        "Each agent must now genuinely search for a good operator sequence; the agent cannot trivially reach FCI with 1 operator",
+        "Record for each algorithm: best_energy, fci_energy, energy_error_ha, chemical_accuracy_reached, operator_count, best_operators",
+        "Save results to results/algorithm_comparison/honest_ppo_dqn_a2c_sacd_lih_10q.json",
+        "The benchmark is VALID even if not all algorithms reach chemical accuracy — report what was actually achieved",
+        "The winner is the algorithm reaching chemical accuracy with fewest operators; if none reach it, report the algorithm with lowest energy_error"
+      ]
+    },
+    {
+      "id": "update-integration-tests",
+      "description": "Update Phase 2 integration tests to work correctly with the fixed environment",
+      "priority": "high",
+      "acceptance_criteria": [
+        "tests/integration/test_lih_molecule.py: test_lih_10q_chemical_accuracy_with_full_training must still pass — but now the agent must genuinely find a good circuit (the test may need more episodes or a higher max_depth)",
+        "tests/integration/test_multi_algorithm.py: test_four_way_comparison_lih_10q must now use the honest benchmark; it is acceptable (and expected) that some algorithms may need more than 1 operator",
+        "Add a new test: test_single_operator_does_not_cheat — creates UCCSearchEnv with run_classical_opt=True, takes exactly 1 step with any action, and asserts energy_error > 1.6e-3 Ha (confirms bug A and B are fixed)",
+        "Add a new test: test_optimizer_only_touches_active_params — after one step, verify that self.current_params has exactly 1 non-zero entry (the active operator's parameter)",
+        "All existing unit tests must continue to pass (no regressions)"
+      ]
+    },
+    {
+      "id": "update-exploration-framework",
+      "description": "Update ExplorationFramework to remove the post-training _eval_episodes workaround that was introduced to compensate for the bug",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "In run_benchmarks(), the post-training _eval_episodes phase is optional and should NOT be the primary source of chemical accuracy — genuine training should discover the circuit",
+        "The _eval_episodes fallback may remain as a secondary sweep but should not use run_classical_opt=True on a fresh eval_env that triggers full UCCSD on the first step",
+        "Ensure run_benchmarks() reports the best energy found during genuine training (not just eval phase)",
+        "Update results/algorithm_comparison/ppo_dqn_a2c_sacd_lih_10q.json to point users to the honest results file or replace it with the honest results"
+      ]
+    },
+    {
+      "id": "document-findings",
+      "description": "Document the bug, root cause, fix, and honest benchmark results in progress.txt",
+      "priority": "medium",
+      "acceptance_criteria": [
+        "Add a section to progress.txt: 'Fix001: Bug Report and Resolution'",
+        "Include: root cause of bug A (unconstrained optimizer), root cause of bug B (simulator shortcut), code locations (file:line), what changed, and before/after energy comparison",
+        "Include the honest benchmark table showing the real operator counts and energies after the fix",
+        "Note whether LiH active_space=(2,5) can be solved to chemical accuracy by the RL agents with the corrected environment, and how many operators each algorithm typically requires"
+      ]
+    }
+  ],
+
+  "technicalSpecifications": {
+    "keyFiles": {
+      "bug_A": "Phase1/006/src/rlqas/phase1/search/environment.py",
+      "bug_B": "Phase1/006/src/rlqas/phase1/simulator/tencirchem.py",
+      "exploration_framework": "Phase2/full/src/rlqas/phase2/adaptation/exploration_framework.py",
+      "integration_tests": "Phase2/full/tests/integration/",
+      "results_output": "Phase2/full/results/algorithm_comparison/"
+    },
+    "howTencirchemWorksForPartialCircuits": {
+      "explanation": "tencirchem.UCCSD.energy(params) evaluates exp(T(params) - T†(params))|HF⟩ where T(params) = sum_i params[i] * T_i. If params[j] = 0 for operator j, then operator j contributes nothing to the circuit. Therefore, calling ucc.energy(partial_params) where partial_params[j]=0 for all non-selected operators IS the correct and efficient way to evaluate the energy of the partial circuit. No new UCCSD object needs to be created.",
+      "implication": "Both evaluate_energy(circuit, params) = ucc.energy(params) and compute_energy shortcut are physically correct IF AND ONLY IF params has zeros for non-selected operators at the time of the call. The entire fix therefore reduces to: ensure the optimizer never writes non-zero values into the inactive parameter slots."
+    },
+    "fixSummary": {
+      "step1": "In environment.step(), extract active_param_indices from self.active_parameters (or from self.excitation_to_param_idx for self.current_excitations). Only optimize these indices.",
+      "step2": "The energy function passed to minimize() should: copy self.current_params, overwrite only active slots with theta, call circuit_builder.evaluate_energy(None, p).",
+      "step3": "After minimize(), copy result.x back into self.current_params[active_param_indices] only.",
+      "step4": "In compute_energy(), either (a) remove the hasattr(circuit,'ucc') shortcut entirely, or (b) keep it but add an assertion that circuit.params has zeros at non-active indices — document this invariant clearly.",
+      "step5": "No changes needed to evaluate_energy itself — ucc.energy(partial_params) is correct."
+    },
+    "testingStrategy": {
+      "unit_tests": [
+        "test_partial_optimizer_respects_active_mask: after 1 step with run_classical_opt=True, assert params for non-active operators == 0",
+        "test_single_operator_energy_not_at_chemical_accuracy: 1 operator VQE energy_error > 1.6e-3 Ha",
+        "test_full_uccsd_energy_at_chemical_accuracy: full UCCSD energy_error < 1.6e-3 Ha (sanity check)"
+      ],
+      "integration_tests": [
+        "test_single_operator_does_not_cheat: 1 step → energy_error > 1.6e-3 Ha",
+        "test_lih_10q_chemical_accuracy_with_full_training: may need n_episodes >= 2000, max_depth >= 6 to reach chemical accuracy with corrected env",
+        "test_honest_multi_algorithm_comparison: compare PPO/DQN/A2C/SAC-Discrete, report actual results"
+      ]
+    },
+    "physicalExpectation": {
+      "note": "For LiH active_space=(2,5) STO-3G, UCCSD = FCI because there are only 2 correlated electrons. The dominant correlation is a doubles excitation (HOMO→LUMO pair). With the corrected environment, the RL agent should discover that 1 correctly-chosen doubles excitation (with its parameter optimized) may actually achieve chemical accuracy for this specific small molecule. However, a randomly chosen single excitation (orbital-diagonal) will NOT reach chemical accuracy. The test of the fix is: does the ENERGY DEPEND ON WHICH OPERATOR IS SELECTED? After the fix, it must."
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "molecule": "H2",
+  "n_episodes": 30,
+  "seed": 42,
+  "best_energy": {
+    "matrix": -1.1372838344885023,
+    "sparse": -1.1372838344885023,
+    "one_hot": -1.1372838344885023
+  },
+  "agreement_within_1e6": true
+}

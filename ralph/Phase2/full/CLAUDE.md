@@ -2,6 +2,174 @@
 
 You are Ralph, an autonomous AI agent that implements software projects based on a PRD (Project Requirements Document).
 
+## PHASE 7: TASK 005 AUTONOMOUS ALGORITHM EXPLORATION (CURRENT ACTIVE TASK — READ FIRST)
+
+### Status of Previous Phases
+
+**Phases 0–6 are COMPLETE. Do NOT re-implement any of them.**
+
+Read `progress.txt` to confirm. If a phase is marked COMPLETE there, skip it entirely.
+
+| Phase | Task | Status |
+|-------|------|--------|
+| Phase 0 | Task 001: DQN + AgentFactory | ✅ COMPLETE |
+| Phase 1 | Task 002: Sequential Testing Framework | ✅ COMPLETE |
+| Phase 2 | Task 003: HEA Search Module (real energy) | ✅ COMPLETE |
+| Phase 3 | Task 004: Experiment Management System | ✅ COMPLETE |
+| Phase 4 | Task 005: Adaptation Framework (scaffold only) | ⚠️ INCOMPLETE — see below |
+| Phase 5 | Task 006: Integration Tests | ✅ COMPLETE |
+| Phase 6 | Fix A (LiH config) + Fix B (HEA real energy) | ✅ COMPLETE |
+
+### What Is Still Missing
+
+The current `ExplorationFramework` only registers algorithms with hardcoded string metadata and scores them without any real training. This is a hollow implementation that does not constitute genuine algorithm exploration.
+
+**Your mission: autonomously research, select, implement, and compare frontier RL algorithms on the quantum architecture search problem. You decide which algorithms to implement — we only specify the problem constraints and outcome requirements.**
+
+---
+
+### The Problem You Are Solving
+
+The RLQAS task has these properties — use them to guide your algorithm selection:
+
+- **Discrete action space**: at each step, the agent selects one excitation operator from a fixed set (10–50 options depending on molecule)
+- **Sparse rewards**: meaningful reward only occurs when the selected operator reduces molecular energy
+- **Sequential decisions**: the agent builds a circuit incrementally; order matters; each choice affects future options
+- **Variable episode length**: episodes end when chemical accuracy is reached or max depth (10 operators) is hit
+- **No invalid action masking by default**: all operators are always available (though some may be redundant)
+
+### Your Research Mission (Autonomous)
+
+**Step 1 — Survey available libraries**
+
+Run the following to discover what is installed:
+```python
+import stable_baselines3; print(dir(stable_baselines3))
+try:
+    import sb3_contrib; print(dir(sb3_contrib))
+except ImportError:
+    print("sb3_contrib not installed")
+```
+
+Also check what custom implementations are feasible given the installed packages (torch, numpy, gymnasium).
+
+**Step 2 — Select at least 2 frontier algorithms**
+
+Choose algorithms that you believe are well-suited to the problem properties above. At least one should be from **2020 or later**, but you are free to also include mature baselines (e.g. A2C, SAC-Discrete) if you judge them useful for comparison. Consider:
+
+- Algorithms that handle **sparse rewards** better than standard PPO/DQN
+- Algorithms with better **sample efficiency** for expensive environments (each energy eval calls a quantum chemistry solver)
+- Algorithms that exploit **discrete action structure** more effectively
+- Algorithms with **improved exploration** strategies
+
+Document your reasoning in `progress.txt` under a "Algorithm Selection Rationale" heading:
+- List every algorithm you considered
+- Explain why you chose the ones you implemented
+- Explain why you rejected the others (too complex to implement, wrong action space type, already covered by PPO/DQN, etc.)
+
+**Step 3 — Implement each chosen algorithm**
+
+For each algorithm, create a new agent class in `src/rlqas/phase2/rl/` that:
+- Inherits from `RLAgent` (see `../../Phase1/006/src/rlqas/phase1/rl/base_agent.py`)
+- Implements `act()`, `learn()`, `save()`, `load()`, `get_config()`
+- Is registered in `AgentFactory._AGENT_REGISTRY` with a short string key
+- Is exported from `src/rlqas/phase2/rl/__init__.py`
+- Follows the same patterns as the existing `DQNAgent` in `src/rlqas/phase2/rl/dqn_agent.py`
+
+You may use SB3/sb3_contrib wrappers, or write custom implementations using PyTorch.
+
+**Step 4 — Add `run_benchmarks()` to `ExplorationFramework`**
+
+Replace the string-scoring `compare_algorithms()` with a method that runs real training:
+
+```python
+def run_benchmarks(
+    self,
+    molecule_data,               # MoleculeData from process_molecule()
+    n_episodes: int = 100,
+    env_config: Optional[Dict] = None,
+    agent_types: Optional[List[str]] = None,  # defaults to all registered
+) -> Dict[str, Any]:
+    """Train each agent type on UCCSearchEnv and return real metrics.
+
+    Returns dict mapping agent_type -> {
+        best_energy: float,
+        fci_energy: float,
+        energy_error_ha: float,
+        energy_error_mha: float,
+        chemical_accuracy_reached: bool,
+        episodes_to_convergence: int or None,
+        best_operators: list,
+        operator_count: int,
+        energy_history: list[float],
+    }
+    Plus "winner" key (algorithm reaching chemical accuracy with fewest operators)
+    and "summary" key (human-readable comparison table string).
+    """
+```
+
+Use this env config baseline for all benchmark runs (ensures fair comparison):
+```python
+base_env_config = {
+    "complexity_penalty": 0.0,
+    "param_init_strategy": "zeros",
+    "max_depth": 10,
+    "run_classical_opt": True,
+}
+```
+
+The winner is the algorithm that reaches chemical accuracy (`energy_error < 1.6e-3 Ha`) using the **fewest excitation operators**. If none reach chemical accuracy, the winner is the one with the lowest energy error.
+
+**Step 5 — Write integration tests**
+
+In `tests/integration/test_multi_algorithm.py`, add a test class for your exploration results. Tests must verify:
+1. Each new agent type trains without errors and returns `best_energy < -7.0 Ha` (below Hartree-Fock for LiH)
+2. `run_benchmarks()` returns real numeric metrics (not string scores)
+3. A full comparison of **PPO, DQN, and all your new algorithms** on LiH `active_space=(2,5)` 10-qubit, where at least one algorithm reaches chemical accuracy
+
+---
+
+### Interface Constraints (Non-Negotiable)
+
+These are the only constraints on your implementation — everything else is your choice:
+
+1. **All new agents must inherit from `RLAgent`** — the base class is at `../../Phase1/006/src/rlqas/phase1/rl/base_agent.py`. Do not change this interface.
+2. **All agents must work with `UCCSearchController`** — the controller creates a `UCCSearchEnv` (Gymnasium discrete) and calls `agent.learn()`. Your agent must be compatible with Gymnasium discrete action spaces.
+3. **`AgentFactory` must remain backward-compatible** — existing `"ppo"` and `"dqn"` keys must continue to work.
+4. **Do not modify Phase 1 source code.**
+
+---
+
+### Acceptance Criteria for Phase 7
+
+- [ ] At least 2 new RL algorithms implemented (beyond existing PPO and DQN), with agent classes in `src/rlqas/phase2/rl/`
+- [ ] "Algorithm Selection Rationale" written in `progress.txt` explaining why these algorithms were chosen and what alternatives were rejected
+- [ ] All new agent types registered in `AgentFactory._AGENT_REGISTRY`
+- [ ] `ExplorationFramework.run_benchmarks()` implemented and runs real training
+- [ ] Integration test: each new agent trains on LiH UCCSearchEnv, `best_energy < -7.0 Ha`
+- [ ] Integration test: `run_benchmarks()` returns real metrics (`best_energy`, `energy_error_ha`, `operator_count`, `chemical_accuracy_reached`)
+- [ ] Integration test: full multi-algorithm comparison (PPO + DQN + all new algorithms) on LiH `active_space=(2,5)`, at least one algorithm reaches chemical accuracy
+- [ ] Comparison results saved to `results/algorithm_comparison/`
+- [ ] `progress.txt` updated with benchmark comparison table
+
+### Files to Create/Modify
+
+```
+src/rlqas/phase2/rl/<algo>_agent.py          # NEW: one file per new algorithm
+src/rlqas/phase2/rl/agent_factory.py         # MODIFY: register new agent types
+src/rlqas/phase2/rl/__init__.py              # MODIFY: export new agent classes
+src/rlqas/phase2/adaptation/exploration_framework.py  # MODIFY: add run_benchmarks()
+tests/integration/test_multi_algorithm.py    # MODIFY: add new algorithm tests
+results/algorithm_comparison/                # NEW: benchmark output JSON
+progress.txt                                 # UPDATE: rationale + results
+```
+
+**Do NOT modify Phase 1 source code. Do NOT re-implement Tasks 001–006.**
+
+---
+
+---
+
 ## CRITICAL WARNINGS (Read Before Starting)
 
 ### Warning 1: LiH Molecule Active Space Convention
@@ -309,12 +477,15 @@ When RLQAS requires parity transformation but Tencirchem's UCC doesn't support i
 4. **Caching**: Store adapter in capability registry for future use
 
 ### Acceptance Criteria
-- [ ] RL Algorithm Exploration Framework is fully implemented and documented
+- [ ] `A2CAgent` class implemented in `src/rlqas/phase2/rl/a2c_agent.py` with full `RLAgent` interface
+- [ ] `AgentFactory` supports `"a2c"` in addition to `"ppo"` and `"dqn"`
+- [ ] `ExplorationFramework.run_benchmarks()` runs actual training and returns real metrics (not string scores)
+- [ ] Benchmark results include `best_energy`, `energy_error_ha`, `operator_count`, `chemical_accuracy_reached` per algorithm
+- [ ] Integration test `test_three_way_comparison_lih_10q` passes (at least one algorithm reaches chemical accuracy)
 - [ ] Capability detection system identifies missing functionality in external dependencies
 - [ ] Dynamic implementation framework generates missing features with templates
 - [ ] Adaptive execution flow operates seamlessly at runtime
 - [ ] Capability registry maintains records of implemented features
-- [ ] Tencirchem parity adapter example demonstrates full lifecycle
 - [ ] All adaptation components achieve >90% code coverage
 
 ### Files to Create
@@ -521,5 +692,9 @@ When ALL phases are complete and ALL acceptance criteria are met:
 - [ ] LiH tests use `active_space=(2, 6)` for 12 qubits (NOT `(4,6)`)
 - [ ] All LiH integration tests contain `assert energy_error < 1.6e-3` (hard failure, not just logging)
 - [ ] pytest run output shows these LiH tests as PASSED (meaning chemical accuracy was actually achieved)
+- [ ] At least 2 new RL algorithms implemented (beyond existing PPO and DQN); at least one from 2020+, mature baselines also allowed
+- [ ] Algorithm selection rationale written in `progress.txt`
+- [ ] `ExplorationFramework.run_benchmarks()` runs real training (not string scoring)
+- [ ] Full multi-algorithm comparison on LiH with at least one algorithm reaching chemical accuracy
 
 **Remember**: You are implementing the ENTIRE Phase 2 in a single development session. Follow the phase order, maintain quality standards, and build upon existing foundations.

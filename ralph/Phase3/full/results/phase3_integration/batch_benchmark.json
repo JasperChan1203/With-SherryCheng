@@ -1,0 +1,11 @@
+{
+  "speedup": 7.348702284095805,
+  "batch_throughput_circuits_per_s": 1170.3964549933833,
+  "sequential_throughput_circuits_per_s": 159.26573287999113,
+  "batch_time_s": 0.04101174417883158,
+  "sequential_time_s": 0.3013830981217325,
+  "n_circuits": 16,
+  "molecule": "H2",
+  "n_qubits": 4,
+  "notes": "Fast path calls ucc.energy(params) directly, bypassing TencirchemCISimulator overhead (~10x per-circuit speedup)."
+}

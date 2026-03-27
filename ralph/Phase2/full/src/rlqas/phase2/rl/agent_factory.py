@@ -12,13 +12,15 @@ import gymnasium as gym
 from rlqas.phase1.rl.base_agent import RLAgent
 from rlqas.phase1.rl.ppo_agent import PPOAgent
 from .dqn_agent import DQNAgent
+from .a2c_agent import A2CAgent
+from .sac_discrete_agent import SACDiscreteAgent
 
 
 class AgentFactory:
     """Factory for creating RL agents.
 
     This class provides a unified interface for instantiating different types
-    of RL agents based on configuration. It supports both PPO and DQN agents
+    of RL agents based on configuration. It supports PPO, DQN, and A2C agents
     and maintains backward compatibility with Phase 1 usage patterns.
 
     Example usage:
@@ -28,6 +30,9 @@ class AgentFactory:
         # Create DQN agent
         dqn_agent = AgentFactory.create_agent("dqn", config, env)
 
+        # Create A2C agent
+        a2c_agent = AgentFactory.create_agent("a2c", config, env)
+
         # Get available agent types
         available = AgentFactory.get_available_agents()
     """
@@ -36,6 +41,8 @@ class AgentFactory:
     _AGENT_REGISTRY: Dict[str, Type[RLAgent]] = {
         "ppo": PPOAgent,
         "dqn": DQNAgent,
+        "a2c": A2CAgent,
+        "sac_discrete": SACDiscreteAgent,
     }
 
     @classmethod
@@ -48,7 +55,7 @@ class AgentFactory:
         """Create an RL agent of the specified type.
 
         Args:
-            agent_type: Type of agent to create ("ppo" or "dqn").
+            agent_type: Type of agent to create ("ppo", "dqn", or "a2c").
             config: Configuration dictionary for the agent.
             env: Gym environment (or callable that returns an environment).
 
@@ -165,7 +172,7 @@ def create_agent(
     This is a shortcut for AgentFactory.create_agent().
 
     Args:
-        agent_type: Type of agent to create ("ppo" or "dqn").
+        agent_type: Type of agent to create ("ppo", "dqn", or "a2c").
         config: Configuration dictionary for the agent.
         env: Gym environment (or callable that returns an environment).
 

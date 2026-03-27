@@ -1,0 +1,34 @@
+{
+  "name": "LiH_UCC_PPO_baseline_12q",
+  "description": "Baseline: 12-qubit, no active space, default hyperparams",
+  "config": {
+    "name": "LiH_UCC_PPO_baseline_12q",
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "ansatz_type": "UCC",
+    "agent_type": "ppo",
+    "n_episodes": 500,
+    "active_space": null,
+    "config": null,
+    "description": "Baseline: 12-qubit, no active space, default hyperparams"
+  },
+  "best_energy_ha": -7.881744976883369,
+  "energy_error_mha": 0.5794020001257394,
+  "n_operators": 9,
+  "elapsed_s": 1425.046282529831,
+  "chemical_accuracy_pass": true,
+  "raw_result": {
+    "best_energy": -7.881744976883369,
+    "fci_energy": -7.882324378883495,
+    "energy_error_mha": 0.5794020001257394,
+    "chemical_accuracy": true,
+    "n_operators": 9,
+    "fusion_template": null,
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "ansatz_type": "UCC",
+    "agent_type": "ppo",
+    "n_episodes_run": 500,
+    "n_qubits": 12
+  }
+}

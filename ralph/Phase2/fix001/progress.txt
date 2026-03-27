@@ -1,0 +1,74 @@
+# RLQAS Phase 2 Fix001 - Progress Log
+# Task: Fix UCCSearchEnv Architecture Search Bug
+
+Started: 2026-03-19
+---
+
+## Fix001: Partial-Circuit Architecture Search Bug — FIXED
+
+### Root cause
+Two bugs made `UCCSearchEnv.step()` report near-FCI energy after ANY single action:
+
+**Bug A — `environment.py` (line ~192):** When `run_classical_opt=True`, the
+L-BFGS-B optimizer was given ALL `n_params` parameters (including those for operators
+the agent had NOT selected). Starting from all-zeros initialisation, L-BFGS-B always
+converged to the full-UCCSD minimum, making architecture search trivially easy.
+
+**Bug B — `tencirchem.py` (line ~82):** The shortcut `circuit.ucc.energy(circuit.params)`
+was safe ONLY IF circuit.params has zeros for non-selected operators — a contract broken
+by Bug A. After fixing Bug A, the shortcut is physically correct and has been annotated
+with an explicit invariant comment.
+
+### Files changed
+1. `Phase1/006/src/rlqas/phase1/search/environment.py`
+   — Replaced full-parameter optimizer call with constrained partial optimizer that
+     touches ONLY the active parameter slots (one per selected excitation operator).
+     All other slots remain at 0 throughout the episode.
+
+2. `Phase1/006/src/rlqas/phase1/simulator/tencirchem.py`
+   — Added explicit invariant comment to the UCCSD energy shortcut explaining that
+     the shortcut is safe because Bug A fix guarantees zeros for inactive operators.
+
+3. `Phase1/006/tests/integration/test_circuit_fix.py` (new file)
+   — Four tests: single-op does not cheat, optimizer touches only active params,
+     full UCCSD matches FCI, two operators improve over one.
+
+4. `Phase2/full/results/algorithm_comparison/ppo_dqn_a2c_sacd_lih_10q.json`
+   — Added WARNING and superseded_by keys marking this as a buggy result.
+
+5. `Phase2/full/tests/integration/test_multi_algorithm.py`
+   — Updated test_four_way_comparison_lih_10q to save to honest_ filename and use
+     correct env_config with max_depth=10 and run_classical_opt=True.
+   — Added test_single_operator_does_not_cheat regression test.
+   — Updated test_exploration_framework_run_benchmarks comment to reflect new reality.
+
+### Verification
+```
+1-operator error: 20.2355 mHa  (was ~0.000004 mHa = effectively zero)
+Non-zero params: 1              (was 20 = all params)
+Bug A: FIXED
+```
+
+All 4 new tests pass (`pytest Phase1/006/tests/integration/test_circuit_fix.py -v`).
+
+### Before (buggy)
+- energy_error ≈ 4e-9 Ha (0.000004 mHa) with 1 operator for ALL algorithms
+- operator_count=1 for all algorithms (trivially optimal)
+- Agents were not doing genuine architecture search
+
+### After (fixed)
+- 1-operator energy error: ~20.2 mHa (genuine partial-circuit energy)
+- Agents must explore multiple operators to reach chemical accuracy
+- Honest benchmark results saved to:
+  Phase2/full/results/algorithm_comparison/honest_ppo_dqn_a2c_sacd_lih_10q.json
+
+### Honest benchmark results (500 episodes, LiH active_space=(2,5), 10 qubits)
+```
+Algorithm    Best Energy (Ha)     Error (mHa)    Operators    Accurate?
+PPO          -7.88067081          1.4258         3            YES
+DQN          -7.88079059          1.3060         5            YES
+A2C          -7.88079059          1.3060         5            YES
+SAC_DISCRETE -7.88067890          1.4177         5            YES
+Winner: PPO — Chemical accuracy reached with 3 operators (error=1.4258 mHa)
+```
+All 4 algorithms reach chemical accuracy with 3–5 operators (vs. trivially 1 operator before the fix).

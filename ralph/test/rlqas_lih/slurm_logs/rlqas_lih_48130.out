@@ -1,0 +1,418 @@
+=== RLQAS LiH Benchmark Test ===
+Job ID: 48130
+Started at: Thu Mar 26 07:53:43 PM CST 2026
+Running on node: curie-gpu003
+Working directory: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih
+Conda llm activated: /curie-home/jpchen/.conda/envs/llm/bin/python3
+Python: Python 3.10.13
+2026-03-26 19:54:12 - root - INFO - Logging configured with level INFO
+rlqas OK: 4.0.0
+
+Running: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih/test_lih.py
+Tests: 2 baseline + 3 tuned (hartree_fock baseline, ent_coef=0.05/0.1, energy_weight=100)
+
+============================================================
+  RLQAS LiH Benchmark Test
+  Python: /curie-home/jpchen/.conda/envs/llm/bin/python3
+============================================================
+2026-03-26 19:54:41 - root - INFO - Logging configured with level INFO
+  rlqas version: 4.0.0
+
+============================================================
+  Test: LiH_UCC_PPO_baseline_12q
+  Baseline: 12-qubit, no active space, default hyperparams
+============================================================
+2026-03-26 19:54:50 - rlqas.phase1.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-03-26 19:54:50 - rlqas.phase1.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 19   |
+|    iterations      | 1    |
+|    time_elapsed    | 103  |
+|    total_timesteps | 2048 |
+-----------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 19          |
+|    iterations           | 2           |
+|    time_elapsed         | 211         |
+|    total_timesteps      | 4096        |
+| train/                  |             |
+|    approx_kl            | 0.009085908 |
+|    clip_fraction        | 0.0602      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.73       |
+|    explained_variance   | -0.238      |
+|    learning_rate        | 0.0003      |
+|    loss                 | 0.0693      |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.041      |
+|    value_loss           | 0.924       |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 19          |
+|    iterations           | 3           |
+|    time_elapsed         | 320         |
+|    total_timesteps      | 6144        |
+| train/                  |             |
+|    approx_kl            | 0.009826711 |
+|    clip_fraction        | 0.0646      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.73       |
+|    explained_variance   | 0.137       |
+|    learning_rate        | 0.0003      |
+|    loss                 | 0.271       |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0447     |
+|    value_loss           | 0.73        |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 19          |
+|    iterations           | 4           |
+|    time_elapsed         | 427         |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.010646857 |
+|    clip_fraction        | 0.0782      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.72       |
+|    explained_variance   | 0.27        |
+|    learning_rate        | 0.0003      |
+|    loss                 | 0.177       |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0463     |
+|    value_loss           | 0.468       |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 19          |
+|    iterations           | 5           |
+|    time_elapsed         | 534         |
+|    total_timesteps      | 10240       |
+| train/                  |             |
+|    approx_kl            | 0.011324918 |
+|    clip_fraction        | 0.0849      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.71       |
+|    explained_variance   | 0.239       |
+|    learning_rate        | 0.0003      |
+|    loss                 | 0.218       |
+|    n_updates            | 40          |
+|    policy_gradient_loss | -0.0471     |
+|    value_loss           | 0.6         |
+-----------------------------------------
+Search completed. Best energy: -7.877578 Hartree
+Best excitations: 2 operators
+  best_energy    = -7.877578 Ha
+  energy_error   = 4.747 mHa  (threshold: 1.6 mHa)
+  n_operators    = 2
+  elapsed        = 546.7 s
+  chemical_acc   = FAIL ✗
+  Saved: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih/results/LiH_UCC_PPO_baseline_12q.json
+
+============================================================
+  Test: LiH_UCC_PPO_baseline_10q
+  Baseline: active_space=(2,5) 10-qubit, default hyperparams
+============================================================
+2026-03-26 20:03:55 - rlqas.phase1.molecule.processor - INFO - Processed molecule LiH with active space (2, 5), transform jordan_wigner, qubits=10, FCI energy=-7.882097
+2026-03-26 20:03:55 - rlqas.phase1.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 118  |
+|    iterations      | 1    |
+|    time_elapsed    | 17   |
+|    total_timesteps | 2048 |
+-----------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 117         |
+|    iterations           | 2           |
+|    time_elapsed         | 34          |
+|    total_timesteps      | 4096        |
+| train/                  |             |
+|    approx_kl            | 0.009574536 |
+|    clip_fraction        | 0.088       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.63       |
+|    explained_variance   | -0.0258     |
+|    learning_rate        | 0.0003      |
+|    loss                 | 1.73        |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0257     |
+|    value_loss           | 5.9         |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 110         |
+|    iterations           | 3           |
+|    time_elapsed         | 55          |
+|    total_timesteps      | 6144        |
+| train/                  |             |
+|    approx_kl            | 0.011548385 |
+|    clip_fraction        | 0.105       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.62       |
+|    explained_variance   | 0.111       |
+|    learning_rate        | 0.0003      |
+|    loss                 | 1.74        |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0317     |
+|    value_loss           | 3.54        |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 108         |
+|    iterations           | 4           |
+|    time_elapsed         | 75          |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.015547309 |
+|    clip_fraction        | 0.148       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.6        |
+|    explained_variance   | 0.294       |
+|    learning_rate        | 0.0003      |
+|    loss                 | 1.14        |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0399     |
+|    value_loss           | 2.65        |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 105         |
+|    iterations           | 5           |
+|    time_elapsed         | 96          |
+|    total_timesteps      | 10240       |
+| train/                  |             |
+|    approx_kl            | 0.015106257 |
+|    clip_fraction        | 0.159       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.56       |
+|    explained_variance   | 0.167       |
+|    learning_rate        | 0.0003      |
+|    loss                 | 0.942       |
+|    n_updates            | 40          |
+|    policy_gradient_loss | -0.0408     |
+|    value_loss           | 2.54        |
+-----------------------------------------
+Search completed. Best energy: -7.878879 Hartree
+Best excitations: 2 operators
+  best_energy    = -7.878879 Ha
+  energy_error   = 3.217 mHa  (threshold: 1.6 mHa)
+  n_operators    = 2
+  elapsed        = 108.3 s
+  chemical_acc   = FAIL ✗
+  Saved: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih/results/LiH_UCC_PPO_baseline_10q.json
+
+============================================================
+  Test: LiH_UCC_PPO_tuned_12q
+  Tuned: 12-qubit, hf-baseline, energy_weight=100, ent_coef=0.05
+============================================================
+2026-03-26 20:05:46 - rlqas.phase1.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-03-26 20:05:46 - rlqas.phase1.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 18   |
+|    iterations      | 1    |
+|    time_elapsed    | 219  |
+|    total_timesteps | 4096 |
+-----------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 18           |
+|    iterations           | 2            |
+|    time_elapsed         | 441          |
+|    total_timesteps      | 8192         |
+| train/                  |              |
+|    approx_kl            | 0.0051775766 |
+|    clip_fraction        | 0.0151       |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -3.74        |
+|    explained_variance   | -0.00355     |
+|    learning_rate        | 0.0003       |
+|    loss                 | 434          |
+|    n_updates            | 10           |
+|    policy_gradient_loss | -0.0193      |
+|    value_loss           | 1.22e+03     |
+------------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 18          |
+|    iterations           | 3           |
+|    time_elapsed         | 649         |
+|    total_timesteps      | 12288       |
+| train/                  |             |
+|    approx_kl            | 0.008830955 |
+|    clip_fraction        | 0.0612      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.72       |
+|    explained_variance   | -0.0243     |
+|    learning_rate        | 0.0003      |
+|    loss                 | 182         |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0264     |
+|    value_loss           | 623         |
+-----------------------------------------
+Search completed. Best energy: -7.875950 Hartree
+Best excitations: 2 operators
+  best_energy    = -7.875950 Ha
+  energy_error   = 6.374 mHa  (threshold: 1.6 mHa)
+  n_operators    = 2
+  elapsed        = 661.2 s
+  chemical_acc   = FAIL ✗
+  Saved: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih/results/LiH_UCC_PPO_tuned_12q.json
+
+============================================================
+  Test: LiH_UCC_PPO_tuned_10q
+  Tuned: active_space=(2,5) 10-qubit, hf-baseline, energy_weight=100, ent_coef=0.05
+============================================================
+2026-03-26 20:16:45 - rlqas.phase1.molecule.processor - INFO - Processed molecule LiH with active space (2, 5), transform jordan_wigner, qubits=10, FCI energy=-7.882097
+2026-03-26 20:16:45 - rlqas.phase1.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 120  |
+|    iterations      | 1    |
+|    time_elapsed    | 34   |
+|    total_timesteps | 4096 |
+-----------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 119         |
+|    iterations           | 2           |
+|    time_elapsed         | 68          |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.008384813 |
+|    clip_fraction        | 0.0605      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.63       |
+|    explained_variance   | -0.0125     |
+|    learning_rate        | 0.0003      |
+|    loss                 | 18.6        |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0109     |
+|    value_loss           | 50.6        |
+-----------------------------------------
+---------------------------------------
+| time/                   |           |
+|    fps                  | 119       |
+|    iterations           | 3         |
+|    time_elapsed         | 103       |
+|    total_timesteps      | 12288     |
+| train/                  |           |
+|    approx_kl            | 0.0070786 |
+|    clip_fraction        | 0.0508    |
+|    clip_range           | 0.2       |
+|    entropy_loss         | -2.63     |
+|    explained_variance   | 0.0249    |
+|    learning_rate        | 0.0003    |
+|    loss                 | 15.4      |
+|    n_updates            | 20        |
+|    policy_gradient_loss | -0.0111   |
+|    value_loss           | 40.8      |
+---------------------------------------
+Search completed. Best energy: -7.878879 Hartree
+Best excitations: 2 operators
+  best_energy    = -7.878879 Ha
+  energy_error   = 3.217 mHa  (threshold: 1.6 mHa)
+  n_operators    = 2
+  elapsed        = 111.8 s
+  chemical_acc   = FAIL ✗
+  Saved: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih/results/LiH_UCC_PPO_tuned_10q.json
+
+============================================================
+  Test: LiH_UCC_PPO_tuned_10q_highent
+  Tuned: active_space=(2,5) 10-qubit, hf-baseline, energy_weight=100, ent_coef=0.1
+============================================================
+2026-03-26 20:18:37 - rlqas.phase1.molecule.processor - INFO - Processed molecule LiH with active space (2, 5), transform jordan_wigner, qubits=10, FCI energy=-7.882097
+2026-03-26 20:18:37 - rlqas.phase1.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 129  |
+|    iterations      | 1    |
+|    time_elapsed    | 31   |
+|    total_timesteps | 4096 |
+-----------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 110         |
+|    iterations           | 2           |
+|    time_elapsed         | 74          |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.008144692 |
+|    clip_fraction        | 0.0566      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.63       |
+|    explained_variance   | -0.0127     |
+|    learning_rate        | 0.0003      |
+|    loss                 | 18.4        |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0109     |
+|    value_loss           | 50.6        |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 109         |
+|    iterations           | 3           |
+|    time_elapsed         | 112         |
+|    total_timesteps      | 12288       |
+| train/                  |             |
+|    approx_kl            | 0.007574413 |
+|    clip_fraction        | 0.0473      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.63       |
+|    explained_variance   | 0.0278      |
+|    learning_rate        | 0.0003      |
+|    loss                 | 13.5        |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0106     |
+|    value_loss           | 37.7        |
+-----------------------------------------
+Search completed. Best energy: -7.878879 Hartree
+Best excitations: 2 operators
+  best_energy    = -7.878879 Ha
+  energy_error   = 3.217 mHa  (threshold: 1.6 mHa)
+  n_operators    = 2
+  elapsed        = 121.7 s
+  chemical_acc   = FAIL ✗
+  Saved: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih/results/LiH_UCC_PPO_tuned_10q_highent.json
+
+============================================================
+  SUMMARY
+============================================================
+  [FAIL ✗] LiH_UCC_PPO_baseline_12q                       error=4.747 mHa  ops=2
+  [FAIL ✗] LiH_UCC_PPO_baseline_10q                       error=3.217 mHa  ops=2
+  [FAIL ✗] LiH_UCC_PPO_tuned_12q                          error=6.374 mHa  ops=2
+  [FAIL ✗] LiH_UCC_PPO_tuned_10q                          error=3.217 mHa  ops=2
+  [FAIL ✗] LiH_UCC_PPO_tuned_10q_highent                  error=3.217 mHa  ops=2
+
+  Passed: 0/5
+  Summary saved: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/test/rlqas_lih/results/summary.json
+
+=== Job finished at: Thu Mar 26 08:20:34 PM CST 2026 ===
+Exit code: 0
+
+=== Result Summary ===
+  [FAIL] LiH_UCC_PPO_baseline_12q                       4.747 mHa
+  [FAIL] LiH_UCC_PPO_baseline_10q                       3.217 mHa
+  [FAIL] LiH_UCC_PPO_tuned_12q                          6.374 mHa
+  [FAIL] LiH_UCC_PPO_tuned_10q                          3.217 mHa
+  [FAIL] LiH_UCC_PPO_tuned_10q_highent                  3.217 mHa

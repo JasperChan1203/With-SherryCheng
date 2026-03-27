@@ -1,0 +1,17 @@
+All user stories have `passes: true`. 
+
+<promise>COMPLETE</promise>
+
+---
+
+**Summary of what was fixed:**
+
+**US-001 (HIGH) — UCCSearchController: PPO Never Trains**
+1. Replaced the broken manual episode loop in `UCCSearchController.search()` with `self.agent.learn(total_timesteps=n_episodes * max_steps)` — this activates SB3's proper training loop
+2. Fixed `UCCSearchEnv.reset()` which was resetting `global_best_energy/excitations/params` on every episode start — these must persist across episodes so `search()` can read the true global best after `learn()` completes
+3. Installed Phase1 as editable (`pip install -e .`) since it was installed as a static copy in site-packages
+
+**US-002 (LOW) — HEASearchController: `_best_energy` stays `float('inf')`**
+1. Added `best_energy` attribute to `HEASearchEnv`, updated in `step()` when real simulation runs (guarded by `self.molecule_data is not None` to prevent dummy energies from polluting it)
+2. After `self._agent.learn()`, `HEASearchController.search()` now reads `self._env.best_energy`
+3. Fixed `HEASearchController.__init__` to handle `MoleculeData` passed as first arg (duck-typing like `HEASearchEnv` already does)

@@ -78,7 +78,12 @@ class TencirchemCISimulator(QuantumSimulator):
         Returns:
             Energy expectation value in Hartree
         """
-        # If circuit has attached UCCSD object and parameters, use its energy method
+        # If circuit has attached UCCSD object and parameters, use its energy method.
+        # INVARIANT: circuit.params must have zeros for non-selected operators.
+        # The Bug A fix in environment.py (constrained partial optimizer) guarantees this:
+        # only the active parameter slots are written by the optimizer; all other slots
+        # remain at 0.  Therefore ucc.energy(circuit.params) correctly computes the
+        # partial-circuit energy (the physical energy of the selected sub-ansatz).
         if hasattr(circuit, 'ucc') and hasattr(circuit, 'params'):
             # Ensure the UCCSD object has an energy method
             if hasattr(circuit.ucc, 'energy'):

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=ralph-phase2-full
-#SBATCH --output=ralph_phase2_full_%j.out
-#SBATCH --error=ralph_phase2_full_%j.err
+#SBATCH --output=slurm_logs/ralph_phase2_full_%j.out
+#SBATCH --error=slurm_logs/ralph_phase2_full_%j.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gpus-per-task=1

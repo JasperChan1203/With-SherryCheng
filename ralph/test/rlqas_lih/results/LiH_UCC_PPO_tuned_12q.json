@@ -1,0 +1,43 @@
+{
+  "name": "LiH_UCC_PPO_tuned_12q",
+  "description": "Tuned: 12-qubit, hf-baseline, energy_weight=100, ent_coef=0.05",
+  "config": {
+    "name": "LiH_UCC_PPO_tuned_12q",
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "ansatz_type": "UCC",
+    "agent_type": "ppo",
+    "n_episodes": 500,
+    "active_space": null,
+    "config": {
+      "reward_function": {
+        "baseline_type": "hartree_fock",
+        "energy_weight": 100.0
+      },
+      "controller": {
+        "ent_coef": 0.05,
+        "n_steps": 4096
+      }
+    },
+    "description": "Tuned: 12-qubit, hf-baseline, energy_weight=100, ent_coef=0.05"
+  },
+  "best_energy_ha": -7.8816226710466575,
+  "energy_error_mha": 0.701707836844534,
+  "n_operators": 10,
+  "elapsed_s": 1652.984860420227,
+  "chemical_accuracy_pass": true,
+  "raw_result": {
+    "best_energy": -7.8816226710466575,
+    "fci_energy": -7.882324378883502,
+    "energy_error_mha": 0.701707836844534,
+    "chemical_accuracy": true,
+    "n_operators": 10,
+    "fusion_template": null,
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "ansatz_type": "UCC",
+    "agent_type": "ppo",
+    "n_episodes_run": 500,
+    "n_qubits": 12
+  }
+}

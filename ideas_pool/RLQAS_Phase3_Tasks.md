@@ -1,13 +1,14 @@
 # RLQAS Phase 3 Task Breakdown
 
 ## Overview
-**Phase 3 Goal**: Implement hybrid architecture search (HEA-UCC fusion), performance optimization (batch evaluation, CI vector tuning, memory management), and circuit encoding module. Validate on medium-to-large systems (BeH₂, H₄, H₆).
-**Total Tasks**: 6 (RLQAS_Phase3_001 to 006)
+**Phase 3 Goal**: Implement hybrid architecture search (HEA-UCC fusion), performance optimization (batch evaluation, CI vector tuning, memory management), circuit encoding module, and qubit operator extension for UCC search. Validate on medium-to-large systems (BeH₂, H₄, H₆).
+**Total Tasks**: 7 (RLQAS_Phase3_001 to 007)
 **Expected Deliverables**:
 - Hybrid HEA-UCC architecture search system
 - Batch evaluation with measurable performance improvement over Phase 1/2 baselines
 - Configurable circuit encoding module (matrix-based primary, others optional)
 - Validated performance on BeH₂ (10–14 qubits), H₄ (8 qubits), H₆ (12 qubits)
+- Qubit operator search domain extending the fermion operator baseline (Task 007)
 
 ## Prerequisites
 - **Phase 1 Complete Package** (`src/rlqas/phase1/`): Molecule processing, CI vector simulator, PPO agent, UCC search
@@ -21,16 +22,45 @@ RLQAS_Phase3_002 (Hybrid Search Environment)
      ↓
 RLQAS_Phase3_003 (Hybrid Search Controller)
      |
-     +——————————————————————————+
-     |                          |
-RLQAS_Phase3_004           RLQAS_Phase3_005
-(Batch Evaluation &         (Circuit Encoding
- Performance Optimization)   Module)
-     |                          |
-     +——————————————————————————+
-                  ↓
-     RLQAS_Phase3_006 (Phase 3 Integration Test)
+     +——————————————————————————+——————————————————————+
+     |                          |                      |
+RLQAS_Phase3_004           RLQAS_Phase3_005    RLQAS_Phase3_007
+(Batch Evaluation &         (Circuit Encoding   (Qubit Operator
+ Performance Optimization)   Module)             Extension)
+     |                          |                      |
+     +——————————————————————————+——————————————————————+
+                              ↓
+              RLQAS_Phase3_006 (Phase 3 Integration Test)
 ```
+
+---
+
+## Phase 3 Execution Permissions
+
+### Environment Modification Permission (Inherited from Phase 2)
+
+Ralph is **explicitly permitted** to modify the runtime environment during Phase 3 execution. This includes, but is not limited to:
+
+1. **Installing Python packages**: `pip install <package>` to pull in missing dependencies (e.g. `sb3_contrib`, `openfermion`, `cirq`, etc.)
+2. **Patching library source code**: If a third-party library (e.g. Tencirchem, OpenFermion) lacks a required feature or has a bug affecting RLQAS, Ralph may directly edit the installed library's `.py` files to add or fix the functionality. Such patches **must** be documented in `progress.txt` under a "Library Patches" heading, including: which file was patched, what was changed, and why.
+3. **Creating wrapper/adapter modules**: Ralph may create `*_adapter.py` shim files that monkey-patch or wrap library APIs without modifying the library itself.
+4. **Downloading reference data**: Ralph may fetch molecule geometry files, basis set data, or benchmark datasets from public sources if needed.
+
+**Constraint**: All environment changes must be idempotent (safe to run twice). Document every change in `progress.txt`.
+
+### Token Consumption Tracking
+
+Ralph **must** record accumulated token consumption at the end of each completed Phase/task in `progress.txt`. Use the following format:
+
+```
+[TOKEN LOG] Phase 3 Task 001 complete
+  Session tokens (this task): input=XXXXX, output=XXXXX
+  Session cumulative total:   input=XXXXX, output=XXXXX
+```
+
+**How to implement**: The Claude Code environment exposes usage statistics through the session. At the end of each task, Ralph should emit a structured token log line. If running via the Anthropic API directly, capture `response.usage.input_tokens` and `response.usage.output_tokens` from each API call and accumulate them. If running via Claude Code CLI, use the session's built-in usage tracking.
+
+The token log serves as an audit trail for cost estimation and helps identify unexpectedly expensive tasks early.
 
 ---
 
@@ -678,11 +708,13 @@ h4_8qubits = {
     "basis_set": "sto-3g", "transform": "jordan_wigner"
 }
 
-# H₆ hydrogen chain (Jordan-Wigner)
+# H₆ hydrogen chain (Jordan-Wigner) — full space, no active_space restriction
+# H₆ with STO-3G has 6 electrons in 6 orbitals naturally; (6,6) IS the full space.
+# Do NOT pass active_space to process_molecule — use the full orbital space.
 h6_12qubits = {
     "formula": "H6", "geometry": "linear", "bond_length": 0.74,
-    "active_space": (6, 6),           # 6 electrons, 6 orbitals -> 12 qubits
     "basis_set": "sto-3g", "transform": "jordan_wigner"
+    # no active_space key — full space
 }
 ```
 
@@ -725,7 +757,7 @@ def test_beh2_8qubits_chemical_accuracy():
 
 #### Test 6: Hydrogen Chain Correlation Effects
 - Run UCC search on H₄ `active_space=(4,4)` → 8 qubits; assert `energy_error < 1.6e-3`
-- Run Hybrid search on H₆ `active_space=(6,6)` → 12 qubits; document energy error (assert < 5.0e-3 as relaxed threshold for strongly correlated systems)
+- Run Hybrid search on H₆ **full space** (no `active_space` restriction; STO-3G naturally gives 6 electrons, 6 orbitals → 12 qubits); assert `energy_error < 1.6e-3`
 
 #### Test 7: ExperimentManager End-to-End with HYBRID ansatz
 - Run `ExperimentManager` with a YAML config specifying `ansatz_type: "HYBRID"` on BeH₂ 8 qubits
@@ -813,10 +845,140 @@ output:
 - [ ] BeH₂ 10-qubit: asserts `energy_error < 1.6e-3` with Jordan-Wigner
 - [ ] BeH₂ 12-qubit: asserts `energy_error < 1.6e-3` with Jordan-Wigner
 - [ ] H₄ 8-qubit: asserts `energy_error < 1.6e-3`
-- [ ] H₆ 12-qubit: asserts `energy_error < 5.0e-3` (relaxed for strongly correlated systems; document actual error)
+- [ ] H₆ 12-qubit: asserts `energy_error < 1.6e-3` (full space, no active_space restriction)
 - [ ] `ExperimentManager` end-to-end with `ansatz_type="HYBRID"` YAML config completes without error
 - [ ] All integration tests in `tests/integration/` pass; benchmark JSON files generated in `results/phase3_integration/`
 - [ ] `progress.txt` updated with Phase 3 completion summary
+
+---
+
+## RLQAS_Phase3_007: Qubit Operator Extension for UCC Search
+
+### Task Metadata
+- **ID**: RLQAS_Phase3_007
+- **Priority**: P1
+- **Dependencies**: RLQAS_Phase3_001, RLQAS_Phase3_002, RLQAS_Phase3_003
+- **Estimated Complexity**: Medium
+- **Related Spec Section**: 3.6 (UCC search extensibility)
+
+### Background
+
+Tencirchem's UCC class supports two types of excitation operators:
+- **Fermion operators** (default): Excitation operators defined in Fock space, e.g. `a†_p a_q`. These are the operators used in Phase 1/2 search.
+- **Qubit operators**: Pauli-string excitations defined directly in qubit space, e.g. `X_0 Y_1 - Y_0 X_1`. These can provide a different expressivity profile and may achieve lower circuit depth for certain molecules.
+
+The current search domain in `UCCSearchEnv` and `HybridSearchEnv` exclusively uses fermion operators. This task extends the framework to optionally use qubit operators as the action space, enabling head-to-head comparison.
+
+### Functional Description
+
+Implement a `QubitOperatorPool` class that generates a qubit-space operator pool for a given molecule, and integrate it as an alternative action space in `UCCSearchEnv` and `HybridSearchEnv`. Add a `QubitUCCSearchController` that mirrors `UCCSearchController` but operates over the qubit operator pool.
+
+### Specific Requirements
+
+1. **Investigate Tencirchem qubit operator API**: Inspect `tencirchem.ucc` to identify the correct API for specifying qubit-space operators (look for `QubitUCC`, qubit excitation lists, or Pauli string inputs). Document findings in `progress.txt` under "Qubit Operator API Investigation". If Tencirchem does not natively support qubit operators, implement an adapter.
+
+2. **Implement `QubitOperatorPool`**: Generate the full qubit operator pool for a given `MoleculeData`. The pool should contain all single and double Pauli-string excitations compatible with the molecular Hamiltonian.
+
+3. **Extend `UCCSearchEnv`**: Add `operator_type` config field (`"fermion"` | `"qubit"`, default `"fermion"`). When `"qubit"`, the action space indexes into `QubitOperatorPool` instead of the fermion excitation pool.
+
+4. **Extend `HybridSearchEnv`**: Similarly add `operator_type` config field so the UCC blocks in hybrid circuits can also use qubit operators.
+
+5. **Implement `QubitUCCSearchController`**: Mirrors `UCCSearchController`; uses `operator_type="qubit"` environment config. Accepts any `RLAgent` from `AgentFactory`.
+
+6. **Comparison benchmark**: Run both fermion and qubit operator search on LiH 10-qubit with PPO (300 episodes each). Record which achieves chemical accuracy with fewer operators. Save results to `results/phase3_integration/qubit_vs_fermion_lih_10q.json`.
+
+### Implementation Details
+
+**File Structure**:
+```
+src/rlqas/phase3/qubit_ops/
+    __init__.py
+    operator_pool.py        # QubitOperatorPool
+    controller.py           # QubitUCCSearchController
+    adapter.py              # TencirchemQubitAdapter (if needed)
+
+tests/
+    test_qubit_operator_pool.py
+    test_qubit_ucc_search.py
+```
+
+**Core Interfaces**:
+```python
+class QubitOperatorPool:
+    def __init__(self, molecule_data: MoleculeData, config: Dict = None):
+        """
+        Builds qubit-space excitation operator pool.
+        config example:
+        {
+            "excitation_level": "sd",       # "s" | "d" | "sd" (singles+doubles)
+            "symmetry_filter": True,         # filter by particle-number symmetry
+            "max_operators": 100             # cap pool size
+        }
+        """
+
+    def get_pool(self) -> List[Any]:
+        """Return list of qubit operators (Pauli strings or Tencirchem-compatible objects)"""
+
+    def get_pool_size(self) -> int:
+        """Return number of operators in pool"""
+
+    def operator_to_circuit(
+        self,
+        op_index: int,
+        n_qubits: int
+    ) -> QuantumCircuit:
+        """Convert a pool operator to a QuantumCircuit block"""
+
+
+class QubitUCCSearchController:
+    def __init__(
+        self,
+        molecule_data: MoleculeData,
+        agent_type: str = "ppo",
+        config: Dict = None
+    ):
+        """
+        Identical interface to UCCSearchController, but
+        uses operator_type="qubit" in environment config.
+        """
+
+    def search(
+        self,
+        n_episodes: int = 500,
+        early_stop_threshold: float = 1.6e-3
+    ) -> SearchResult:
+        """Same return type as UCCSearchController.search()"""
+```
+
+**Integration with existing environments**:
+```python
+# In UCCSearchEnv.__init__():
+operator_type = config.get("operator_type", "fermion")
+if operator_type == "qubit":
+    self.operator_pool = QubitOperatorPool(molecule_data, config)
+else:
+    self.operator_pool = FermionOperatorPool(molecule_data, config)  # existing
+
+self.action_space = spaces.Discrete(self.operator_pool.get_pool_size())
+```
+
+### Test Requirements
+- **API Investigation Tests**: Verify `QubitOperatorPool` can be instantiated for H₂ and LiH without error
+- **Pool Size Tests**: Verify pool size is non-zero and bounded by `max_operators`
+- **Circuit Construction Tests**: Verify each operator converts to a valid `QuantumCircuit` with correct qubit count
+- **Environment Tests**: Verify `UCCSearchEnv(operator_type="qubit")` passes `gym.Env` compliance check
+- **Energy Tests**: Verify qubit operator environment returns physically meaningful energies (below Hartree-Fock) for LiH
+- **Comparison Tests**: Run fermion vs qubit search on LiH 10q; record results (no chemical accuracy assertion required — comparison is the goal)
+- **Coverage**: >80% code coverage
+
+### Acceptance Criteria
+- [ ] `QubitOperatorPool` generates a non-empty qubit operator pool for H₂ (≥1 operator) and LiH (≥5 operators)
+- [ ] `UCCSearchEnv` with `operator_type="qubit"` runs 10 complete episodes on LiH 10q without error
+- [ ] `QubitUCCSearchController.search()` returns a `SearchResult` with populated `best_energy` field
+- [ ] Comparison JSON `qubit_vs_fermion_lih_10q.json` saved with both results
+- [ ] If qubit operators achieve chemical accuracy: assert `energy_error < 1.6e-3`; otherwise document the gap
+- [ ] `progress.txt` contains "Qubit Operator API Investigation" section documenting how Tencirchem qubit operators work
+- [ ] All tests pass with >80% coverage
 
 ---
 
@@ -829,6 +991,7 @@ output:
 - [ ] `BatchEvaluator` + `CIVectorBenchmark` + `MemoryManager` (Task 004)
 - [ ] `CircuitEncoder` hierarchy + `EncoderFactory` (Task 005)
 - [ ] Integration tests passing on BeH₂, H₄, H₆ (Task 006)
+- [ ] `QubitOperatorPool` + `QubitUCCSearchController` + fermion-vs-qubit comparison (Task 007)
 
 ### Package Structure
 ```
@@ -854,6 +1017,11 @@ src/rlqas/phase3/
         one_hot_encoder.py      # OneHotEncoder
         encoder_factory.py      # EncoderFactory
         benchmark.py            # EncodingBenchmark
+    qubit_ops/
+        __init__.py
+        operator_pool.py        # QubitOperatorPool
+        controller.py           # QubitUCCSearchController
+        adapter.py              # TencirchemQubitAdapter (if needed)
 ```
 
 ### Code Quality
@@ -865,6 +1033,10 @@ src/rlqas/phase3/
 - [ ] `benchmarks/ci_vector_benchmark_results.json` recorded
 - [ ] `results/phase3_integration/batch_benchmark.json` showing ≥1.5× speedup
 - [ ] `results/phase3_integration/encoding_benchmark.json` showing timing per encoder
+- [ ] `results/phase3_integration/qubit_vs_fermion_lih_10q.json` showing fermion vs qubit comparison
+
+### Token Tracking Evidence
+- [ ] `progress.txt` contains `[TOKEN LOG]` entries after each completed task with cumulative input/output token counts
 
 ### Next Steps Ready
 - [ ] Foundation laid for Phase 4 (CLI, full documentation, production packaging)
@@ -892,3 +1064,4 @@ scipy>=1.7   # already required by Phase 1
 
 ## Document Update Record
 - v1.0 (2026-03-15): Created Phase 3 task breakdown based on RLQAS_Ralph_20260205_EN.md PRD Section 3.6, 3.2 (performance), and Phase 3 spec. Structured as 6 tasks following Phase 1/2 task format conventions.
+- v1.2 (2026-03-22): Changed H₆ threshold from relaxed 5.0e-3 to standard chemical accuracy 1.6e-3; removed active_space restriction for H₆ (STO-3G full space is naturally (6,6), so active_space parameter omitted to use full orbital space).
