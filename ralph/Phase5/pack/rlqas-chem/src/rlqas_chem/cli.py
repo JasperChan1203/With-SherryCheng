@@ -1,5 +1,9 @@
 """CLI for rlqas-chem."""
+import sys
+import json
 import click
+
+from rlqas_chem.api import search as _search
 
 
 @click.group()
@@ -8,18 +12,75 @@ def main():
 
 
 @main.command()
-@click.option('--molecule', required=True)
-@click.option('--bond-length', type=float, required=True)
-@click.option('--ansatz', default='UCC')
-@click.option('--agent', default='ppo')
-@click.option('--episodes', type=int, default=500)
-def search(molecule, bond_length, ansatz, agent, episodes):
+@click.option('--molecule', '-m', required=True, help='Molecular formula (e.g. H2, LiH)')
+@click.option('--bond-length', '-b', type=float, required=True, help='Bond length in Angstroms')
+@click.option('--ansatz', '-a', default='UCC', show_default=True, help='Ansatz type: UCC, HEA, HYBRID')
+@click.option('--agent', default='ppo', show_default=True, help='RL agent: ppo, dqn, a2c, sac_discrete')
+@click.option('--episodes', '-e', type=int, default=500, show_default=True, help='Number of episodes')
+@click.option('--active-space', default=None, help='Active space as "n_elec,n_orb" e.g. "2,5"')
+@click.option('--basis', default='sto-3g', show_default=True, help='Basis set')
+@click.option('--transform', default='jordan_wigner', show_default=True, help='Fermion-qubit transform')
+@click.option('--output', '-o', default=None, help='Save results as JSON to this path')
+def search(molecule, bond_length, ansatz, agent, episodes, active_space, basis, transform, output):
     """Run quantum architecture search."""
-    raise NotImplementedError("CLI not yet implemented — fill in US-007")
+    active = None
+    if active_space:
+        parts = active_space.split(',')
+        active = (int(parts[0]), int(parts[1]))
+
+    click.echo(f"Running RLQAS: {molecule} @ {bond_length} Å, {ansatz}/{agent}, {episodes} episodes")
+    result = _search(
+        molecule=molecule,
+        bond_length=bond_length,
+        ansatz_type=ansatz,
+        agent_type=agent,
+        n_episodes=episodes,
+        active_space=active,
+        basis_set=basis,
+        transform=transform,
+    )
+
+    click.echo(f"Best energy:      {result['best_energy']:.6f} Ha")
+    click.echo(f"FCI energy:       {result['fci_energy']:.6f} Ha")
+    click.echo(f"Error:            {result['energy_error_mha']:.3f} mHa")
+    click.echo(f"Chemical accuracy: {'YES' if result['chemical_accuracy'] else 'NO'}")
+
+    if output:
+        with open(output, 'w') as f:
+            json.dump(result, f, indent=2)
+        click.echo(f"Results saved to {output}")
+
+    sys.exit(0)
 
 
 @main.command()
-@click.option('--config', required=True)
-def experiment(config):
-    """Run experiment from config file."""
-    raise NotImplementedError("CLI not yet implemented — fill in US-007")
+@click.option('--config', '-c', required=True, help='Experiment config YAML file')
+@click.option('--output', '-o', default=None, help='Save results as JSON to this path')
+def experiment(config, output):
+    """Run experiment from YAML config file."""
+    try:
+        import yaml
+        with open(config) as f:
+            cfg = yaml.safe_load(f)
+    except ImportError:
+        import json
+        with open(config) as f:
+            cfg = json.load(f)
+
+    from rlqas_chem.experiment.manager import Experiment
+    exp = Experiment(
+        molecule_config=cfg.get('molecule', {}),
+        search_config=cfg.get('search', {}),
+        rl_config=cfg.get('rl', {}),
+    )
+    result = exp.run()
+
+    click.echo(f"Best energy:      {result['best_energy']:.6f} Ha")
+    click.echo(f"FCI energy:       {result['fci_energy']:.6f} Ha")
+    click.echo(f"Error:            {result['energy_error_mha']:.3f} mHa")
+
+    if output:
+        exp.save(output)
+        click.echo(f"Results saved to {output}")
+
+    sys.exit(0)
