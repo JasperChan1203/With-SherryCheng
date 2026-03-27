@@ -7,7 +7,7 @@
       "id": "US-001",
       "title": "Create rlqas-chem package scaffold",
       "priority": 1,
-      "passes": false,
+      "passes": true,
       "description": "As a developer, I want a properly structured Python package skeleton for rlqas-chem, so that subsequent stories can fill in the implementation without needing to restructure.",
       "fix": [
         "Create the directory tree at ./rlqas-chem/ (relative to this CLAUDE.md):",
@@ -45,7 +45,7 @@
       "id": "US-002",
       "title": "Implement molecule and simulator modules",
       "priority": 1,
-      "passes": false,
+      "passes": true,
       "description": "As a researcher, I want rlqas_chem.molecule and rlqas_chem.simulator to provide the same molecule processing and quantum simulation capabilities as Phase 1, so I can process any supported molecule and evaluate circuit energies.",
       "fix": [
         "Copy and adapt files from Phase 1 source (../../../Phase1/006/src/rlqas/phase1/):",
@@ -78,7 +78,7 @@
       "id": "US-003",
       "title": "Implement RL agent modules (PPO, DQN, A2C, SAC-Discrete, factory)",
       "priority": 1,
-      "passes": false,
+      "passes": true,
       "description": "As a researcher, I want rlqas_chem.rl to provide all RL agent implementations from Phase 1 and Phase 2, including the multi-agent factory, so any algorithm can be selected via a string name.",
       "fix": [
         "Copy from Phase 1 (../../../Phase1/006/src/rlqas/phase1/rl/):",
@@ -107,7 +107,7 @@
       "id": "US-004",
       "title": "Implement UCC search module with Phase 5 fixes baked in",
       "priority": 1,
-      "passes": false,
+      "passes": true,
       "description": "As a researcher, I want rlqas_chem.search.ucc to provide PPO-based UCC circuit search with the Phase 5 MDP and entropy fixes already incorporated, so UCC search genuinely learns without requiring external patches.",
       "fix": [
         "Copy from Phase 1 (../../../Phase1/006/src/rlqas/phase1/search/):",
@@ -135,7 +135,7 @@
       "id": "US-005",
       "title": "Implement HEA search module",
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "description": "As a researcher, I want rlqas_chem.search.hea to provide Hardware-Efficient Ansatz (HEA) circuit search supporting all RL algorithms, so I can compare UCC and HEA approaches from the same package.",
       "fix": [
         "Copy from Phase 2 (../../../Phase2/full/src/rlqas/phase2/hea_search/):",
@@ -159,7 +159,7 @@
       "id": "US-006",
       "title": "Implement Hybrid search module with Phase 5 REINFORCE fix baked in",
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "description": "As a researcher, I want rlqas_chem.search.hybrid to provide HEA-UCC hybrid circuit search with real RL policy gradient training (REINFORCE), so hybrid search genuinely learns over episodes.",
       "fix": [
         "Copy from Phase 3 (../../../Phase3/full/src/rlqas/phase3/hybrid_search/):",
@@ -191,7 +191,7 @@
       "id": "US-007",
       "title": "Implement unified top-level API and CLI",
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "description": "As a user, I want to call rlqas_chem.search() with a molecule name and get the best circuit energy back, and optionally use a CLI command 'rlqas-chem search', without needing to know about internal module structure.",
       "fix": [
         "Implement rlqas_chem/api.py with search() function:",
@@ -231,7 +231,7 @@
       "id": "US-008",
       "title": "Tests, examples, and LiH benchmark validation",
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "description": "As a developer, I want a comprehensive test suite and usage examples for rlqas-chem, and I want the LiH benchmark (300 episodes, UCC+PPO, active_space=(2,5)) to pass chemical accuracy, confirming the Phase 5 fixes are correctly baked in.",
       "fix": [
         "Create rlqas-chem/tests/ with pytest test files:",

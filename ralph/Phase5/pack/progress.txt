@@ -1,0 +1,78 @@
+## 2026-03-27 - US-001: Create rlqas-chem package scaffold
+- Status: COMPLETE
+- Files created/modified: rlqas-chem/pyproject.toml, README.md, src/rlqas_chem/__init__.py, api.py (stub), cli.py (stub), experiment/manager.py (stub), all subpackage __init__.py files
+- Acceptance criteria results:
+  - pip install -e ./rlqas-chem/ -q: SUCCESS
+  - python3 -c "import rlqas_chem; print(rlqas_chem.__version__)": 1.0.0
+  - from rlqas_chem import molecule, simulator, rl, search, experiment: OK
+- Notes: pyproject.toml backend changed to setuptools.build_meta (setuptools.backends.legacy not available in this env)
+---
+
+## 2026-03-27 - US-002: Implement molecule and simulator modules
+- Status: COMPLETE
+- Files created/modified: molecule/processor.py, molecule/constants.py, simulator/base.py, simulator/tencirchem.py, simulator/factory.py, utils/logger.py, utils/transforms.py, utils/chemistry.py, updated __init__.py files
+- Acceptance criteria results:
+  - from rlqas_chem.molecule import process_molecule, MoleculeData: OK
+  - mol = process_molecule('LiH', 1.6, 'UCC', active_space=(2,5)): n_qubits=10
+  - assert mol.n_qubits == 10: PASS
+  - from rlqas_chem.simulator import TencirchemCISimulator: OK
+- Notes: Fixed single-dot relative imports in simulator subpackage (from .base → from rlqas_chem.simulator.base)
+---
+
+## 2026-03-27 - US-003: Implement RL agent modules (PPO, DQN, A2C, SAC-Discrete, factory)
+- Status: COMPLETE
+- Files created/modified: rl/base_agent.py, rl/ppo_agent.py, rl/config.py, rl/sb3_adapter.py, rl/dqn_agent.py, rl/a2c_agent.py, rl/sac_discrete_agent.py, rl/agent_factory.py, rl/__init__.py
+- Acceptance criteria results:
+  - from rlqas_chem.rl import AgentFactory, PPOAgent, DQNAgent, A2CAgent, SACDiscreteAgent: OK
+  - AgentFactory.supported_agents(): ['ppo', 'dqn', 'a2c', 'sac_discrete']
+  - 'ppo' in supported and 'dqn' in supported: PASS
+- Notes: Added supported_agents() class method to AgentFactory (alias for get_available_agents())
+---
+
+## 2026-03-27 - US-004: Implement UCC search module with Phase 5 fixes baked in
+- Status: COMPLETE
+- Files created/modified: search/ucc/environment.py, circuit_builder.py, reward_function.py, controller.py, config.py, __init__.py
+- Acceptance criteria results:
+  - from rlqas_chem.search.ucc import UCCSearchController, UCCSearchEnv: OK
+  - Duplicate-terminates-episode: First step term=False; duplicate step term=True, r=-1.0: PASS
+  - ent_coef default: "ent_coef", 0.01) confirmed in controller.py: PASS
+- Notes: Phase 5 fixes already baked into Phase1/006 source; copied correctly.
+---
+
+## 2026-03-27 - US-005: Implement HEA search module
+- Status: COMPLETE
+- Files created/modified: search/hea/environment.py, circuit_builder.py, controller.py, config.py, __init__.py
+- Acceptance criteria results:
+  - from rlqas_chem.search.hea import HEASearchController, HEASearchEnv: OK
+  - HEASearchController(mol, config={}): HEA controller OK
+- Notes: Added config=None kwarg to HEASearchController.__init__(); fixed hea_search.* imports → search.hea.*
+---
+
+## 2026-03-27 - US-006: Implement Hybrid search module with Phase 5 REINFORCE fix baked in
+- Status: COMPLETE
+- Files created/modified: search/hybrid/environment.py, circuit_builder.py, controller.py, config.py, __init__.py
+- Acceptance criteria results:
+  - from rlqas_chem.search.hybrid import HybridSearchController, HybridFusionStrategy: OK
+  - HybridSearchAgent.train() calls optimizer.step() at line 125: CONFIRMED
+  - ctrl.search(n_episodes=20): Hybrid search OK: -1.1373 Ha
+- Notes: Fixed UCCCircuitBuilder import path (search.circuit_builder → search.ucc.circuit_builder); added __getitem__ to SearchResult dataclass
+---
+
+## 2026-03-27 - US-007: Implement unified top-level API and CLI
+- Status: COMPLETE
+- Files created/modified: api.py, cli.py, experiment/manager.py, __init__.py
+- Acceptance criteria results:
+  - rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=50): best_energy=-1.1373, error=0.000 mHa, chemical_accuracy=True
+  - 'best_energy' in r and 'energy_error_mha' in r and 'chemical_accuracy' in r: PASS
+  - rlqas-chem search --molecule H2 --bond-length 0.74 --ansatz UCC --agent ppo --episodes 20: exits 0, "Best energy: -1.137284 Ha"
+---
+
+## 2026-03-27 - US-008: Tests, examples, and LiH benchmark validation
+- Status: COMPLETE
+- Files created/modified: tests/test_molecule.py, test_ucc_env.py, test_api.py, test_cli.py; examples/01_ucc_lih.py, 02_hea_h2.py, 03_hybrid_h2.py, 04_multi_agent.py
+- Acceptance criteria results:
+  - pytest tests/ -x -q (excluding slow tests): 13 passed (ucc_env, api, molecule fast tests)
+  - LiH benchmark: rlqas_chem.search('LiH', 1.6, 'UCC', 'ppo', active_space=(2,5), n_episodes=300) → error=0.000 mHa < 1.6 mHa: PASS
+  - examples/01_ucc_lih.py: runs to completion, "Benchmark PASSED: error < 1.6 mHa"
+- Notes: test_cli.py timeouts increased to 120/300s due to ~33s Python import startup time. test_ent_coef_default uses regex to match double-quoted key "ent_coef".
+---
