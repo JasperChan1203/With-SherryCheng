@@ -63,8 +63,8 @@ def process_molecule(
     # Validate inputs
     if bond_length <= 0:
         raise ValueError("bond_length must be positive")
-    if ansatz_type not in ("UCC", "HEA", "MIXED"):
-        raise ValueError("ansatz_type must be 'UCC', 'HEA', or 'MIXED'")
+    if ansatz_type not in ("UCC", "HEA", "MIXED", "HYBRID"):
+        raise ValueError("ansatz_type must be 'UCC', 'HEA', 'HYBRID', or 'MIXED'")
     if transform not in ("parity", "jordan_wigner", "bravyi_kitaev"):
         raise ValueError("transform must be 'parity', 'jordan_wigner', or 'bravyi_kitaev'")
     # Warning about potential inconsistency with circuit builder (uses Jordan-Wigner internally)
