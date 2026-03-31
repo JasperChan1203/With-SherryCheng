@@ -37,6 +37,18 @@ class UCCRewardFunction:
         self.baseline_type = self.config.get("baseline_type", "current_best")
         self.use_shaping = self.config.get("shaping_rewards", False)
 
+        # Alpha parameter: trade-off between energy accuracy and circuit complexity.
+        # alpha=1.0 (default) means pure energy optimization — backward compatible.
+        self.alpha = _raw.get("alpha", 1.0)
+        self.max_operators = _raw.get("max_operators", 20)
+
+        # If alpha < 1.0, use alpha-weighted complexity formula
+        if self.alpha < 1.0:
+            self.energy_weight = self.alpha
+            self._use_alpha_complexity = True
+        else:
+            self._use_alpha_complexity = False
+
         # State for shaping rewards
         self.last_energy = None
         self.consecutive_improvements = 0
@@ -129,7 +141,11 @@ class UCCRewardFunction:
         weighted_improvement = energy_improvement * self.energy_weight
 
         # Compute complexity penalty (per excitation operator)
-        complexity_penalty = self.complexity_penalty * circuit_complexity
+        if self._use_alpha_complexity:
+            max_ops = max(1, self.max_operators)
+            complexity_penalty = (1.0 - self.alpha) * (circuit_complexity / max_ops)
+        else:
+            complexity_penalty = self.complexity_penalty * circuit_complexity
 
         # Compute shaping reward
         shaping_reward = self._compute_shaping_reward(current_energy)

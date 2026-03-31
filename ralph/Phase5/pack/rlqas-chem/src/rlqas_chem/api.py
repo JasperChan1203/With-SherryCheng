@@ -33,6 +33,8 @@ def search(
     early_stop_threshold: float = 1.6e-3,
     config: Optional[Dict[str, Any]] = None,
     operator_pool: str = "fop",
+    alpha: float = 1.0,
+    max_operators: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Run RLQAS architecture search.
 
@@ -48,6 +50,10 @@ def search(
         early_stop_threshold: Stop when error < this value (Ha)
         config: Optional dict merged into controller config
         operator_pool: "fop" (fermion operator pool, default) or "qop" (qubit operator pool)
+        alpha: Trade-off between energy accuracy (1.0) and circuit complexity (0.0).
+               Default 1.0 = pure energy optimization (backward compatible).
+        max_operators: Maximum number of operators for alpha complexity normalization.
+                       Default None (uses reward function default of 20).
 
     Returns:
         dict with keys: best_energy, fci_energy, energy_error_mha,
@@ -82,7 +88,10 @@ def search(
             "n_episodes": n_episodes,
             "early_stop_threshold": early_stop_threshold,
         },
+        "alpha": alpha,
     }
+    if max_operators is not None:
+        ctrl_config["max_operators"] = max_operators
     if config:
         _deep_merge(ctrl_config, config)
 
