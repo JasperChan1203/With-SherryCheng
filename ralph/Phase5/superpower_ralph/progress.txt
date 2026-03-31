@@ -13,3 +13,69 @@
   Check 4: GRPO losses over 5 groups: [-0.227, 0.056, 0.169, 0.089, 0.135] — GRPO loss tracking PASS
 - Notes: H2 converged immediately at group 0 (exact FCI match), demonstrating real VQE calls running
 ---
+
+## 2026-03-31 - US-009: Integrate QOP (Qubit Operator Pool) into rlqas-chem
+- Status: COMPLETE
+- Files created/modified:
+  - ../pack/rlqas-chem/src/rlqas_chem/search/qop/__init__.py (created)
+  - ../pack/rlqas-chem/src/rlqas_chem/search/qop/operator_pool.py (copied from Phase3, imports rewritten)
+  - ../pack/rlqas-chem/src/rlqas_chem/search/qop/controller.py (copied from Phase3, imports rewritten)
+  - ../pack/rlqas-chem/src/rlqas_chem/search/qop/adapter.py (copied from Phase3, no changes)
+  - ../pack/rlqas-chem/src/rlqas_chem/api.py (added operator_pool='fop' param, QOP routing)
+- Acceptance criteria results:
+  - QubitOperatorPool import: PASS
+  - H2 QOP pool size >= 1: PASS (pool_size=4)
+  - search('H2', operator_pool='qop') returns best_energy: PASS (energy=-1.1368)
+  - search('H2', operator_pool='fop') backward compat: PASS
+  - Anti-hollow: LiH QOP pool_size >= 2: PASS (pool_size=100)
+---
+
+## 2026-03-31 - US-011: Multi-objective Pareto reward (alpha parameter)
+- Status: COMPLETE
+- Files created/modified:
+  - ../pack/rlqas-chem/src/rlqas_chem/search/ucc/reward_function.py (added alpha, max_operators)
+  - ../pack/rlqas-chem/src/rlqas_chem/api.py (added alpha=1.0, max_operators=None params)
+- Acceptance criteria results:
+  - search('H2', alpha=0.7) returns best_energy: PASS
+  - alpha=0.5 n_ops <= alpha=1.0 n_ops + 5: PASS
+  - UCCRewardFunction({'alpha': 1.0}) backward compat: PASS
+---
+
+## 2026-03-31 - US-012: Hyperparameter optimization with Optuna
+- Status: COMPLETE
+- Files created/modified:
+  - ../pack/rlqas-chem/src/rlqas_chem/experiment/hpo.py (created)
+  - ../pack/rlqas-chem/src/rlqas_chem/experiment/__init__.py (exports optimize_hyperparams)
+  - ../pack/rlqas-chem/src/rlqas_chem/cli.py (added optimize command)
+  - ../pack/rlqas-chem/pyproject.toml (added hpo optional dependency)
+- Acceptance criteria results:
+  - optimize_hyperparams import: PASS
+  - optimize_hyperparams('H2', 0.74, n_trials=3, n_episodes=20): PASS (best_params with lr key)
+  - CLI rlqas-chem optimize --trials 3 --episodes 20: PASS (exit code 0)
+---
+
+## 2026-03-31 - US-013: Experiment runners E1, E2, E3
+- Status: COMPLETE
+- Files created:
+  - ../pack/rlqas-chem/experiments/run_e1_pool_comparison.py
+  - ../pack/rlqas-chem/experiments/run_e2_grpo_vs_ppo.py
+  - ../pack/rlqas-chem/experiments/run_e3_pareto.py
+  - ../pack/rlqas-chem/experiments/run_all.py
+- Acceptance criteria results:
+  - All 3 scripts exit 0 and create JSON output: PASS
+  - e1_pool_comparison.json has both 'fop' and 'qop' entries: PASS
+  - e3_pareto_frontier.json has 5 entries: PASS
+- Notes: Scripts support RLQAS_N_EPISODES/RLQAS_N_SEEDS env var overrides
+---
+
+## 2026-03-31 - US-014: Cross-geometry policy transfer experiment
+- Status: COMPLETE
+- Files created/modified:
+  - ../pack/rlqas-chem/src/rlqas_chem/experiment/transfer.py (created)
+  - ../pack/rlqas-chem/src/rlqas_chem/experiment/__init__.py (exports transfer functions)
+  - ../pack/rlqas-chem/experiments/run_e4_transfer.py (created)
+- Acceptance criteria results:
+  - train_multi_geometry, evaluate_transfer import: PASS
+  - run_e4_transfer.py exits 0 (RLQAS_N_EPISODES=5): PASS
+  - e4_transfer.json has 3 test bond length entries with all 3 error fields: PASS
+---
