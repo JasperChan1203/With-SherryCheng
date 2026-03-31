@@ -84,3 +84,39 @@ def experiment(config, output):
         click.echo(f"Results saved to {output}")
 
     sys.exit(0)
+
+
+@main.command()
+@click.option('--molecule', '-m', required=True, help='Molecular formula (e.g. H2, LiH)')
+@click.option('--bond-length', '-b', type=float, required=True, help='Bond length in Angstroms')
+@click.option('--agent', default='ppo', show_default=True, help='RL agent type')
+@click.option('--operator-pool', default='fop', show_default=True, help='Operator pool (fop, qop)')
+@click.option('--trials', '-t', type=int, default=50, show_default=True, help='Number of Optuna trials')
+@click.option('--episodes', '-e', type=int, default=150, show_default=True, help='Episodes per trial')
+@click.option('--output', '-o', default=None, help='Save results as JSON to this path')
+def optimize(molecule, bond_length, agent, operator_pool, trials, episodes, output):
+    """Optimize hyperparameters using Optuna."""
+    click.echo(f"Optimizing hyperparams: {molecule} @ {bond_length} Å, {agent}, {trials} trials")
+
+    from rlqas_chem.experiment.hpo import optimize_hyperparams
+    result = optimize_hyperparams(
+        molecule=molecule,
+        bond_length=bond_length,
+        agent_type=agent,
+        operator_pool=operator_pool,
+        n_trials=trials,
+        n_episodes_per_trial=episodes,
+    )
+
+    click.echo(f"Best energy: {result['best_energy']:.6f} Ha")
+    click.echo(f"Best params: {result['best_params']}")
+
+    if output:
+        import os
+        serializable = {k: v for k, v in result.items() if k != 'study'}
+        os.makedirs(os.path.dirname(os.path.abspath(output)) if os.path.dirname(output) else '.', exist_ok=True)
+        with open(output, 'w') as f:
+            json.dump(serializable, f, indent=2)
+        click.echo(f"Results saved to {output}")
+
+    sys.exit(0)

@@ -22,5 +22,8 @@ dependencies = [
 [project.scripts]
 rlqas-chem = "rlqas_chem.cli:main"
 
+[project.optional-dependencies]
+hpo = ["optuna>=3.0"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
