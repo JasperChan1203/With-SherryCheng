@@ -14,6 +14,7 @@ from rlqas_chem.rl.ppo_agent import PPOAgent
 from rlqas_chem.rl.dqn_agent import DQNAgent
 from rlqas_chem.rl.a2c_agent import A2CAgent
 from rlqas_chem.rl.sac_discrete_agent import SACDiscreteAgent
+from rlqas_chem.rl.grpo_agent import GRPOAgent
 
 
 class AgentFactory:
@@ -43,6 +44,7 @@ class AgentFactory:
         "dqn": DQNAgent,
         "a2c": A2CAgent,
         "sac_discrete": SACDiscreteAgent,
+        "grpo": GRPOAgent,
     }
 
     @classmethod

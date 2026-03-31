@@ -5,9 +5,10 @@ from .config import AgentConfig
 from .dqn_agent import DQNAgent
 from .a2c_agent import A2CAgent
 from .sac_discrete_agent import SACDiscreteAgent
+from .grpo_agent import GRPOAgent
 from .agent_factory import AgentFactory
 
 __all__ = [
     "RLAgent", "PPOAgent", "DQNAgent", "A2CAgent", "SACDiscreteAgent",
-    "AgentFactory", "AgentConfig",
+    "GRPOAgent", "AgentFactory", "AgentConfig",
 ]

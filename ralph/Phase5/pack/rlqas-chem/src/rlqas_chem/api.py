@@ -11,8 +11,8 @@ _VALID_ANSATZ = ("UCC", "HEA", "HYBRID")
 _VALID_AGENTS = ("ppo", "dqn", "a2c", "sac_discrete", "grpo")
 _VALID_OPERATOR_POOLS = ("fop", "qop")
 
-# UCCSearchController only supports PPO; all others route to HybridSearchController
-_UCC_AGENTS = ("ppo",)
+# UCCSearchController supports PPO and GRPO; all others route to HybridSearchController
+_UCC_AGENTS = ("ppo", "grpo")
 
 _BASE_CONFIG = {
     "run_classical_opt": True,      # MUST stay True — disabling breaks energy evaluation

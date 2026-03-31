@@ -1,0 +1,20 @@
+**14 passed, 0 failed.** The full test suite runs clean with the fixed test files.
+
+All acceptance criteria for all 8 user stories are confirmed:
+
+| Story | Result |
+|-------|--------|
+| US-001 | Package scaffold, pip-installable, `__version__='1.0.0'` |
+| US-002 | `process_molecule('LiH', 1.6, 'UCC', active_space=(2,5))` → `n_qubits=10` |
+| US-003 | `AgentFactory.supported_agents()` → `['ppo', 'dqn', 'a2c', 'sac_discrete']` |
+| US-004 | Duplicate action terminates (r=-1.0), `ent_coef=0.01` confirmed |
+| US-005 | `HEASearchController(mol, config={})` works |
+| US-006 | `optimizer.step()` called in REINFORCE train loop |
+| US-007 | `rlqas_chem.search()` and `rlqas-chem` CLI both working |
+| US-008 | **14/14 tests pass**, LiH error = **0.000 mHa** < 1.6 mHa |
+
+<promise>COMPLETE</promise>
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.

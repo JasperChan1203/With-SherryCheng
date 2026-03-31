@@ -84,6 +84,16 @@ class UCCSearchController:
                 "wrapper_class": self.config.get("wrapper_class", None),
             }
             self.agent = UCCPPOAgent(config=agent_config, env=self.env)
+        elif agent_type.lower() == 'grpo':
+            from rlqas_chem.rl.grpo_agent import GRPOAgent
+            grpo_config = {
+                "lr": self.config.get("learning_rate", 3e-4),
+                "clip_range": self.config.get("clip_range", 0.2),
+                "group_size": self.config.get("group_size", 4),
+                "gamma": self.config.get("gamma", 0.99),
+                "entropy_coef": self.config.get("ent_coef", 0.01),
+            }
+            self.agent = GRPOAgent(config=grpo_config, env=self.env)
         else:
             raise ValueError(f"Unsupported agent type: {agent_type}")
 
@@ -125,6 +135,9 @@ class UCCSearchController:
         print(f"Starting UCC search for {n_episodes} episodes ({total_timesteps} timesteps)")
         print(f"Early stop threshold: {early_stop_threshold} Hartree")
 
+        if self.agent_type.lower() == 'grpo':
+            return self._grpo_search(n_episodes, early_stop_threshold)
+
         self.agent.learn(total_timesteps=total_timesteps)
 
         # Read results from env's global tracking (updated by env.step() during learn())
@@ -145,6 +158,43 @@ class UCCSearchController:
 
         print(f"Search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
         print(f"Best excitations: {len(self.best_overall_excitations)} operators")
+        return self.results
+
+    def _grpo_search(self, n_episodes: int, early_stop_threshold: float) -> Dict[str, Any]:
+        """GRPO-specific search loop."""
+        group_size = getattr(self.agent, 'group_size', 4)
+        n_groups = max(1, n_episodes // group_size)
+
+        print(f"Starting GRPO search: {n_groups} groups x {group_size} episodes = {n_groups * group_size} episodes")
+
+        for g in range(n_groups):
+            group_result = self.agent.train_one_group(self.env)
+
+            # Track best energy
+            group_best = group_result.get("best_energy", float('inf'))
+
+            # Also check global best from env
+            env_best = getattr(self.env, 'global_best_energy', float('inf'))
+            current_best = min(group_best, env_best)
+
+            if current_best < self.best_overall_energy:
+                self.best_overall_energy = current_best
+                self.best_overall_excitations = getattr(self.env, 'global_best_excitations', []) or []
+                self.best_overall_params = getattr(self.env, 'global_best_params', None)
+
+            # Early stopping
+            if self.molecule_data.fci_energy is not None and self.best_overall_energy != float('inf'):
+                err = abs(self.best_overall_energy - self.molecule_data.fci_energy)
+                if err < early_stop_threshold:
+                    print(f"  GRPO converged at group {g}: error={err*1000:.4f} mHa")
+                    break
+
+        self.results['best_energy'] = self.best_overall_energy
+        self.results['best_excitations'] = self.best_overall_excitations or []
+        self.results['best_params'] = self.best_overall_params
+        self.results['convergence_reached'] = self._check_convergence(early_stop_threshold)
+
+        print(f"GRPO search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
         return self.results
 
     def _check_convergence(self, threshold: float) -> bool:
