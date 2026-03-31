@@ -8,7 +8,8 @@ from rlqas_chem.search.ucc.controller import UCCSearchController
 from rlqas_chem.search.hybrid.controller import HybridSearchController
 
 _VALID_ANSATZ = ("UCC", "HEA", "HYBRID")
-_VALID_AGENTS = ("ppo", "dqn", "a2c", "sac_discrete")
+_VALID_AGENTS = ("ppo", "dqn", "a2c", "sac_discrete", "grpo")
+_VALID_OPERATOR_POOLS = ("fop", "qop")
 
 # UCCSearchController only supports PPO; all others route to HybridSearchController
 _UCC_AGENTS = ("ppo",)
@@ -31,6 +32,7 @@ def search(
     transform: str = "jordan_wigner",
     early_stop_threshold: float = 1.6e-3,
     config: Optional[Dict[str, Any]] = None,
+    operator_pool: str = "fop",
 ) -> Dict[str, Any]:
     """Run RLQAS architecture search.
 
@@ -38,13 +40,14 @@ def search(
         molecule: Molecular formula, e.g. "LiH", "BeH2", "H4"
         bond_length: Bond length in Angstroms
         ansatz_type: "UCC", "HEA", or "HYBRID"
-        agent_type: "ppo", "dqn", "a2c", or "sac_discrete"
+        agent_type: "ppo", "dqn", "a2c", "sac_discrete", or "grpo"
         n_episodes: Number of RL training episodes
         active_space: (n_electrons, n_orbitals); None = use default
         basis_set: Basis set (default "sto-3g")
         transform: Fermion-qubit transform (default "jordan_wigner")
         early_stop_threshold: Stop when error < this value (Ha)
         config: Optional dict merged into controller config
+        operator_pool: "fop" (fermion operator pool, default) or "qop" (qubit operator pool)
 
     Returns:
         dict with keys: best_energy, fci_energy, energy_error_mha,
@@ -58,6 +61,10 @@ def search(
     if agent_type not in _VALID_AGENTS:
         raise ValueError(
             f"Invalid agent_type '{agent_type}'. Valid options: {_VALID_AGENTS}"
+        )
+    if operator_pool not in _VALID_OPERATOR_POOLS:
+        raise ValueError(
+            f"Invalid operator_pool '{operator_pool}'. Valid options: {_VALID_OPERATOR_POOLS}"
         )
 
     # process_molecule accepts "UCC", "HEA", "HYBRID", "MIXED"
@@ -79,7 +86,17 @@ def search(
     if config:
         _deep_merge(ctrl_config, config)
 
-    if ansatz_type == "UCC" and agent_type in _UCC_AGENTS:
+    if ansatz_type == "UCC" and operator_pool == "qop":
+        # QOP: qubit operator pool — route to QubitUCCSearchController
+        from rlqas_chem.search.qop import QubitUCCSearchController
+        ctrl = QubitUCCSearchController(mol, agent_type=agent_type, config=ctrl_config)
+        result = ctrl.search(n_episodes=n_episodes,
+                             early_stop_threshold=early_stop_threshold)
+        best_energy = float(_extract(result, "best_energy") or float('inf'))
+        n_operators = _extract(result, "performance_metrics", default={}).get("qubit_pool_size")
+        fusion_template = None
+
+    elif ansatz_type == "UCC" and agent_type in _UCC_AGENTS:
         # UCC with PPO: use UCCSearchController
         ctrl = UCCSearchController(mol, agent_type=agent_type, config=ctrl_config)
         result = ctrl.search(n_episodes=n_episodes,
