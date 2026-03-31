@@ -1,0 +1,42 @@
+[
+  {
+    "molecule": "H2",
+    "bond_length": 0.74,
+    "pool": "fop",
+    "best_energy": -1.1372838344885023,
+    "energy_error_mha": 0.0,
+    "chemical_accuracy": true,
+    "n_operators": 1,
+    "n_episodes_run": 5
+  },
+  {
+    "molecule": "H2",
+    "bond_length": 0.74,
+    "pool": "qop",
+    "best_energy": -1.1243611919943368,
+    "energy_error_mha": 12.922642494165526,
+    "chemical_accuracy": false,
+    "n_operators": 4,
+    "n_episodes_run": 5
+  },
+  {
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "pool": "fop",
+    "best_energy": -7.881239960284659,
+    "energy_error_mha": 1.0844185988432287,
+    "chemical_accuracy": true,
+    "n_operators": 10,
+    "n_episodes_run": 5
+  },
+  {
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "pool": "qop",
+    "best_energy": -7.8618647698086574,
+    "energy_error_mha": 20.459609074848117,
+    "chemical_accuracy": false,
+    "n_operators": 100,
+    "n_episodes_run": 5
+  }
+]

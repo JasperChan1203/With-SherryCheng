@@ -1,0 +1,37 @@
+[
+  {
+    "alpha": 0.3,
+    "best_energy": -7.88124710919718,
+    "energy_error_mha": 1.0772696863217135,
+    "chemical_accuracy": true,
+    "n_operators": 10
+  },
+  {
+    "alpha": 0.5,
+    "best_energy": -7.8812471091971785,
+    "energy_error_mha": 1.0772696863270426,
+    "chemical_accuracy": true,
+    "n_operators": 10
+  },
+  {
+    "alpha": 0.7,
+    "best_energy": -7.881239960284671,
+    "energy_error_mha": 1.0844185988307942,
+    "chemical_accuracy": true,
+    "n_operators": 10
+  },
+  {
+    "alpha": 0.9,
+    "best_energy": -7.881247109196937,
+    "energy_error_mha": 1.0772696865544162,
+    "chemical_accuracy": true,
+    "n_operators": 10
+  },
+  {
+    "alpha": 1.0,
+    "best_energy": -7.881247109197221,
+    "energy_error_mha": 1.077269686259541,
+    "chemical_accuracy": true,
+    "n_operators": 10
+  }
+]

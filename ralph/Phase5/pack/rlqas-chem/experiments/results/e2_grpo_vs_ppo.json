@@ -1,0 +1,70 @@
+[
+  {
+    "agent": "ppo",
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "mean_energy": -7.881247109197214,
+    "std_energy": 0.0,
+    "mean_vqe_calls": 5.0,
+    "std_vqe_calls": 0.0,
+    "chem_acc_rate": 1.0,
+    "seed_results": [
+      {
+        "best_energy": -7.881247109197214,
+        "chemical_accuracy": true,
+        "n_episodes_run": 5
+      }
+    ]
+  },
+  {
+    "agent": "ppo",
+    "molecule": "BeH2",
+    "bond_length": 1.3,
+    "mean_energy": -15.584160608716623,
+    "std_energy": 0.0,
+    "mean_vqe_calls": 5.0,
+    "std_vqe_calls": 0.0,
+    "chem_acc_rate": 0.0,
+    "seed_results": [
+      {
+        "best_energy": -15.584160608716623,
+        "chemical_accuracy": false,
+        "n_episodes_run": 5
+      }
+    ]
+  },
+  {
+    "agent": "grpo",
+    "molecule": "LiH",
+    "bond_length": 1.6,
+    "mean_energy": -7.880293195037155,
+    "std_energy": 0.0,
+    "mean_vqe_calls": 5.0,
+    "std_vqe_calls": 0.0,
+    "chem_acc_rate": 0.0,
+    "seed_results": [
+      {
+        "best_energy": -7.880293195037155,
+        "chemical_accuracy": false,
+        "n_episodes_run": 5
+      }
+    ]
+  },
+  {
+    "agent": "grpo",
+    "molecule": "BeH2",
+    "bond_length": 1.3,
+    "mean_energy": -15.577017773297982,
+    "std_energy": 0.0,
+    "mean_vqe_calls": 5.0,
+    "std_vqe_calls": 0.0,
+    "chem_acc_rate": 0.0,
+    "seed_results": [
+      {
+        "best_energy": -15.577017773297982,
+        "chemical_accuracy": false,
+        "n_episodes_run": 5
+      }
+    ]
+  }
+]
