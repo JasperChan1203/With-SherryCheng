@@ -1,0 +1,270 @@
+{
+  "project": "RLQAS-CHEM: Innovation Extensions (Phase 6)",
+  "branchName": "ralph/Phase6/innovations",
+  "description": "Extend rlqas-chem with four innovation directions: (1) QOP operator pool integration, (2) GRPO agent, (3) multi-objective Pareto reward, (4) experiment runners for systematic comparison. The goal is to get the best possible VQE results, not to benchmark. All changes are additive — existing rlqas-chem functionality must not be broken.",
+  "userStories": [
+    {
+      "id": "US-009",
+      "title": "Integrate QOP (Qubit Operator Pool) into rlqas-chem",
+      "priority": 1,
+      "passes": false,
+      "description": "As a researcher, I want rlqas_chem.search.qop to provide a qubit-space operator pool analogous to the FOP pool, so I can compare FOP vs QOP search dynamics under the same RL framework.",
+      "fix": [
+        "Copy Phase 3 qubit_ops files into rlqas-chem:",
+        "  ../../Phase3/full/src/rlqas/phase3/qubit_ops/operator_pool.py → ../pack/rlqas-chem/src/rlqas_chem/search/qop/operator_pool.py",
+        "  ../../Phase3/full/src/rlqas/phase3/qubit_ops/controller.py    → ../pack/rlqas-chem/src/rlqas_chem/search/qop/controller.py",
+        "  ../../Phase3/full/src/rlqas/phase3/qubit_ops/adapter.py       → ../pack/rlqas-chem/src/rlqas_chem/search/qop/adapter.py (if exists)",
+        "Create ../pack/rlqas-chem/src/rlqas_chem/search/qop/__init__.py exporting: QubitOperatorPool, QubitUCCSearchController",
+        "Rewrite all imports in copied files:",
+        "  from rlqas.phase1.molecule.processor → from rlqas_chem.molecule",
+        "  from rlqas.phase1.search.environment  → from rlqas_chem.search.ucc.environment",
+        "  from rlqas.phase2.rl.agent_factory    → from rlqas_chem.rl.agent_factory",
+        "  from .operator_pool                   → keep as-is (relative import)",
+        "QubitUCCSearchController.search() must return a dict with keys: best_energy, fci_energy, energy_error_mha, chemical_accuracy, n_operators, molecule, bond_length, agent_type, n_episodes_run",
+        "Register 'qop' pool type in ../pack/rlqas-chem/src/rlqas_chem/api.py: when operator_pool='qop', route to QubitUCCSearchController; default operator_pool='fop' routes to existing UCCSearchController",
+        "Add operator_pool parameter to rlqas_chem.search() signature: operator_pool='fop'"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.search.qop import QubitOperatorPool, QubitUCCSearchController",
+        "from rlqas_chem.molecule import process_molecule; mol = process_molecule('H2', 0.74, 'UCC'); pool = QubitOperatorPool(mol); assert pool.get_pool_size() >= 1",
+        "import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=30, operator_pool='qop'); assert 'best_energy' in r",
+        "import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=30, operator_pool='fop'); assert 'best_energy' in r"
+      ],
+      "files": [
+        "../../Phase3/full/src/rlqas/phase3/qubit_ops/",
+        "../pack/rlqas-chem/src/rlqas_chem/search/qop/",
+        "../pack/rlqas-chem/src/rlqas_chem/api.py"
+      ]
+    },
+    {
+      "id": "US-010",
+      "title": "Implement GRPO Agent",
+      "priority": 1,
+      "passes": true,
+      "description": "As a researcher, I want a GRPO (Group Relative Policy Optimization) agent for UCC circuit search. GRPO samples G complete circuit rollouts per molecule, computes within-group relative advantages from VQE energies, and updates the policy with a clipped importance-weighted objective. No critic network is needed.",
+      "fix": [
+        "Create ../pack/rlqas-chem/src/rlqas_chem/rl/grpo_agent.py implementing GRPOAgent:",
+        "",
+        "class GRPOAgent(RLAgent):",
+        "  __init__(self, obs_dim, action_dim, config=None):",
+        "    config keys: lr (default 3e-4), clip_range (default 0.2), group_size G (default 4), gamma (default 0.99), entropy_coef (default 0.01)",
+        "    policy: 2-layer MLP → Linear(obs_dim,128)→ReLU→Linear(128,action_dim)→Softmax",
+        "    optimizer: Adam(policy.parameters(), lr=lr)",
+        "",
+        "  collect_episode(self, env) -> dict:",
+        "    Run one complete episode; return {states, actions, log_probs, final_energy}",
+        "    Episode ends when env returns terminated=True",
+        "",
+        "  compute_group_advantages(self, group_results: List[dict]) -> torch.Tensor:",
+        "    group_results: list of G dicts from collect_episode",
+        "    energy_rewards = [r['final_energy'] for r in group_results]  (lower is better, so negate)",
+        "    rewards = [-e for e in energy_rewards]",
+        "    mean_r = mean(rewards); std_r = std(rewards) + 1e-8",
+        "    advantage_i = (rewards[i] - mean_r) / std_r  for each episode i",
+        "    Return tensor of shape (G,) with per-episode advantage",
+        "",
+        "  update(self, group_results: List[dict], advantages: torch.Tensor):",
+        "    For each episode i with advantage A_i:",
+        "      For each (state, action, old_log_prob) in episode i:",
+        "        Compute new_log_prob from current policy",
+        "        ratio = exp(new_log_prob - old_log_prob)",
+        "        clipped = clip(ratio, 1-clip_range, 1+clip_range)",
+        "        policy_loss += -min(ratio * A_i, clipped * A_i)",
+        "      Add entropy bonus: -entropy_coef * entropy(policy(state))",
+        "    loss = mean(policy_loss) / total_steps; loss.backward(); optimizer.step()",
+        "",
+        "  train_one_group(self, env) -> dict:",
+        "    Collect G episodes via collect_episode",
+        "    Compute advantages via compute_group_advantages",
+        "    Call update(); return {mean_energy, best_energy, advantages}",
+        "",
+        "  act(self, obs) -> Tuple[int, float]:",
+        "    Sample action from policy; return (action, log_prob)",
+        "",
+        "Register GRPOAgent in ../pack/rlqas-chem/src/rlqas_chem/rl/agent_factory.py: add 'grpo' key",
+        "Update ../pack/rlqas-chem/src/rlqas_chem/rl/__init__.py to export GRPOAgent",
+        "",
+        "IMPORTANT: GRPOAgent.train_one_group() drives its own episode collection internally.",
+        "The UCCSearchController must detect agent_type='grpo' and call train_one_group() per group instead of the standard step-by-step training loop.",
+        "Add grpo_search() method to UCCSearchController or handle in controller.py via agent_type check."
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.rl import GRPOAgent",
+        "from rlqas_chem.rl import AgentFactory; assert 'grpo' in AgentFactory.supported_agents()",
+        "import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='grpo', n_episodes=20); assert 'best_energy' in r and r['best_energy'] < -1.0",
+        "GRPOAgent policy loss must decrease over 5 training groups on H2 (assert final_loss < initial_loss)"
+      ],
+      "files": [
+        "../pack/rlqas-chem/src/rlqas_chem/rl/grpo_agent.py",
+        "../pack/rlqas-chem/src/rlqas_chem/rl/agent_factory.py",
+        "../pack/rlqas-chem/src/rlqas_chem/rl/__init__.py",
+        "../pack/rlqas-chem/src/rlqas_chem/search/ucc/controller.py"
+      ]
+    },
+    {
+      "id": "US-011",
+      "title": "Multi-objective Pareto reward (alpha parameter)",
+      "priority": 2,
+      "passes": false,
+      "description": "As a researcher, I want to control the trade-off between energy accuracy and circuit depth via a single alpha parameter, so I can sweep alpha to generate a Pareto frontier of energy vs CNOT count.",
+      "fix": [
+        "Modify ../pack/rlqas-chem/src/rlqas_chem/search/ucc/reward_function.py:",
+        "  Add alpha parameter to UCCRewardFunction.__init__() with default alpha=1.0",
+        "  When alpha < 1.0: energy_weight = alpha; complexity_penalty_per_op = (1.0 - alpha) * base_cnot_cost",
+        "  base_cnot_cost for FOP: use 4 CNOT per operator (JW standard single/double)",
+        "  base_cnot_cost for QOP: use 2 CNOT per Pauli string operator",
+        "  Normalize: complexity_penalty = (1 - alpha) * (n_operators / max_operators) so it is in [0,1] range",
+        "  When alpha=1.0 (default): behavior is identical to current implementation (no change)",
+        "",
+        "Modify ../pack/rlqas-chem/src/rlqas_chem/search/ucc/controller.py:",
+        "  Accept alpha in config dict (default 1.0), pass to UCCRewardFunction",
+        "",
+        "Modify ../pack/rlqas-chem/src/rlqas_chem/api.py:",
+        "  Add alpha parameter to search() signature with default alpha=1.0",
+        "  Pass alpha through to controller config",
+        "",
+        "Add max_operators parameter to search() and controller:",
+        "  If max_operators is not specified and an adapt_vqe_operators count is provided, use it",
+        "  Otherwise default to existing behavior (unlimited / pool size)"
+      ],
+      "acceptanceCriteria": [
+        "import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=30, alpha=0.7); assert 'best_energy' in r",
+        "import rlqas_chem; r1 = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=30, alpha=1.0); r2 = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', agent_type='ppo', n_episodes=30, alpha=0.5); assert r2.get('n_operators', 999) <= r1.get('n_operators', 999) + 5",
+        "UCCRewardFunction(alpha=1.0).compute_reward(e, n) == UCCRewardFunction().compute_reward(e, n) for any e, n (backward compatible)"
+      ],
+      "files": [
+        "../pack/rlqas-chem/src/rlqas_chem/search/ucc/reward_function.py",
+        "../pack/rlqas-chem/src/rlqas_chem/search/ucc/controller.py",
+        "../pack/rlqas-chem/src/rlqas_chem/api.py"
+      ]
+    },
+    {
+      "id": "US-012",
+      "title": "Hyperparameter optimization with Optuna",
+      "priority": 2,
+      "passes": false,
+      "description": "As a researcher, I want a built-in hyperparameter optimization utility using Optuna that finds the best RL hyperparameters for a given molecule and agent, so I can maximize VQE performance without manual tuning.",
+      "fix": [
+        "Create ../pack/rlqas-chem/src/rlqas_chem/experiment/hpo.py:",
+        "",
+        "def optimize_hyperparams(molecule, bond_length, agent_type='ppo', operator_pool='fop',",
+        "                         n_trials=50, n_episodes_per_trial=150,",
+        "                         active_space=None, alpha=1.0) -> dict:",
+        "  Uses Optuna TPE sampler with MedianPruner",
+        "  Search space per agent:",
+        "    ALL agents: lr log-uniform [1e-5, 1e-2], gamma uniform [0.9, 0.999], max_operators int [5, 20]",
+        "    PPO/A2C: ent_coef log-uniform [1e-4, 0.1], n_steps categorical [64, 128, 256]",
+        "    DQN: epsilon_start uniform [0.5, 1.0], epsilon_end uniform [0.01, 0.1]",
+        "    GRPO: group_size categorical [2, 4, 8], clip_range uniform [0.1, 0.3]",
+        "  Objective: minimize final best_energy (lower = better)",
+        "  Pruning: report energy every 50 episodes; prune if median worse by >10%",
+        "  Returns: {best_params: dict, best_energy: float, study: optuna.Study}",
+        "",
+        "Add optuna as optional dependency in pyproject.toml (extras_require={'hpo': ['optuna>=3.0']})",
+        "Export optimize_hyperparams from rlqas_chem.experiment",
+        "Add CLI command: rlqas-chem optimize --molecule LiH --bond-length 1.6 --agent ppo --trials 50"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.experiment.hpo import optimize_hyperparams",
+        "result = optimize_hyperparams('H2', 0.74, agent_type='ppo', n_trials=3, n_episodes_per_trial=20); assert 'best_params' in result and 'lr' in result['best_params']",
+        "rlqas-chem optimize --molecule H2 --bond-length 0.74 --agent ppo --trials 3 --episodes 20 exits with code 0"
+      ],
+      "files": [
+        "../pack/rlqas-chem/src/rlqas_chem/experiment/hpo.py",
+        "../pack/rlqas-chem/src/rlqas_chem/experiment/__init__.py",
+        "../pack/rlqas-chem/src/rlqas_chem/cli.py",
+        "../pack/rlqas-chem/pyproject.toml"
+      ]
+    },
+    {
+      "id": "US-013",
+      "title": "Experiment runner: E1 (FOP vs QOP), E2 (GRPO vs PPO), E3 (Pareto frontier)",
+      "priority": 3,
+      "passes": false,
+      "description": "As a researcher, I want a single script that runs the three core experiments systematically and saves results as JSON, so I can reproduce and compare results across configurations.",
+      "fix": [
+        "Create ../pack/rlqas-chem/experiments/run_e1_pool_comparison.py:",
+        "  For each molecule in ['H2', 'LiH'] and each pool in ['fop', 'qop']:",
+        "    Run rlqas_chem.search(molecule, bond_length, agent_type='ppo', operator_pool=pool, n_episodes=300)",
+        "    Record: best_energy, energy_error_mha, chemical_accuracy, n_operators, n_episodes_run",
+        "  Save results to results/e1_pool_comparison.json",
+        "  Print summary table: molecule | pool | energy_error_mha | chemical_accuracy | n_operators",
+        "",
+        "Create ../pack/rlqas-chem/experiments/run_e2_grpo_vs_ppo.py:",
+        "  Use best pool from E1 (FOP or QOP, whichever achieved chemical accuracy faster)",
+        "  For each agent in ['ppo', 'grpo'] and each molecule in ['LiH', 'BeH2']:",
+        "    Run 3 seeds; record mean and std of: vqe_calls_to_accuracy, best_energy, chemical_accuracy",
+        "  Save results to results/e2_grpo_vs_ppo.json",
+        "  Print summary: agent | molecule | mean_vqe_calls | std_vqe_calls | chem_acc_rate",
+        "",
+        "Create ../pack/rlqas-chem/experiments/run_e3_pareto.py:",
+        "  For alpha in [0.3, 0.5, 0.7, 0.9, 1.0] and molecule='LiH':",
+        "    Run rlqas_chem.search('LiH', 1.6, agent_type='ppo', operator_pool=best_pool, alpha=alpha, n_episodes=300)",
+        "    Record: alpha, best_energy, energy_error_mha, n_operators (as proxy for CNOT count)",
+        "  Save results to results/e3_pareto_frontier.json",
+        "  Print Pareto table: alpha | energy_error_mha | n_operators",
+        "",
+        "Create ../pack/rlqas-chem/experiments/run_all.py that calls E1, E2, E3 in sequence",
+        "Bond lengths: H2=0.74, LiH=1.6, BeH2=1.3"
+      ],
+      "acceptanceCriteria": [
+        "python3 ../pack/rlqas-chem/experiments/run_e1_pool_comparison.py exits 0 and creates results/e1_pool_comparison.json",
+        "python3 ../pack/rlqas-chem/experiments/run_e2_grpo_vs_ppo.py exits 0 and creates results/e2_grpo_vs_ppo.json",
+        "python3 ../pack/rlqas-chem/experiments/run_e3_pareto.py exits 0 and creates results/e3_pareto_frontier.json",
+        "results/e1_pool_comparison.json contains keys for both 'fop' and 'qop' entries",
+        "results/e3_pareto_frontier.json contains 5 entries (one per alpha value)"
+      ],
+      "files": [
+        "../pack/rlqas-chem/experiments/run_e1_pool_comparison.py",
+        "../pack/rlqas-chem/experiments/run_e2_grpo_vs_ppo.py",
+        "../pack/rlqas-chem/experiments/run_e3_pareto.py",
+        "../pack/rlqas-chem/experiments/run_all.py"
+      ]
+    },
+    {
+      "id": "US-014",
+      "title": "Cross-geometry policy transfer experiment (exploratory)",
+      "priority": 4,
+      "passes": false,
+      "description": "As a researcher, I want to test whether an RL policy trained on multiple bond lengths of H2 can transfer to unseen bond lengths (zero-shot and fine-tune), to establish whether cross-geometry generalization is possible for quantum circuit search.",
+      "fix": [
+        "Create ../pack/rlqas-chem/src/rlqas_chem/experiment/transfer.py:",
+        "",
+        "def train_multi_geometry(molecule, bond_lengths_train, agent_type='ppo',",
+        "                         operator_pool='fop', n_episodes_per_geometry=100) -> agent:",
+        "  For each bond_length in bond_lengths_train:",
+        "    Initialize env for molecule at that bond_length",
+        "    Continue training the SAME agent (do not reset policy between geometries)",
+        "    Alternate geometries round-robin: each geometry gets n_episodes_per_geometry",
+        "  Return the trained agent",
+        "",
+        "def evaluate_transfer(agent, molecule, bond_lengths_test, operator_pool='fop',",
+        "                       n_episodes_finetune=50) -> dict:",
+        "  For each bond_length in bond_lengths_test:",
+        "    zero_shot: run agent for 1 episode without any gradient updates → record energy",
+        "    fine_tune: continue training agent for n_episodes_finetune → record energy",
+        "    from_scratch: train new agent from scratch for n_episodes_finetune → record energy",
+        "  Return {bond_length: {zero_shot_error, finetune_error, scratch_error}} for each bond_length",
+        "",
+        "Create ../pack/rlqas-chem/experiments/run_e4_transfer.py:",
+        "  train_bond_lengths = [0.5, 0.7, 0.9, 1.1, 1.3]  # equilibrium region",
+        "  test_bond_lengths  = [1.5, 1.7, 2.0]             # dissociation region",
+        "  Train agent on H2 at train_bond_lengths",
+        "  Evaluate transfer on test_bond_lengths",
+        "  Save to results/e4_transfer.json",
+        "  Print table: bond_length | zero_shot_error_mha | finetune_error_mha | scratch_error_mha",
+        "  Print conclusion: 'Transfer effective' if mean(finetune_error) < 0.5 * mean(scratch_error) else 'Transfer inconclusive'"
+      ],
+      "acceptanceCriteria": [
+        "from rlqas_chem.experiment.transfer import train_multi_geometry, evaluate_transfer",
+        "python3 ../pack/rlqas-chem/experiments/run_e4_transfer.py exits 0 and creates results/e4_transfer.json",
+        "results/e4_transfer.json contains entries for all 3 test bond lengths",
+        "results/e4_transfer.json contains zero_shot_error, finetune_error, scratch_error for each test bond length"
+      ],
+      "files": [
+        "../pack/rlqas-chem/src/rlqas_chem/experiment/transfer.py",
+        "../pack/rlqas-chem/experiments/run_e4_transfer.py"
+      ]
+    }
+  ]
+}

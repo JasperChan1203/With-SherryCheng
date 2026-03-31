@@ -1,0 +1,15 @@
+## 2026-03-31 18:22 - US-010: Implement GRPO Agent
+- Status: COMPLETE
+- Files created/modified:
+  - ../pack/rlqas-chem/src/rlqas_chem/rl/grpo_agent.py (created)
+  - ../pack/rlqas-chem/src/rlqas_chem/rl/agent_factory.py (added grpo import + registry entry)
+  - ../pack/rlqas-chem/src/rlqas_chem/rl/__init__.py (exported GRPOAgent)
+  - ../pack/rlqas-chem/src/rlqas_chem/search/ucc/controller.py (added grpo branch + _grpo_search method)
+  - ../pack/rlqas-chem/src/rlqas_chem/api.py (updated _UCC_AGENTS to include 'grpo')
+- Acceptance criteria results:
+  Check 1: GRPOAgent imported OK
+  Check 2: AgentFactory has grpo: ['ppo', 'dqn', 'a2c', 'sac_discrete', 'grpo']
+  Check 3: GRPO best_energy: -1.1372838344885023 — GRPO energy check PASS
+  Check 4: GRPO losses over 5 groups: [-0.227, 0.056, 0.169, 0.089, 0.135] — GRPO loss tracking PASS
+- Notes: H2 converged immediately at group 0 (exact FCI match), demonstrating real VQE calls running
+---
