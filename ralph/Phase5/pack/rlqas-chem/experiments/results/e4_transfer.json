@@ -1,0 +1,47 @@
+{
+  "molecule": "H2",
+  "train_bond_lengths": [
+    0.5,
+    0.7,
+    0.9,
+    1.1,
+    1.3
+  ],
+  "test_bond_lengths": [
+    1.5,
+    1.7,
+    2.0
+  ],
+  "n_episodes_per_geometry": 5,
+  "n_episodes_finetune": 5,
+  "results": {
+    "1.5": {
+      "zero_shot_error": 0.08727579887702341,
+      "finetune_error": 0.052762286521755186,
+      "scratch_error": 0.04813457437866697,
+      "fci_energy": -0.9981493534714101,
+      "zero_shot_energy": -0.9108735545943867,
+      "finetune_energy": -0.9453870669496549,
+      "scratch_energy": -0.9500147790927431
+    },
+    "1.7": {
+      "zero_shot_error": 0.08622803906683818,
+      "finetune_error": 0.07542383434803357,
+      "scratch_error": 0.07432119044546637,
+      "fci_energy": -0.971426688458341,
+      "zero_shot_energy": -0.8851986493915028,
+      "finetune_energy": -0.8960028541103074,
+      "scratch_energy": -0.8971054980128746
+    },
+    "2.0": {
+      "zero_shot_error": 0.12963071399714488,
+      "finetune_error": 0.11878220501469627,
+      "scratch_error": 0.11751521512717789,
+      "fci_energy": -0.9486411121761855,
+      "zero_shot_energy": -0.8190103981790406,
+      "finetune_energy": -0.8298589071614892,
+      "scratch_energy": -0.8311258970490076
+    }
+  },
+  "conclusion": "Transfer inconclusive"
+}
