@@ -133,6 +133,7 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
     }
 
     os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
+    os.makedirs(os.path.dirname(diag_path) or '.', exist_ok=True)
     with open(output_path, 'w') as f:
         json.dump(report, f, indent=2)
     print(f"\nReport saved → {output_path}")
