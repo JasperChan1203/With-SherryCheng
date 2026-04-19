@@ -167,3 +167,30 @@ def test_dqn_agent_learn_accepts_callback():
     # Must not raise TypeError about unexpected keyword argument 'callback'
     agent.learn(total_timesteps=50, callback=None)
     env.close()
+
+
+def test_ucc_controller_accepts_dqn_agent_type():
+    """UCCSearchController instantiates a DQNAgent when agent_type='dqn'."""
+    import sys
+    from unittest.mock import patch, MagicMock
+    from rlqas_chem.search.ucc.controller import UCCSearchController
+    from rlqas_chem.rl.dqn_agent import DQNAgent
+
+    # Retrieve the controller module via sys.modules to avoid the
+    # rlqas_chem.search name collision (rlqas_chem exports a search() function
+    # at the top level, so attribute-based import resolution fails).
+    ucc_ctrl_module = sys.modules["rlqas_chem.search.ucc.controller"]
+
+    mol = MagicMock()
+    mol.n_qubits = 4
+    mol.fci_energy = -7.882324
+    mol.hamiltonian = MagicMock()
+    mol.reference_state = None
+    mol.molecular_info = {"hf_energy": -7.8}
+
+    # Patch _init_model to prevent SB3 from trying to inspect the mock env.
+    with patch.object(ucc_ctrl_module, "UCCSearchEnv"), \
+         patch.object(ucc_ctrl_module, "SimulatorFactory"), \
+         patch.object(DQNAgent, "_init_model"):
+        controller = UCCSearchController(mol, agent_type='dqn', config={})
+        assert isinstance(controller.agent, DQNAgent)
