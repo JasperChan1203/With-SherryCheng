@@ -154,3 +154,16 @@ def test_save_writes_json():
         assert data[0]["q_loss"] == pytest.approx(0.4)
     finally:
         os.unlink(path)
+
+
+def test_dqn_agent_learn_accepts_callback():
+    """DQNAgent.learn() must accept callback=None without raising TypeError."""
+    from rlqas_chem.rl.dqn_agent import DQNAgent
+    import gymnasium as gym
+
+    env = gym.make("CartPole-v1")
+    agent = DQNAgent(config={"learning_starts": 10, "buffer_size": 100,
+                              "batch_size": 10, "verbose": 0}, env=env)
+    # Must not raise TypeError about unexpected keyword argument 'callback'
+    agent.learn(total_timesteps=50, callback=None)
+    env.close()
