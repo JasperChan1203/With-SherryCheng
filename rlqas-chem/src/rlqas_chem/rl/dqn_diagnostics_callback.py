@@ -142,6 +142,7 @@ class DQNDiagnosticsCallback(BaseCallback):
 
         return {
             "n_samples": len(self.samples),
+            "n_loss_samples": n,
             "q_loss_first": float(np.mean(losses[:head])) if losses else None,
             "q_loss_last": float(np.mean(losses[-tail:])) if losses else None,
             "q_loss_trend_pass": q_loss_trend_pass,
