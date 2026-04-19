@@ -52,7 +52,7 @@ class UCCSearchController:
 
         Args:
             molecule_data: MoleculeData object from Task 001
-            agent_type: Type of RL agent ('ppo' from Task 003)
+            agent_type: Type of RL agent ('ppo', 'grpo', or 'dqn')
             config: Controller configuration
         """
         self.molecule_data = molecule_data
@@ -96,6 +96,9 @@ class UCCSearchController:
             }
             self.agent = GRPOAgent(config=grpo_config, env=self.env)
         elif agent_type.lower() == 'dqn':
+            # Read from the raw config dict, not self.config (controller section),
+            # because DQN hyperparameters are not in the controller section of
+            # UCCSearchConfig — self.config only has agent_type, n_episodes, etc.
             raw = config or {}
             dqn_config = {
                 "learning_rate": raw.get("learning_rate", 1e-3),
