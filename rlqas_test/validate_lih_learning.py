@@ -1,47 +1,49 @@
 #!/usr/bin/env python3
 """
-LiH UCC DQN Learning Validation
-=================================
-Validates that the DQN agent in RLQAS can achieve the same goals as the
-PPO baseline: chemical accuracy + ≤ 6 excitation operators on LiH @ 1.6 Å.
+LiH UCC PPO Learning Validation
+================================
+Validates that the PPO agent in RLQAS is genuinely learning —
+not performing sophisticated random search.
 
 Pass criteria (ALL must be satisfied):
-  1. Chemical accuracy: |best_energy - FCI| < 1.6 mHa
-  2. Operator efficiency: ≤ 6 excitation operators (matching ADAPT-VQE)
-  3. Q-loss trend: mean(last 20% losses) < mean(first 20% losses)
-  4. Exploration decay: final epsilon < initial epsilon
-  5. Energy trend: final best_energy < first recorded best_energy
+  1. explained_variance (last 20% of updates) > 0.1
+  2. Policy entropy has a decreasing trend over training
+  3. Best energy improves over training
+  4. Chemical accuracy (1.6 mHa) reached within 2000 episodes
 
 Usage:
-  python validate_lih_dqn.py [--episodes 2000] [--output results/dqn_lih_validation.json]
+  python validate_lih_learning.py [--episodes 2000] [--output results/lih_validation.json]
 """
 
 import argparse
-import datetime
 import json
 import os
 import sys
+import datetime
 
+# Ensure rlqas-chem is on path
 RLQAS_CHEM = os.path.join(os.path.dirname(__file__), '..', 'rlqas-chem', 'src')
 sys.path.insert(0, os.path.abspath(RLQAS_CHEM))
 
 import numpy as np
 from rlqas_chem.molecule.processor import process_molecule
 from rlqas_chem.search.ucc.controller import UCCSearchController
-from rlqas_chem.rl.dqn_diagnostics_callback import DQNDiagnosticsCallback
+from rlqas_chem.rl.diagnostics_callback import DiagnosticsCallback
 
-MOLECULE     = 'LiH'
-BOND_LENGTH  = 1.6
-ACTIVE_SPACE = (4, 6)
-CHEM_ACC     = 1.6e-3   # Hartree
-TARGET_OPS   = 6        # ADAPT-VQE needs 5 @ 1.6 Å; we target ≤ 6
+MOLECULE       = 'LiH'
+BOND_LENGTH    = 1.6
+ACTIVE_SPACE   = (4, 6)
+FCI_ENERGY     = None        # obtained dynamically from processor
+CHEM_ACC       = 1.6e-3      # Ha
+TARGET_OPS     = 6           # ADAPT-VQE needs 5 @ 1.6 Å; we target ≤ 6
 
 
 def run_validation(n_episodes: int, output_path: str, diag_path: str):
     print("=" * 60)
-    print("RLQAS LiH DQN Learning Validation")
+    print(f"RLQAS LiH Learning Validation")
     print(f"Molecule    : {MOLECULE} @ {BOND_LENGTH} Å  active_space={ACTIVE_SPACE}")
     print(f"Episodes    : {n_episodes}")
+    print(f"FCI energy  : {FCI_ENERGY} Ha")
     print(f"Started     : {datetime.datetime.now()}")
     print("=" * 60)
 
@@ -53,32 +55,24 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
 
     config = {
         # UCCSearchConfig reads 'environment' section for env settings.
-        # Flat keys are ignored by the env; must be nested here.
         'environment': {
             'max_excitations': 5,  # hard cap: episode ends at 5 operators
         },
-        # Flat keys read directly by UCCSearchEnv via _raw_config
         'run_classical_opt': True,
         'param_init_strategy': 'zeros',
         'use_early_stop': True,
-        # DQN-specific keys (extracted by controller dqn branch from raw config)
-        'learning_rate': 1e-3,
-        'buffer_size': 50000,
+        'ent_coef': 0.05,          # higher entropy bonus to encourage exploration
+        'n_steps': 512,            # shorter rollout → more frequent updates → faster feedback
         'batch_size': 64,
-        'exploration_fraction': 0.3,
-        'exploration_final_eps': 0.05,
-        'learning_starts': 1000,
-        'train_freq': 4,
-        'target_update_interval': 500,
+        'n_epochs': 10,
+        'learning_rate': 3e-4,
         'verbose': 1,
     }
 
-    controller = UCCSearchController(mol, agent_type='dqn', config=config)
+    controller = UCCSearchController(mol, agent_type='ppo', config=config)
 
-    # sample_freq=2048 matches PPO rollout size for comparable data density
-    callback = DQNDiagnosticsCallback(
+    callback = DiagnosticsCallback(
         output_path=diag_path,
-        sample_freq=2048,
         checkpoint_freq=5,
         verbose=1,
     )
@@ -100,13 +94,13 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
     energy_error  = abs(best_energy - fci_energy) * 1000  # mHa
 
     print("\n" + "=" * 60)
-    print("DQN LEARNING DIAGNOSTICS SUMMARY")
+    print("LEARNING DIAGNOSTICS SUMMARY")
     print("=" * 60)
-    print(f"  Samples collected      : {summary['n_samples']}")
-    print(f"  Q-loss trend           : {summary['q_loss_first']:.4f} → {summary['q_loss_last']:.4f}"
-          f"  {'✓ PASS' if summary['q_loss_trend_pass'] else '✗ FAIL (loss should decrease)'}")
-    print(f"  Exploration decay      : ε {summary['exploration_rate_first']:.3f} → {summary['exploration_rate_last']:.3f}"
-          f"  {'✓ PASS' if summary['exploration_decay_pass'] else '✗ FAIL (epsilon should decrease)'}")
+    print(f"  Updates collected      : {summary['n_updates']}")
+    print(f"  explained_variance     : {summary['explained_variance_final']:.4f}"
+          f"  {'✓ PASS' if summary['ev_pass'] else '✗ FAIL (need > 0.1)'}")
+    print(f"  Entropy slope          : {summary['entropy_slope']:.5f}"
+          f"  {'✓ PASS' if summary['entropy_pass'] else '✗ FAIL (entropy_loss should rise toward 0)'}")
     print(f"  Energy trend           : {summary['best_energy_first']:.6f} → {summary['best_energy_last']:.6f} Ha"
           f"  {'✓ PASS' if summary['energy_trend_pass'] else '✗ FAIL'}")
     print(f"  Chemical accuracy      : error={energy_error:.3f} mHa"
@@ -115,13 +109,13 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
           f"  {'✓ PASS' if ops_pass else f'✗ FAIL (need ≤ {TARGET_OPS} ops with chem acc)'}")
 
     overall = summary['overall_pass'] and chem_acc_pass and ops_pass
-    print("\n" + "=" * 60)
-    print(f"  OVERALL: {'✓ PASS — DQN is learning' if overall else '✗ FAIL — DQN may not be learning'}")
+    print("\n" + ("=" * 60))
+    print(f"  OVERALL: {'✓ PASS — RL is learning' if overall else '✗ FAIL — RL may not be learning'}")
     print("=" * 60)
 
+    # --- Save full report ---
     report = {
         'timestamp': str(datetime.datetime.now()),
-        'agent': 'dqn',
         'molecule': MOLECULE,
         'bond_length': BOND_LENGTH,
         'n_episodes': n_episodes,
@@ -137,11 +131,10 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
     }
 
     os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
-    os.makedirs(os.path.dirname(diag_path) or '.', exist_ok=True)
     with open(output_path, 'w') as f:
         json.dump(report, f, indent=2)
     print(f"\nReport saved → {output_path}")
-    print(f"DQN diagnostics → {diag_path}")
+    print(f"Learning curves → {diag_path}")
 
     return overall
 
@@ -149,8 +142,8 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--episodes', type=int, default=2000)
-    parser.add_argument('--output',   default='results/dqn_lih_validation.json')
-    parser.add_argument('--diag',     default='results/dqn_lih_diagnostics.json')
+    parser.add_argument('--output',   default='results/lih_validation.json')
+    parser.add_argument('--diag',     default='results/lih_diagnostics.json')
     args = parser.parse_args()
 
     passed = run_validation(args.episodes, args.output, args.diag)
