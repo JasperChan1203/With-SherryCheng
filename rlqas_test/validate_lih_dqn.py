@@ -52,8 +52,12 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
     print(f"Target ops  : ≤ {TARGET_OPS} (ADAPT-VQE @ 1.6 Å needs 5)")
 
     config = {
-        # Environment / controller keys
-        'max_excitations': 6,
+        # UCCSearchConfig reads 'environment' section for env settings.
+        # Flat keys are ignored by the env; must be nested here.
+        'environment': {
+            'max_excitations': 6,  # hard cap: episode ends at 6 operators
+        },
+        # Flat keys read directly by UCCSearchEnv via _raw_config
         'run_classical_opt': True,
         'param_init_strategy': 'zeros',
         'use_early_stop': True,
