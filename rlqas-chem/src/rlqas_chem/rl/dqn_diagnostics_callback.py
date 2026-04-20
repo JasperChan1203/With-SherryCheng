@@ -66,8 +66,8 @@ class DQNDiagnosticsCallback(BaseCallback):
         log = self.model.logger.name_to_value
         record["q_loss"] = float(log["train/loss"]) if "train/loss" in log else None
         record["exploration_rate"] = (
-            float(log["train/exploration_rate"])
-            if "train/exploration_rate" in log
+            float(log["rollout/exploration_rate"])
+            if "rollout/exploration_rate" in log
             else None
         )
 

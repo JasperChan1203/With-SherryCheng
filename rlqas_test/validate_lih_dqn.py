@@ -53,7 +53,7 @@ def run_validation(n_episodes: int, output_path: str, diag_path: str):
 
     config = {
         # Environment / controller keys
-        'max_excitations': 30,
+        'max_excitations': 6,
         'run_classical_opt': True,
         'param_init_strategy': 'zeros',
         'use_early_stop': True,

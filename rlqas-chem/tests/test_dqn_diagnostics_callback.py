@@ -17,7 +17,7 @@ class FakeModel:
         self.logger = MagicMock()
         self.logger.name_to_value = {
             "train/loss": 0.5,
-            "train/exploration_rate": 0.8,
+            "rollout/exploration_rate": 0.8,
         }
         self.num_timesteps = 0
 
