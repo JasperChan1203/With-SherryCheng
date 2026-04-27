@@ -1,0 +1,32 @@
+=== RLQAS LiH Learning Validation ===
+Job ID  : 71746
+Node    : curie-gpu002
+Started : Sun Apr 26 10:20:54 PM CST 2026
+2026-04-26 22:21:37 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-04-26 22:22:05 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH Learning Validation
+Molecule    : LiH @ 1.6 Å  active_space=(4, 6)
+Episodes    : 2000
+FCI energy  : None Ha
+Started     : 2026-04-26 22:22:06.465085
+============================================================
+2026-04-26 22:22:13 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha  (from processor)
+Target ops  : ≤ 6 (ADAPT-VQE @ 1.6 Å needs 5)
+2026-04-26 22:22:13 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 2000 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.5661 mHa
+[DiagnosticsCallback] saved 0 updates → results/lih_diagnostics_71746.json
+Search completed. Best energy: -7.880758 Hartree
+Best excitations: 5 operators
+
+============================================================
+LEARNING DIAGNOSTICS SUMMARY
+============================================================
+  Updates collected      : 0
+
+=== Finished at Sun Apr 26 10:22:22 PM CST 2026 — exit code: 1 ===

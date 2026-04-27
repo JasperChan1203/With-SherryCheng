@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-04-17 15:30:03.573075",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.78446,
+  "best_energy": -7.881744976883211,
+  "energy_error_mha": 97.28497688321092,
+  "chemical_accuracy_pass": 

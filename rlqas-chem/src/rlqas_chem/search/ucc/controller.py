@@ -119,6 +119,41 @@ class UCCSearchController:
                 "seed": raw.get("seed", 42),
             }
             self.agent = DQNAgent(config=dqn_config, env=self.env)
+        elif agent_type.lower() == 'a2c':
+            from rlqas_chem.rl.a2c_agent import A2CAgent
+            raw = config or {}
+            a2c_config = {
+                "learning_rate": raw.get("learning_rate", 7e-4),
+                "n_steps": raw.get("n_steps", 128),
+                "gamma": raw.get("gamma", 0.99),
+                "gae_lambda": raw.get("gae_lambda", 1.0),
+                "ent_coef": raw.get("ent_coef", 0.05),
+                "vf_coef": raw.get("vf_coef", 0.5),
+                "max_grad_norm": raw.get("max_grad_norm", 0.5),
+                "verbose": raw.get("verbose", 1),
+                "seed": raw.get("seed", 42),
+                "use_gpu": raw.get("use_gpu", False),
+            }
+            self.agent = A2CAgent(config=a2c_config, env=self.env)
+        elif agent_type.lower() == 'sac_discrete':
+            from rlqas_chem.rl.sac_discrete_agent import SACDiscreteAgent
+            raw = config or {}
+            sac_config = {
+                "learning_rate": raw.get("learning_rate", 3e-4),
+                "buffer_size": raw.get("buffer_size", 50000),
+                "batch_size": raw.get("batch_size", 64),
+                "learning_starts": raw.get("learning_starts", 1000),
+                "train_freq": raw.get("train_freq", 1),
+                "gradient_steps": raw.get("gradient_steps", 1),
+                "gamma": raw.get("gamma", 0.99),
+                "tau": raw.get("tau", 0.005),
+                "alpha": raw.get("alpha", 0.2),
+                "auto_entropy_tuning": raw.get("auto_entropy_tuning", True),
+                "verbose": raw.get("verbose", 0),
+                "seed": raw.get("seed", 42),
+                "use_gpu": raw.get("use_gpu", False),
+            }
+            self.agent = SACDiscreteAgent(config=sac_config, env=self.env)
         else:
             raise ValueError(f"Unsupported agent type: {agent_type}")
 
@@ -147,25 +182,86 @@ class UCCSearchController:
         """Run UCC search.
 
         Args:
-            n_episodes: Maximum number of episodes
+            n_episodes: Maximum number of episodes. The caller's value is used
+                unless the *controller* config section explicitly overrides it
+                (i.e. the config dict contains a nested ``'controller'`` key).
+                A plain flat config (e.g. passed by validate scripts) will NOT
+                silently override the caller's value.
             early_stop_threshold: Convergence threshold (Hartree)
             callbacks: Optional SB3 callback or list of callbacks for diagnostics
 
         Returns:
             Dictionary containing search results
         """
-        n_episodes = self.config.get("n_episodes", n_episodes)
+        # FIX: Only override n_episodes when the controller section explicitly
+        # sets it (i.e. the key is present and differs from the default 1000).
+        # Previously, the UCCSearchConfig default of 1000 always silently won.
+        controller_n_episodes = self.config.get("n_episodes", None)
+        if controller_n_episodes is not None and controller_n_episodes != 1000:
+            n_episodes = controller_n_episodes
+
         early_stop_threshold = self.config.get("early_stop_threshold", early_stop_threshold)
-        max_steps = self.config.get("max_excitations", 20)
-        total_timesteps = n_episodes * max_steps
+
+        # FIX: Read max_excitations from the environment section of the raw config,
+        # not from the controller section (where it doesn't exist and defaults to 20).
+        raw_config = self.env._raw_config
+        env_max_excitations = (
+            raw_config.get("environment", {}).get("max_excitations")
+            or raw_config.get("max_excitations")
+            or self.env.config.get("max_excitations", 20)
+        )
+        total_timesteps = n_episodes * env_max_excitations
 
         print(f"Starting UCC search for {n_episodes} episodes ({total_timesteps} timesteps)")
         print(f"Early stop threshold: {early_stop_threshold} Hartree")
 
         if self.agent_type.lower() == 'grpo':
-            return self._grpo_search(n_episodes, early_stop_threshold)
+            return self._grpo_search(n_episodes, early_stop_threshold, callbacks=callbacks)
 
-        self.agent.learn(total_timesteps=total_timesteps, callback=callbacks)
+        if self.agent_type.lower() == 'sac_discrete':
+            return self._sac_search(n_episodes, early_stop_threshold, callbacks=callbacks)
+
+        # FIX: For DQN (and PPO), wire early stopping via an SB3 callback so that
+        # training terminates as soon as chemical accuracy is reached, rather than
+        # only checking after learn() returns.
+        from stable_baselines3.common.callbacks import BaseCallback
+
+        class EarlyStopCallback(BaseCallback):
+            """Stop SB3 training when the environment reaches the energy threshold."""
+
+            def __init__(self, env, threshold, fci_energy, verbose=0):
+                super().__init__(verbose)
+                self._env = env
+                self._threshold = threshold
+                self._fci_energy = fci_energy
+
+            def _on_step(self) -> bool:
+                if self._fci_energy is None:
+                    return True
+                best = getattr(self._env, 'global_best_energy', None)
+                if best is not None and abs(best - self._fci_energy) < self._threshold:
+                    if self.verbose:
+                        print(f"  Early stop: error={abs(best - self._fci_energy)*1000:.4f} mHa")
+                    return False  # returning False stops training
+                return True
+
+        early_stop_cb = EarlyStopCallback(
+            env=self.env,
+            threshold=early_stop_threshold,
+            fci_energy=self.molecule_data.fci_energy,
+            verbose=1,
+        )
+
+        # Combine with any user-provided callbacks
+        from stable_baselines3.common.callbacks import CallbackList
+        if callbacks is None:
+            combined_callbacks = early_stop_cb
+        elif isinstance(callbacks, list):
+            combined_callbacks = CallbackList([early_stop_cb] + callbacks)
+        else:
+            combined_callbacks = CallbackList([early_stop_cb, callbacks])
+
+        self.agent.learn(total_timesteps=total_timesteps, callback=combined_callbacks)
 
         # Read results from env's global tracking (updated by env.step() during learn())
         self.best_overall_energy = self.env.global_best_energy
@@ -187,7 +283,8 @@ class UCCSearchController:
         print(f"Best excitations: {len(self.best_overall_excitations)} operators")
         return self.results
 
-    def _grpo_search(self, n_episodes: int, early_stop_threshold: float) -> Dict[str, Any]:
+    def _grpo_search(self, n_episodes: int, early_stop_threshold: float,
+                     callbacks=None) -> Dict[str, Any]:
         """GRPO-specific search loop."""
         group_size = getattr(self.agent, 'group_size', 4)
         n_groups = max(1, n_episodes // group_size)
@@ -215,7 +312,12 @@ class UCCSearchController:
                     err = abs(self.best_overall_energy - self.molecule_data.fci_energy)
                     if err < early_stop_threshold:
                         print(f"  GRPO converged at group {g}: error={err*1000:.4f} mHa")
+                        if callbacks is not None and hasattr(callbacks, 'on_group_end'):
+                            callbacks.on_group_end(g, group_result, self.env)
                         break
+
+            if callbacks is not None and hasattr(callbacks, 'on_group_end'):
+                callbacks.on_group_end(g, group_result, self.env)
 
 
         self.results['best_energy'] = self.best_overall_energy
@@ -224,6 +326,57 @@ class UCCSearchController:
         self.results['convergence_reached'] = self._check_convergence(early_stop_threshold)
 
         print(f"GRPO search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
+        return self.results
+
+    def _sac_search(self, n_episodes: int, early_stop_threshold: float,
+                    callbacks=None) -> Dict[str, Any]:
+        """SAC-specific search: calls agent.learn() with step_callback for diagnostics."""
+        raw_config = self.env._raw_config
+        env_max_excitations = (
+            raw_config.get("environment", {}).get("max_excitations")
+            or raw_config.get("max_excitations")
+            or self.env.config.get("max_excitations", 20)
+        )
+        total_timesteps = n_episodes * env_max_excitations
+        sample_freq = getattr(callbacks, 'sample_freq', 2048) if callbacks else 2048
+
+        fci_energy = self.molecule_data.fci_energy
+        _stop = [False]  # mutable flag for early stopping from callback
+
+        def _step_cb(step, env, losses):
+            if fci_energy is not None:
+                best = getattr(env, 'global_best_energy', None)
+                if best is not None and abs(best - fci_energy) < early_stop_threshold:
+                    print(f"  SAC early stop at step {step}: "
+                          f"error={abs(best - fci_energy)*1000:.4f} mHa")
+                    _stop[0] = True
+            if callbacks is not None and callable(callbacks):
+                callbacks(step, env, losses)
+            return not _stop[0]  # returning False breaks SAC learn() loop
+
+        self.agent.learn(
+            total_timesteps=total_timesteps,
+            step_callback=_step_cb,
+            sample_freq=sample_freq,
+        )
+
+        self.best_overall_energy = self.env.global_best_energy
+        self.best_overall_excitations = (
+            self.env.global_best_excitations.copy()
+            if self.env.global_best_excitations else []
+        )
+        self.best_overall_params = (
+            self.env.global_best_params.copy()
+            if self.env.global_best_params is not None else None
+        )
+
+        self.results['best_energy'] = self.best_overall_energy
+        self.results['best_excitations'] = self.best_overall_excitations
+        self.results['best_params'] = self.best_overall_params
+        self.results['convergence_reached'] = self._check_convergence(early_stop_threshold)
+
+        print(f"SAC search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
+        print(f"Best excitations: {len(self.best_overall_excitations)} operators")
         return self.results
 
     def _check_convergence(self, threshold: float) -> bool:

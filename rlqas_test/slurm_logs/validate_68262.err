@@ -1,0 +1,18 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Traceback (most recent call last):
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/validate_lih_learning.py", line 140, in <module>
+    main()
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/validate_lih_learning.py", line 135, in main
+    passed = run_validation(args.episodes, args.output, args.diag)
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/validate_lih_learning.py", line 74, in run_validation
+    results = controller.search(
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas-chem/src/rlqas_chem/search/ucc/controller.py", line 143, in search
+    self.agent.learn(total_timesteps=total_timesteps, callback=callbacks)
+TypeError: PPOAgent.learn() got an unexpected keyword argument 'callback'

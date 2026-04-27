@@ -1,0 +1,211 @@
+=== RLQAS LiH Learning Validation ===
+Job ID  : 68273
+Node    : curie-gpu002
+Started : Fri Apr 17 04:51:49 PM CST 2026
+2026-04-17 16:52:32 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-04-17 16:53:04 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH Learning Validation
+Molecule    : LiH @ 1.6 Å  active_space=(4, 6)
+Episodes    : 2000
+FCI energy  : None Ha
+Started     : 2026-04-17 16:53:05.631560
+============================================================
+2026-04-17 16:53:19 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha  (from processor)
+Target ops  : ≤ 6 (ADAPT-VQE @ 1.6 Å needs 5)
+2026-04-17 16:53:19 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 1000 episodes (20000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 8    |
+|    iterations      | 1    |
+|    time_elapsed    | 241  |
+|    total_timesteps | 2048 |
+-----------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 8            |
+|    iterations           | 2            |
+|    time_elapsed         | 482          |
+|    total_timesteps      | 4096         |
+| train/                  |              |
+|    approx_kl            | 0.0068400856 |
+|    clip_fraction        | 0.0376       |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -3.74        |
+|    explained_variance   | -0.926       |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.0396      |
+|    n_updates            | 10           |
+|    policy_gradient_loss | -0.0366      |
+|    value_loss           | 0.166        |
+------------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 8            |
+|    iterations           | 3            |
+|    time_elapsed         | 730          |
+|    total_timesteps      | 6144         |
+| train/                  |              |
+|    approx_kl            | 0.0076534636 |
+|    clip_fraction        | 0.046        |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -3.73        |
+|    explained_variance   | -0.0376      |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.0659      |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0403      |
+|    value_loss           | 0.0817       |
+------------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 4           |
+|    time_elapsed         | 978         |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.008992378 |
+|    clip_fraction        | 0.0591      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.72       |
+|    explained_variance   | 0.0774      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0797     |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0457     |
+|    value_loss           | 0.0824      |
+-----------------------------------------
+[DiagnosticsCallback] saved 5 updates → results/lih_diagnostics_68273.json
+---------------------------------------
+| time/                   |           |
+|    fps                  | 8         |
+|    iterations           | 5         |
+|    time_elapsed         | 1232      |
+|    total_timesteps      | 10240     |
+| train/                  |           |
+|    approx_kl            | 0.0088462 |
+|    clip_fraction        | 0.0594    |
+|    clip_range           | 0.2       |
+|    entropy_loss         | -3.71     |
+|    explained_variance   | 0.0573    |
+|    learning_rate        | 0.0003    |
+|    loss                 | -0.0751   |
+|    n_updates            | 40        |
+|    policy_gradient_loss | -0.0422   |
+|    value_loss           | 0.0877    |
+---------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 6           |
+|    time_elapsed         | 1481        |
+|    total_timesteps      | 12288       |
+| train/                  |             |
+|    approx_kl            | 0.009871012 |
+|    clip_fraction        | 0.069       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.71       |
+|    explained_variance   | 0.0322      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0858     |
+|    n_updates            | 50          |
+|    policy_gradient_loss | -0.0466     |
+|    value_loss           | 0.0929      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 7           |
+|    time_elapsed         | 1732        |
+|    total_timesteps      | 14336       |
+| train/                  |             |
+|    approx_kl            | 0.010461664 |
+|    clip_fraction        | 0.0773      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.7        |
+|    explained_variance   | 0.0255      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0775     |
+|    n_updates            | 60          |
+|    policy_gradient_loss | -0.0485     |
+|    value_loss           | 0.0879      |
+-----------------------------------------
+----------------------------------------
+| time/                   |            |
+|    fps                  | 8          |
+|    iterations           | 8          |
+|    time_elapsed         | 1984       |
+|    total_timesteps      | 16384      |
+| train/                  |            |
+|    approx_kl            | 0.01122684 |
+|    clip_fraction        | 0.0836     |
+|    clip_range           | 0.2        |
+|    entropy_loss         | -3.69      |
+|    explained_variance   | 0.178      |
+|    learning_rate        | 0.0003     |
+|    loss                 | -0.0855    |
+|    n_updates            | 70         |
+|    policy_gradient_loss | -0.0497    |
+|    value_loss           | 0.0853     |
+----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 9           |
+|    time_elapsed         | 2239        |
+|    total_timesteps      | 18432       |
+| train/                  |             |
+|    approx_kl            | 0.011769738 |
+|    clip_fraction        | 0.0956      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.67       |
+|    explained_variance   | 0.0853      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0761     |
+|    n_updates            | 80          |
+|    policy_gradient_loss | -0.0511     |
+|    value_loss           | 0.0873      |
+-----------------------------------------
+[DiagnosticsCallback] saved 10 updates → results/lih_diagnostics_68273.json
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 10          |
+|    time_elapsed         | 2494        |
+|    total_timesteps      | 20480       |
+| train/                  |             |
+|    approx_kl            | 0.011488247 |
+|    clip_fraction        | 0.0957      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.66       |
+|    explained_variance   | 0.0957      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0661     |
+|    n_updates            | 90          |
+|    policy_gradient_loss | -0.0508     |
+|    value_loss           | 0.0919      |
+-----------------------------------------
+[DiagnosticsCallback] saved 10 updates → results/lih_diagnostics_68273.json
+Search completed. Best energy: -7.881745 Hartree
+Best excitations: 9 operators
+
+============================================================
+LEARNING DIAGNOSTICS SUMMARY
+============================================================
+  Updates collected      : 9
+  explained_variance     : 0.0957  ✗ FAIL (need > 0.1)
+  Entropy slope          : 0.00905  ✓ PASS
+  Energy trend           : -7.881247 → -7.881745 Ha  ✓ PASS
+  Chemical accuracy      : error=0.579 mHa  ✓ PASS
+  Operator efficiency    : 9 ops (target ≤ 6)  ✗ FAIL (need ≤ 6 ops with chem acc)
+
+============================================================
+  OVERALL: ✗ FAIL — RL may not be learning
+============================================================
+
+=== Finished at Fri Apr 17 05:35:02 PM CST 2026 — exit code: 1 ===

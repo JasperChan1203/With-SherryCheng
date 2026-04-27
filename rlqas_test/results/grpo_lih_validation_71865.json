@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-04-27 15:26:18.281759",
+  "agent": "grpo",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883506,
+  "best_energy": -7.8812100672485625,
+  "energy_error_mha": 1.1143116349430215,
+  "best_ops": 5,
+  "target_ops": 6,
+  "chemical_accuracy_pass": 

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-04-27 16:11:59.301809",
+  "agent": "a2c",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883506,
+  "best_energy": -7.880758293643951,
+  "energy_error_mha": 1.5660852395544822,
+  "best_ops": 5,
+  "target_ops": 6,
+  "chemical_accuracy_pass": true,
+  "operator_efficiency_pass": true,
+  "diagnostics": {
+    "n_updates": 0,
+    "explained_variance_final": null,
+    "ev_pass": false,
+    "entropy_slope": null,
+    "entropy_pass": false,
+    "best_energy_first": null,
+    "best_energy_last": null,
+    "energy_trend_pass": false,
+    "overall_pass": false
+  },
+  "overall_pass": false
+}

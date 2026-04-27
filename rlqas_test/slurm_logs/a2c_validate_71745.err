@@ -1,0 +1,26 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Traceback (most recent call last):
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/validate_lih_a2c.py", line 171, in <module>
+    main()
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/validate_lih_a2c.py", line 166, in main
+    passed = run_validation(args.episodes, args.output, args.diag)
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/validate_lih_a2c.py", line 152, in run_validation
+    json.dump(report, f, indent=2)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool_ is not JSON serializable

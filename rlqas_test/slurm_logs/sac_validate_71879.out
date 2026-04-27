@@ -1,0 +1,42 @@
+=== RLQAS LiH SAC-Discrete Learning Validation ===
+Job ID  : 71879
+Node    : curie-gpu002
+Started : Mon Apr 27 05:10:32 PM CST 2026
+2026-04-27 17:11:18 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-04-27 17:11:53 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH SAC-Discrete Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(4, 6)
+Episodes    : 2000
+Started     : 2026-04-27 17:11:54.472917
+============================================================
+2026-04-27 17:12:05 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha  (from processor)
+Target ops  : <= 6 (ADAPT-VQE @ 1.6 A needs 5)
+2026-04-27 17:12:05 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2000 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+  SAC early stop at step 4096: error=1.5588 mHa
+SAC search completed. Best energy: -7.880766 Hartree
+Best excitations: 5 operators
+[SACDiagnosticsTracker] saved 2 samples → results/sac_lih_diagnostics_71879.json
+
+============================================================
+SAC LEARNING DIAGNOSTICS SUMMARY
+============================================================
+  Samples collected      : 2
+  Actor loss trend       : -11.2763 -> -14.4775  PASS
+  Alpha (temperature)    : 1.1899 -> 1.5376  PASS (tuned)
+  Energy trend           : -7.880160 -> -7.880766 Ha  PASS
+  Chemical accuracy      : error=1.559 mHa  PASS
+  Operator efficiency    : 5 ops (target <= 6)  PASS
+
+============================================================
+  OVERALL: PASS -- SAC is learning
+============================================================
+
+Report saved -> results/sac_lih_validation_71879.json
+SAC diagnostics -> results/sac_lih_diagnostics_71879.json
+
+=== Finished at Mon Apr 27 05:28:15 PM CST 2026 -- exit code: 0 ===

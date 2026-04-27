@@ -1,0 +1,325 @@
+=== RLQAS Molecule Test ===
+Job ID  : 53415
+Node    : curie-gpu002
+Started : Wed Apr  1 09:07:44 PM CST 2026
+Python  : Python 3.10.13
+2026-04-01 21:14:59 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+Episodes: 500
+
+2026-04-01 21:21:26 - root - INFO - Logging configured with level INFO
+RLQAS Molecule Test  |  2026-04-01 21:21:32
+Molecules : ['LiH', 'BeH2', 'H6']
+Agents    : ['ppo', 'grpo']
+Episodes  : 500
+Output    : results/results_20260401_211617.json
+======================================================================
+
+--- LiH (bond_length=1.0 Å) ---
+  [PPO] LiH @ 1.0 Å  (500 episodes) ...
+2026-04-01 21:21:45 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.784460
+2026-04-01 21:21:45 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 8    |
+|    iterations      | 1    |
+|    time_elapsed    | 247  |
+|    total_timesteps | 2048 |
+-----------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 8            |
+|    iterations           | 2            |
+|    time_elapsed         | 492          |
+|    total_timesteps      | 4096         |
+| train/                  |              |
+|    approx_kl            | 0.0072246236 |
+|    clip_fraction        | 0.0372       |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -3.74        |
+|    explained_variance   | -0.639       |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.0157      |
+|    n_updates            | 10           |
+|    policy_gradient_loss | -0.037       |
+|    value_loss           | 0.186        |
+------------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 8            |
+|    iterations           | 3            |
+|    time_elapsed         | 741          |
+|    total_timesteps      | 6144         |
+| train/                  |              |
+|    approx_kl            | 0.0077003734 |
+|    clip_fraction        | 0.045        |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -3.73        |
+|    explained_variance   | -0.129       |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.0511      |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0413      |
+|    value_loss           | 0.128        |
+------------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 4           |
+|    time_elapsed         | 992         |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.010061639 |
+|    clip_fraction        | 0.0679      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.72       |
+|    explained_variance   | -0.0578     |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0393     |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0465     |
+|    value_loss           | 0.143       |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 5           |
+|    time_elapsed         | 1244        |
+|    total_timesteps      | 10240       |
+| train/                  |             |
+|    approx_kl            | 0.010281707 |
+|    clip_fraction        | 0.075       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.71       |
+|    explained_variance   | -0.0754     |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0486     |
+|    n_updates            | 40          |
+|    policy_gradient_loss | -0.0479     |
+|    value_loss           | 0.149       |
+-----------------------------------------
+Search completed. Best energy: -7.783968 Hartree
+Best excitations: 10 operators
+    → energy=-7.783968 Ha  error=0.49 mHa  ops=10  ✓ CHEM_ACC  (1298.5s)
+  [GRPO] LiH @ 1.0 Å  (500 episodes) ...
+2026-04-01 21:43:25 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.784460
+2026-04-01 21:43:25 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 125 groups x 4 episodes = 500 episodes
+GRPO search completed. Best energy: -7.783756 Hartree
+    → energy=-7.783756 Ha  error=0.70 mHa  ops=10  ✓ CHEM_ACC  (476.7s)
+
+--- BeH2 (bond_length=1.0 Å) ---
+  [PPO] BeH2 @ 1.0 Å  (500 episodes) ...
+2026-04-01 21:51:19 - rlqas_chem.molecule.processor - INFO - Processed molecule BeH2 with active space (6, 7), transform jordan_wigner, qubits=14, FCI energy=-15.481741
+2026-04-01 21:51:19 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 5    |
+|    iterations      | 1    |
+|    time_elapsed    | 372  |
+|    total_timesteps | 2048 |
+-----------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 5           |
+|    iterations           | 2           |
+|    time_elapsed         | 742         |
+|    total_timesteps      | 4096        |
+| train/                  |             |
+|    approx_kl            | 0.007365091 |
+|    clip_fraction        | 0.0417      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.02       |
+|    explained_variance   | -0.651      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0295     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0409     |
+|    value_loss           | 0.169       |
+-----------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 5            |
+|    iterations           | 3            |
+|    time_elapsed         | 1110         |
+|    total_timesteps      | 6144         |
+| train/                  |              |
+|    approx_kl            | 0.0085706115 |
+|    clip_fraction        | 0.0591       |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -4.02        |
+|    explained_variance   | -0.264       |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.0511      |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0465      |
+|    value_loss           | 0.148        |
+------------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 5            |
+|    iterations           | 4            |
+|    time_elapsed         | 1489         |
+|    total_timesteps      | 8192         |
+| train/                  |              |
+|    approx_kl            | 0.0085534435 |
+|    clip_fraction        | 0.0539       |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -4.01        |
+|    explained_variance   | -0.0853      |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.0709      |
+|    n_updates            | 30           |
+|    policy_gradient_loss | -0.0478      |
+|    value_loss           | 0.143        |
+------------------------------------------
+----------------------------------------
+| time/                   |            |
+|    fps                  | 5          |
+|    iterations           | 5          |
+|    time_elapsed         | 1868       |
+|    total_timesteps      | 10240      |
+| train/                  |            |
+|    approx_kl            | 0.01093677 |
+|    clip_fraction        | 0.0814     |
+|    clip_range           | 0.2        |
+|    entropy_loss         | -4.01      |
+|    explained_variance   | -0.1       |
+|    learning_rate        | 0.0003     |
+|    loss                 | -0.0858    |
+|    n_updates            | 40         |
+|    policy_gradient_loss | -0.0539    |
+|    value_loss           | 0.137      |
+----------------------------------------
+Search completed. Best energy: -15.473548 Hartree
+Best excitations: 10 operators
+    → energy=-15.473548 Ha  error=8.19 mHa  ops=10  ✗ not converged  (1880.4s)
+  [GRPO] BeH2 @ 1.0 Å  (500 episodes) ...
+2026-04-01 22:22:39 - rlqas_chem.molecule.processor - INFO - Processed molecule BeH2 with active space (6, 7), transform jordan_wigner, qubits=14, FCI energy=-15.481741
+2026-04-01 22:22:39 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 125 groups x 4 episodes = 500 episodes
+GRPO search completed. Best energy: -15.471423 Hartree
+    → energy=-15.471423 Ha  error=10.32 mHa  ops=10  ✗ not converged  (758.9s)
+
+--- H6 (bond_length=1.0 Å) ---
+  [PPO] H6 @ 1.0 Å  (500 episodes) ...
+2026-04-01 22:35:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H6 with active space (6, 6), transform jordan_wigner, qubits=12, FCI energy=-3.236066
+2026-04-01 22:35:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 4    |
+|    iterations      | 1    |
+|    time_elapsed    | 449  |
+|    total_timesteps | 2048 |
+-----------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 2           |
+|    time_elapsed         | 905         |
+|    total_timesteps      | 4096        |
+| train/                  |             |
+|    approx_kl            | 0.007085991 |
+|    clip_fraction        | 0.03        |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.23       |
+|    explained_variance   | -0.406      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0218     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0417     |
+|    value_loss           | 0.19        |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 3           |
+|    time_elapsed         | 1359        |
+|    total_timesteps      | 6144        |
+| train/                  |             |
+|    approx_kl            | 0.009538167 |
+|    clip_fraction        | 0.0636      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.23       |
+|    explained_variance   | -0.116      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0647     |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0525     |
+|    value_loss           | 0.153       |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 4           |
+|    time_elapsed         | 1813        |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.010249861 |
+|    clip_fraction        | 0.0824      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.22       |
+|    explained_variance   | -0.0619     |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.082      |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0552     |
+|    value_loss           | 0.15        |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 5           |
+|    time_elapsed         | 2274        |
+|    total_timesteps      | 10240       |
+| train/                  |             |
+|    approx_kl            | 0.010912886 |
+|    clip_fraction        | 0.0875      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.22       |
+|    explained_variance   | -0.113      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0702     |
+|    n_updates            | 40          |
+|    policy_gradient_loss | -0.0568     |
+|    value_loss           | 0.148       |
+-----------------------------------------
+Search completed. Best energy: -3.195180 Hartree
+Best excitations: 10 operators
+    → energy=-3.195180 Ha  error=40.89 mHa  ops=10  ✗ not converged  (2286.3s)
+  [GRPO] H6 @ 1.0 Å  (500 episodes) ...
+2026-04-01 23:13:25 - rlqas_chem.molecule.processor - INFO - Processed molecule H6 with active space (6, 6), transform jordan_wigner, qubits=12, FCI energy=-3.236066
+2026-04-01 23:13:25 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 500 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 125 groups x 4 episodes = 500 episodes
+GRPO search completed. Best energy: -3.203903 Hartree
+    → energy=-3.203903 Ha  error=32.16 mHa  ops=10  ✗ not converged  (948.5s)
+
+======================================================================
+Molecule Agent     Energy (Ha)  Error (mHa)   Ops  ChemAcc
+----------------------------------------------------------------------
+LiH      ppo         -7.783968        0.492    10      YES
+LiH      grpo        -7.783756        0.704    10      YES
+BeH2     ppo        -15.473548        8.193    10       NO
+BeH2     grpo       -15.471423       10.318    10       NO
+H6       ppo         -3.195180       40.886    10       NO
+H6       grpo        -3.203903       32.163    10       NO
+======================================================================
+
+Results saved to: results/results_20260401_211617.json
+
+=== Finished at Wed Apr  1 11:29:51 PM CST 2026 | Exit code: 0 ===

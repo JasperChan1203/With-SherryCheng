@@ -1,0 +1,91 @@
+=== RLQAS LiH GRPO Learning Validation ===
+Job ID  : 71875
+Node    : curie-gpu002
+Started : Mon Apr 27 04:10:23 PM CST 2026
+
+2026-04-27 16:11:09 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-04-27 16:11:46 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH GRPO Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(4, 6)
+Episodes    : 2000
+Started     : 2026-04-27 16:11:46.714127
+============================================================
+2026-04-27 16:11:54 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha  (from processor)
+Target ops  : <= 6 (ADAPT-VQE @ 1.6 A needs 5)
+2026-04-27 16:11:54 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2000 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 500 groups x 4 episodes = 2000 episodes
+[GRPODiagnosticsTracker] saved 10 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 20 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 30 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 40 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 50 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 60 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 70 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 80 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 90 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 100 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 110 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 120 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 130 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 140 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 150 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 160 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 170 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 180 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 190 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 200 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 210 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 220 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 230 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 240 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 250 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 260 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 270 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 280 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 290 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 300 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 310 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 320 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 330 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 340 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 350 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 360 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 370 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 380 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 390 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 400 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 410 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 420 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 430 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 440 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 450 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 460 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 470 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 480 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 490 groups → results/grpo_lih_diagnostics_71875.json
+[GRPODiagnosticsTracker] saved 500 groups → results/grpo_lih_diagnostics_71875.json
+GRPO search completed. Best energy: -7.881219 Hartree
+[GRPODiagnosticsTracker] saved 500 groups → results/grpo_lih_diagnostics_71875.json
+
+============================================================
+GRPO LEARNING DIAGNOSTICS SUMMARY
+============================================================
+  Groups completed       : 500
+  Policy loss trend      : -0.0461 -> -0.0585  PASS
+  Energy trend           : -7.876583 -> -7.881219 Ha  PASS
+  Chemical accuracy      : error=1.105 mHa  PASS
+  Operator efficiency    : 5 ops (target <= 6)  PASS
+
+============================================================
+  OVERALL: PASS -- GRPO is learning
+============================================================
+
+Report saved -> results/grpo_lih_validation_71875.json
+GRPO diagnostics -> results/grpo_lih_diagnostics_71875.json
+
+=== Finished at Mon Apr 27 04:31:12 PM CST 2026 -- exit code: 0 ===

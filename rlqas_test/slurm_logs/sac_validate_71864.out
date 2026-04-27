@@ -1,0 +1,38 @@
+=== RLQAS LiH SAC-Discrete Learning Validation ===
+Job ID  : 71864
+Node    : curie-gpu002
+Started : Mon Apr 27 03:05:51 PM CST 2026
+2026-04-27 15:06:35 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-04-27 15:07:11 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH SAC-Discrete Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(4, 6)
+Episodes    : 2000
+Started     : 2026-04-27 15:07:12.689761
+============================================================
+2026-04-27 15:07:24 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha  (from processor)
+Target ops  : <= 6 (ADAPT-VQE @ 1.6 A needs 5)
+2026-04-27 15:07:24 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2000 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+SAC search completed. Best energy: -7.880737 Hartree
+Best excitations: 5 operators
+[SACDiagnosticsTracker] saved 4 samples → results/sac_lih_diagnostics_71864.json
+
+============================================================
+SAC LEARNING DIAGNOSTICS SUMMARY
+============================================================
+  Samples collected      : 4
+  Actor loss trend       : -13.0802 -> -1.4139  FAIL (loss should decrease)
+  Alpha (temperature)    : 1.1667 -> 0.1741  PASS (tuned)
+  Energy trend           : -7.880679 -> -7.880679 Ha  FAIL
+  Chemical accuracy      : error=1.587 mHa  PASS
+  Operator efficiency    : 5 ops (target <= 6)  PASS
+
+============================================================
+  OVERALL: FAIL -- SAC may not be learning
+============================================================
+
+=== Finished at Mon Apr 27 03:57:07 PM CST 2026 -- exit code: 1 ===

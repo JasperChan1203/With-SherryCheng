@@ -1,0 +1,56 @@
+[
+  {
+    "step": 2048,
+    "q_loss": 0.03067602589726448,
+    "exploration_rate": 0.6758916666666668,
+    "global_best_energy": -7.880782706466866
+  },
+  {
+    "step": 4096,
+    "q_loss": 0.040728092193603516,
+    "exploration_rate": 0.3516250000000001,
+    "global_best_energy": -7.88167085579716
+  },
+  {
+    "step": 6144,
+    "q_loss": 0.03981897979974747,
+    "exploration_rate": 0.05,
+    "global_best_energy": -7.88167085579716
+  },
+  {
+    "step": 8192,
+    "q_loss": 0.012925524264574051,
+    "exploration_rate": 0.05,
+    "global_best_energy": -7.88167085579716
+  },
+  {
+    "step": 10240,
+    "q_loss": 0.01502779871225357,
+    "exploration_rate": 0.05,
+    "global_best_energy": -7.88167085579716
+  },
+  {
+    "step": 12288,
+    "q_loss": 0.01196520309895277,
+    "exploration_rate": 0.05,
+    "global_best_energy": -7.88167085579716
+  },
+  {
+    "step": 14336,
+    "q_loss": 0.00797219667583704,
+    "exploration_rate": 0.05,
+    "global_best_energy": -7.88167085579716
+  },
+  {
+    "step": 16384,
+    "q_loss": 0.007631261833012104,
+    "exploration_rate": 0.05,
+    "global_best_energy": -7.88167085579716
+  },
+  {
+    "step": 18432,
+    "q_loss": null,
+    "exploration_rate": null,
+    "global_best_energy": -7.88167085579716
+  }
+]

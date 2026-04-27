@@ -1,0 +1,763 @@
+=== RLQAS vs ADAPT-VQE Comparison ===
+Job ID  : 63701
+Node    : curie-gpu002
+Started : Tue Apr  7 08:43:23 PM CST 2026
+
+2026-04-07 20:44:07 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+
+>>> Step 1: ADAPT-VQE
+Started : Tue Apr  7 08:44:14 PM CST 2026
+
+============================================================
+ADAPT-VQE: LiH  active_space=(4, 6)
+============================================================
+FCI energy: -7.784460 Ha
+n_qubits:   12
+Operator pool size: 42
+  Iter  0 | ops= 1 | E=-7.779421 Ha | err=5.039 mHa | |grad|=0.2826
+  Iter  1 | ops= 2 | E=-7.780632 Ha | err=3.828 mHa | |grad|=0.1415
+  Iter  2 | ops= 3 | E=-7.781764 Ha | err=2.696 mHa | |grad|=0.1263
+  Iter  3 | ops= 4 | E=-7.782689 Ha | err=1.771 mHa | |grad|=0.1117
+  Iter  4 | ops= 5 | E=-7.783567 Ha | err=0.894 mHa | |grad|=0.0977
+  *** Chemical accuracy reached at 5 operators ***
+  Iter  5 | ops= 6 | E=-7.783638 Ha | err=0.822 mHa | |grad|=0.0832
+  Iter  6 | ops= 7 | E=-7.783690 Ha | err=0.770 mHa | |grad|=0.0732
+  Iter  7 | ops= 8 | E=-7.783743 Ha | err=0.717 mHa | |grad|=0.0685
+  Iter  8 | ops= 9 | E=-7.783928 Ha | err=0.532 mHa | |grad|=0.0634
+  Iter  9 | ops=10 | E=-7.783944 Ha | err=0.516 mHa | |grad|=0.0602
+  Iter 10 | ops=11 | E=-7.783972 Ha | err=0.488 mHa | |grad|=0.0570
+  Iter 11 | ops=12 | E=-7.783988 Ha | err=0.472 mHa | |grad|=0.0538
+  Iter 12 | ops=13 | E=-7.784016 Ha | err=0.444 mHa | |grad|=0.0503
+  Iter 13 | ops=14 | E=-7.784030 Ha | err=0.431 mHa | |grad|=0.0468
+  Iter 14 | ops=15 | E=-7.784043 Ha | err=0.417 mHa | |grad|=0.0437
+  Iter 15 | ops=16 | E=-7.784063 Ha | err=0.397 mHa | |grad|=0.0404
+  Iter 16 | ops=17 | E=-7.784083 Ha | err=0.377 mHa | |grad|=0.0378
+  Iter 17 | ops=18 | E=-7.784104 Ha | err=0.356 mHa | |grad|=0.0349
+  Iter 18 | ops=19 | E=-7.784125 Ha | err=0.335 mHa | |grad|=0.0318
+  Iter 19 | ops=20 | E=-7.784145 Ha | err=0.315 mHa | |grad|=0.0283
+  Iter 20 | ops=21 | E=-7.784165 Ha | err=0.295 mHa | |grad|=0.0247
+  Iter 21 | ops=22 | E=-7.784169 Ha | err=0.291 mHa | |grad|=0.0205
+  Iter 22 | ops=23 | E=-7.784314 Ha | err=0.146 mHa | |grad|=0.0175
+  Iter 23 | ops=24 | E=-7.784439 Ha | err=0.021 mHa | |grad|=0.0148
+  Iter 24 | ops=25 | E=-7.784444 Ha | err=0.016 mHa | |grad|=0.0122
+  Iter 25 | ops=26 | E=-7.784450 Ha | err=0.010 mHa | |grad|=0.0097
+  Iter 26 | ops=27 | E=-7.784451 Ha | err=0.010 mHa | |grad|=0.0063
+  Iter 27 | ops=28 | E=-7.784451 Ha | err=0.009 mHa | |grad|=0.0056
+  Iter 28 | ops=29 | E=-7.784452 Ha | err=0.008 mHa | |grad|=0.0049
+  Iter 29 | ops=30 | E=-7.784453 Ha | err=0.008 mHa | |grad|=0.0043
+  Iter 30 | ops=31 | E=-7.784453 Ha | err=0.007 mHa | |grad|=0.0036
+  Iter 31 | ops=32 | E=-7.784453 Ha | err=0.007 mHa | |grad|=0.0030
+  Iter 32 | ops=33 | E=-7.784455 Ha | err=0.006 mHa | |grad|=0.0024
+  Iter 33 | ops=34 | E=-7.784455 Ha | err=0.005 mHa | |grad|=0.0010
+  Iter 34 | ops=35 | E=-7.784456 Ha | err=0.005 mHa | |grad|=0.0000
+  Gradient converged (norm=2.84e-05)
+
+============================================================
+ADAPT-VQE: BeH2  active_space=(6, 7)
+============================================================
+FCI energy: -15.481741 Ha
+n_qubits:   14
+Operator pool size: 56
+  Iter  0 | ops= 1 | E=-15.460521 Ha | err=21.220 mHa | |grad|=0.4350
+  Iter  1 | ops= 2 | E=-15.462848 Ha | err=18.893 mHa | |grad|=0.4037
+  Iter  2 | ops= 3 | E=-15.465208 Ha | err=16.533 mHa | |grad|=0.3745
+  Iter  3 | ops= 4 | E=-15.466759 Ha | err=14.982 mHa | |grad|=0.3429
+  Iter  4 | ops= 5 | E=-15.469646 Ha | err=12.095 mHa | |grad|=0.3142
+  Iter  5 | ops= 6 | E=-15.471523 Ha | err=10.218 mHa | |grad|=0.2858
+  Iter  6 | ops= 7 | E=-15.473485 Ha | err=8.256 mHa | |grad|=0.2557
+  Iter  7 | ops= 8 | E=-15.474574 Ha | err=7.167 mHa | |grad|=0.2177
+  Iter  8 | ops= 9 | E=-15.477838 Ha | err=3.903 mHa | |grad|=0.1815
+  Iter  9 | ops=10 | E=-15.480910 Ha | err=0.831 mHa | |grad|=0.1417
+  *** Chemical accuracy reached at 10 operators ***
+  Iter 10 | ops=11 | E=-15.480946 Ha | err=0.795 mHa | |grad|=0.0936
+  Iter 11 | ops=12 | E=-15.480994 Ha | err=0.747 mHa | |grad|=0.0832
+  Iter 12 | ops=13 | E=-15.481042 Ha | err=0.699 mHa | |grad|=0.0781
+  Iter 13 | ops=14 | E=-15.481088 Ha | err=0.653 mHa | |grad|=0.0727
+  Iter 14 | ops=15 | E=-15.481110 Ha | err=0.631 mHa | |grad|=0.0672
+  Iter 15 | ops=16 | E=-15.481157 Ha | err=0.584 mHa | |grad|=0.0602
+  Iter 16 | ops=17 | E=-15.481178 Ha | err=0.563 mHa | |grad|=0.0535
+  Iter 17 | ops=18 | E=-15.481266 Ha | err=0.475 mHa | |grad|=0.0447
+  Iter 18 | ops=19 | E=-15.481330 Ha | err=0.411 mHa | |grad|=0.0415
+  Iter 19 | ops=20 | E=-15.481338 Ha | err=0.403 mHa | |grad|=0.0396
+  Iter 20 | ops=21 | E=-15.481345 Ha | err=0.396 mHa | |grad|=0.0372
+  Iter 21 | ops=22 | E=-15.481349 Ha | err=0.392 mHa | |grad|=0.0346
+  Iter 22 | ops=23 | E=-15.481355 Ha | err=0.386 mHa | |grad|=0.0323
+  Iter 23 | ops=24 | E=-15.481361 Ha | err=0.381 mHa | |grad|=0.0300
+  Iter 24 | ops=25 | E=-15.481383 Ha | err=0.358 mHa | |grad|=0.0274
+  Iter 25 | ops=26 | E=-15.481401 Ha | err=0.340 mHa | |grad|=0.0242
+  Iter 26 | ops=27 | E=-15.481431 Ha | err=0.310 mHa | |grad|=0.0217
+  Iter 27 | ops=28 | E=-15.481458 Ha | err=0.283 mHa | |grad|=0.0194
+  Iter 28 | ops=29 | E=-15.481461 Ha | err=0.280 mHa | |grad|=0.0170
+  Iter 29 | ops=30 | E=-15.481464 Ha | err=0.278 mHa | |grad|=0.0147
+  Iter 30 | ops=31 | E=-15.481469 Ha | err=0.272 mHa | |grad|=0.0119
+  Iter 31 | ops=32 | E=-15.481476 Ha | err=0.266 mHa | |grad|=0.0096
+  Iter 32 | ops=33 | E=-15.481476 Ha | err=0.265 mHa | |grad|=0.0063
+  Iter 33 | ops=34 | E=-15.481477 Ha | err=0.264 mHa | |grad|=0.0054
+  Iter 34 | ops=35 | E=-15.481477 Ha | err=0.264 mHa | |grad|=0.0043
+  Iter 35 | ops=36 | E=-15.481477 Ha | err=0.264 mHa | |grad|=0.0034
+  Iter 36 | ops=37 | E=-15.481477 Ha | err=0.264 mHa | |grad|=0.0022
+  Iter 37 | ops=38 | E=-15.481477 Ha | err=0.264 mHa | |grad|=0.0015
+  Iter 38 | ops=39 | E=-15.481616 Ha | err=0.125 mHa | |grad|=0.0001
+  Gradient converged (norm=5.68e-05)
+
+============================================================
+ADAPT-VQE: H6  active_space=(6, 6)
+============================================================
+FCI energy: -3.236066 Ha
+n_qubits:   12
+Operator pool size: 69
+  Iter  0 | ops= 1 | E=-3.154245 Ha | err=81.821 mHa | |grad|=0.6983
+  Iter  1 | ops= 2 | E=-3.162911 Ha | err=73.155 mHa | |grad|=0.6746
+  Iter  2 | ops= 3 | E=-3.172045 Ha | err=64.021 mHa | |grad|=0.6476
+  Iter  3 | ops= 4 | E=-3.178538 Ha | err=57.529 mHa | |grad|=0.6183
+  Iter  4 | ops= 5 | E=-3.185446 Ha | err=50.621 mHa | |grad|=0.5840
+  Iter  5 | ops= 6 | E=-3.192611 Ha | err=43.455 mHa | |grad|=0.5439
+  Iter  6 | ops= 7 | E=-3.195161 Ha | err=40.905 mHa | |grad|=0.4973
+  Iter  7 | ops= 8 | E=-3.198199 Ha | err=37.867 mHa | |grad|=0.4736
+  Iter  8 | ops= 9 | E=-3.201313 Ha | err=34.753 mHa | |grad|=0.4378
+  Iter  9 | ops=10 | E=-3.204223 Ha | err=31.843 mHa | |grad|=0.3978
+  Iter 10 | ops=11 | E=-3.206781 Ha | err=29.286 mHa | |grad|=0.3915
+  Iter 11 | ops=12 | E=-3.208661 Ha | err=27.406 mHa | |grad|=0.3785
+  Iter 12 | ops=13 | E=-3.209785 Ha | err=26.281 mHa | |grad|=0.3714
+  Iter 13 | ops=14 | E=-3.211453 Ha | err=24.613 mHa | |grad|=0.3613
+  Iter 14 | ops=15 | E=-3.213174 Ha | err=22.892 mHa | |grad|=0.3469
+  Iter 15 | ops=16 | E=-3.214407 Ha | err=21.659 mHa | |grad|=0.3315
+  Iter 16 | ops=17 | E=-3.215666 Ha | err=20.400 mHa | |grad|=0.3158
+  Iter 17 | ops=18 | E=-3.216661 Ha | err=19.405 mHa | |grad|=0.2989
+  Iter 18 | ops=19 | E=-3.217747 Ha | err=18.319 mHa | |grad|=0.2913
+  Iter 19 | ops=20 | E=-3.218920 Ha | err=17.146 mHa | |grad|=0.2858
+  Iter 20 | ops=21 | E=-3.220415 Ha | err=15.651 mHa | |grad|=0.2790
+  Iter 21 | ops=22 | E=-3.222206 Ha | err=13.860 mHa | |grad|=0.2749
+  Iter 22 | ops=23 | E=-3.222796 Ha | err=13.271 mHa | |grad|=0.2676
+  Iter 23 | ops=24 | E=-3.223495 Ha | err=12.571 mHa | |grad|=0.2611
+  Iter 24 | ops=25 | E=-3.224229 Ha | err=11.837 mHa | |grad|=0.2527
+  Iter 25 | ops=26 | E=-3.225515 Ha | err=10.551 mHa | |grad|=0.2431
+  Iter 26 | ops=27 | E=-3.227054 Ha | err=9.013 mHa | |grad|=0.2339
+  Iter 27 | ops=28 | E=-3.227827 Ha | err=8.240 mHa | |grad|=0.2203
+  Iter 28 | ops=29 | E=-3.228673 Ha | err=7.393 mHa | |grad|=0.2120
+  Iter 29 | ops=30 | E=-3.229247 Ha | err=6.820 mHa | |grad|=0.2014
+  Iter 30 | ops=31 | E=-3.229764 Ha | err=6.303 mHa | |grad|=0.1934
+  Iter 31 | ops=32 | E=-3.230281 Ha | err=5.785 mHa | |grad|=0.1826
+  Iter 32 | ops=33 | E=-3.230753 Ha | err=5.313 mHa | |grad|=0.1757
+  Iter 33 | ops=34 | E=-3.231279 Ha | err=4.787 mHa | |grad|=0.1658
+  Iter 34 | ops=35 | E=-3.231649 Ha | err=4.417 mHa | |grad|=0.1570
+  Iter 35 | ops=36 | E=-3.232121 Ha | err=3.946 mHa | |grad|=0.1444
+  Iter 36 | ops=37 | E=-3.232465 Ha | err=3.601 mHa | |grad|=0.1365
+  Iter 37 | ops=38 | E=-3.232815 Ha | err=3.252 mHa | |grad|=0.1238
+  Iter 38 | ops=39 | E=-3.233187 Ha | err=2.879 mHa | |grad|=0.1184
+  Iter 39 | ops=40 | E=-3.233422 Ha | err=2.645 mHa | |grad|=0.1119
+  Iter 40 | ops=41 | E=-3.233667 Ha | err=2.399 mHa | |grad|=0.1052
+  Iter 41 | ops=42 | E=-3.233858 Ha | err=2.209 mHa | |grad|=0.0973
+  Iter 42 | ops=43 | E=-3.234055 Ha | err=2.012 mHa | |grad|=0.0892
+  Iter 43 | ops=44 | E=-3.234259 Ha | err=1.807 mHa | |grad|=0.0796
+  Iter 44 | ops=45 | E=-3.234471 Ha | err=1.596 mHa | |grad|=0.0720
+  *** Chemical accuracy reached at 45 operators ***
+  Iter 45 | ops=46 | E=-3.234710 Ha | err=1.357 mHa | |grad|=0.0628
+  Iter 46 | ops=47 | E=-3.234964 Ha | err=1.102 mHa | |grad|=0.0536
+  Iter 47 | ops=48 | E=-3.235032 Ha | err=1.034 mHa | |grad|=0.0405
+  Iter 48 | ops=49 | E=-3.235123 Ha | err=0.943 mHa | |grad|=0.0360
+  Iter 49 | ops=50 | E=-3.235185 Ha | err=0.882 mHa | |grad|=0.0304
+
+============================================================
+Molecule  ChemAcc  Ops(chem)  Ops(final)  FinalErr(mHa)  Time(s)
+------------------------------------------------------------
+LiH           YES          5          35          0.005      1.1
+BeH2          YES         10          39          0.125      5.8
+H6            YES         45          50          0.882      3.0
+============================================================
+
+Saved to results/adapt_vqe_results.json
+Finished: Tue Apr  7 08:45:14 PM CST 2026
+
+>>> Step 2: RLQAS (PPO + GRPO, early_stop=True, max_ops=30)
+Started : Tue Apr  7 08:45:14 PM CST 2026
+2026-04-07 20:45:48 - root - INFO - Logging configured with level INFO
+RLQAS Efficiency Test  |  2026-04-07 20:45:49
+Molecules  : ['LiH', 'BeH2', 'H6']
+Agents     : ['ppo', 'grpo']
+Episodes   : 1000
+max_ops    : 50
+early_stop : chemical accuracy (1.6 mHa)
+Output     : results/rlqas_efficiency_20260407_204414.json
+======================================================================
+
+--- LiH (bond_length=1.0 Å) ---
+  [PPO] LiH @ 1.0 Å  (1000 ep, max_ops=50) ...
+2026-04-07 20:45:56 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.784460
+2026-04-07 20:45:56 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 1000 episodes (20000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 8    |
+|    iterations      | 1    |
+|    time_elapsed    | 252  |
+|    total_timesteps | 2048 |
+-----------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 8            |
+|    iterations           | 2            |
+|    time_elapsed         | 504          |
+|    total_timesteps      | 4096         |
+| train/                  |              |
+|    approx_kl            | 0.0077505624 |
+|    clip_fraction        | 0.0522       |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -3.73        |
+|    explained_variance   | -0.971       |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.09        |
+|    n_updates            | 10           |
+|    policy_gradient_loss | -0.0355      |
+|    value_loss           | 0.082        |
+------------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 3           |
+|    time_elapsed         | 759         |
+|    total_timesteps      | 6144        |
+| train/                  |             |
+|    approx_kl            | 0.005832772 |
+|    clip_fraction        | 0.0368      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.73       |
+|    explained_variance   | -0.601      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0934     |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0317     |
+|    value_loss           | 0.0266      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 4           |
+|    time_elapsed         | 1016        |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.008400947 |
+|    clip_fraction        | 0.0565      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.72       |
+|    explained_variance   | -0.0188     |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0764     |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0358     |
+|    value_loss           | 0.019       |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 8           |
+|    iterations           | 5           |
+|    time_elapsed         | 1278        |
+|    total_timesteps      | 10240       |
+| train/                  |             |
+|    approx_kl            | 0.009481994 |
+|    clip_fraction        | 0.072       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.71       |
+|    explained_variance   | -0.0906     |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0867     |
+|    n_updates            | 40          |
+|    policy_gradient_loss | -0.0388     |
+|    value_loss           | 0.0209      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 7           |
+|    iterations           | 6           |
+|    time_elapsed         | 1538        |
+|    total_timesteps      | 12288       |
+| train/                  |             |
+|    approx_kl            | 0.011949923 |
+|    clip_fraction        | 0.109       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.68       |
+|    explained_variance   | 0.00748     |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0792     |
+|    n_updates            | 50          |
+|    policy_gradient_loss | -0.0436     |
+|    value_loss           | 0.0364      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 7           |
+|    iterations           | 7           |
+|    time_elapsed         | 1802        |
+|    total_timesteps      | 14336       |
+| train/                  |             |
+|    approx_kl            | 0.013928506 |
+|    clip_fraction        | 0.132       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.65       |
+|    explained_variance   | -0.156      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0964     |
+|    n_updates            | 60          |
+|    policy_gradient_loss | -0.0487     |
+|    value_loss           | 0.0503      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 7           |
+|    iterations           | 8           |
+|    time_elapsed         | 2063        |
+|    total_timesteps      | 16384       |
+| train/                  |             |
+|    approx_kl            | 0.012527423 |
+|    clip_fraction        | 0.131       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.61       |
+|    explained_variance   | 0.00519     |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0503     |
+|    n_updates            | 70          |
+|    policy_gradient_loss | -0.048      |
+|    value_loss           | 0.0722      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 7           |
+|    iterations           | 9           |
+|    time_elapsed         | 2334        |
+|    total_timesteps      | 18432       |
+| train/                  |             |
+|    approx_kl            | 0.012508805 |
+|    clip_fraction        | 0.122       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.57       |
+|    explained_variance   | -0.164      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0769     |
+|    n_updates            | 80          |
+|    policy_gradient_loss | -0.0473     |
+|    value_loss           | 0.0849      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 7           |
+|    iterations           | 10          |
+|    time_elapsed         | 2613        |
+|    total_timesteps      | 20480       |
+| train/                  |             |
+|    approx_kl            | 0.015350668 |
+|    clip_fraction        | 0.152       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.52       |
+|    explained_variance   | -0.114      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0725     |
+|    n_updates            | 90          |
+|    policy_gradient_loss | -0.0527     |
+|    value_loss           | 0.104       |
+-----------------------------------------
+Search completed. Best energy: -7.784205 Hartree
+Best excitations: 13 operators
+    → energy=-7.784205 Ha  error=0.26 mHa  ops=13  ✓ CHEM_ACC  (2627.2s)
+  [GRPO] LiH @ 1.0 Å  (1000 ep, max_ops=50) ...
+2026-04-07 21:29:44 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.784460
+2026-04-07 21:29:44 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 1000 episodes (20000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 250 groups x 4 episodes = 1000 episodes
+GRPO search completed. Best energy: -7.783781 Hartree
+    → energy=-7.783781 Ha  error=0.68 mHa  ops=12  ✓ CHEM_ACC  (1076.3s)
+
+--- BeH2 (bond_length=1.0 Å) ---
+  [PPO] BeH2 @ 1.0 Å  (1000 ep, max_ops=50) ...
+2026-04-07 21:47:40 - rlqas_chem.molecule.processor - INFO - Processed molecule BeH2 with active space (6, 7), transform jordan_wigner, qubits=14, FCI energy=-15.481741
+2026-04-07 21:47:40 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 1000 episodes (20000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 5    |
+|    iterations      | 1    |
+|    time_elapsed    | 400  |
+|    total_timesteps | 2048 |
+-----------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 5            |
+|    iterations           | 2            |
+|    time_elapsed         | 797          |
+|    total_timesteps      | 4096         |
+| train/                  |              |
+|    approx_kl            | 0.0091919545 |
+|    clip_fraction        | 0.0595       |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -4.02        |
+|    explained_variance   | -1.51        |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.123       |
+|    n_updates            | 10           |
+|    policy_gradient_loss | -0.0418      |
+|    value_loss           | 0.0728       |
+------------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 5            |
+|    iterations           | 3            |
+|    time_elapsed         | 1202         |
+|    total_timesteps      | 6144         |
+| train/                  |              |
+|    approx_kl            | 0.0075972294 |
+|    clip_fraction        | 0.058        |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -4.02        |
+|    explained_variance   | -1.32        |
+|    learning_rate        | 0.0003       |
+|    loss                 | -0.118       |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0409      |
+|    value_loss           | 0.00785      |
+------------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 5           |
+|    iterations           | 4           |
+|    time_elapsed         | 1600        |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.008772576 |
+|    clip_fraction        | 0.0661      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.01       |
+|    explained_variance   | -0.55       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.124      |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0452     |
+|    value_loss           | 0.0037      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 5           |
+|    iterations           | 5           |
+|    time_elapsed         | 2011        |
+|    total_timesteps      | 10240       |
+| train/                  |             |
+|    approx_kl            | 0.009405026 |
+|    clip_fraction        | 0.0723      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4          |
+|    explained_variance   | -0.391      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.117      |
+|    n_updates            | 40          |
+|    policy_gradient_loss | -0.0462     |
+|    value_loss           | 0.00345     |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 5           |
+|    iterations           | 6           |
+|    time_elapsed         | 2417        |
+|    total_timesteps      | 12288       |
+| train/                  |             |
+|    approx_kl            | 0.010726122 |
+|    clip_fraction        | 0.089       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.99       |
+|    explained_variance   | -0.357      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.126      |
+|    n_updates            | 50          |
+|    policy_gradient_loss | -0.0521     |
+|    value_loss           | 0.00339     |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 5           |
+|    iterations           | 7           |
+|    time_elapsed         | 2832        |
+|    total_timesteps      | 14336       |
+| train/                  |             |
+|    approx_kl            | 0.009922626 |
+|    clip_fraction        | 0.0788      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.98       |
+|    explained_variance   | -0.295      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.109      |
+|    n_updates            | 60          |
+|    policy_gradient_loss | -0.0432     |
+|    value_loss           | 0.00557     |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 5           |
+|    iterations           | 8           |
+|    time_elapsed         | 3265        |
+|    total_timesteps      | 16384       |
+| train/                  |             |
+|    approx_kl            | 0.012413638 |
+|    clip_fraction        | 0.106       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.97       |
+|    explained_variance   | -0.329      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.113      |
+|    n_updates            | 70          |
+|    policy_gradient_loss | -0.0543     |
+|    value_loss           | 0.00394     |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 5           |
+|    iterations           | 9           |
+|    time_elapsed         | 3685        |
+|    total_timesteps      | 18432       |
+| train/                  |             |
+|    approx_kl            | 0.012463767 |
+|    clip_fraction        | 0.108       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.96       |
+|    explained_variance   | -0.29       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.107      |
+|    n_updates            | 80          |
+|    policy_gradient_loss | -0.0552     |
+|    value_loss           | 0.00432     |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 10          |
+|    time_elapsed         | 4120        |
+|    total_timesteps      | 20480       |
+| train/                  |             |
+|    approx_kl            | 0.013355985 |
+|    clip_fraction        | 0.114       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -3.94       |
+|    explained_variance   | -0.231      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.123      |
+|    n_updates            | 90          |
+|    policy_gradient_loss | -0.0559     |
+|    value_loss           | 0.00356     |
+-----------------------------------------
+Search completed. Best energy: -15.480142 Hartree
+Best excitations: 22 operators
+    → energy=-15.480142 Ha  error=1.60 mHa  ops=22  ✓ CHEM_ACC  (4130.6s)
+  [GRPO] BeH2 @ 1.0 Å  (1000 ep, max_ops=50) ...
+2026-04-07 22:56:32 - rlqas_chem.molecule.processor - INFO - Processed molecule BeH2 with active space (6, 7), transform jordan_wigner, qubits=14, FCI energy=-15.481741
+2026-04-07 22:56:32 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 1000 episodes (20000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 250 groups x 4 episodes = 1000 episodes
+GRPO search completed. Best energy: -15.478370 Hartree
+    → energy=-15.478370 Ha  error=3.37 mHa  ops=27  ✗ not converged  (2010.9s)
+
+--- H6 (bond_length=1.0 Å) ---
+  [PPO] H6 @ 1.0 Å  (1000 ep, max_ops=50) ...
+2026-04-07 23:30:04 - rlqas_chem.molecule.processor - INFO - Processed molecule H6 with active space (6, 6), transform jordan_wigner, qubits=12, FCI energy=-3.236066
+2026-04-07 23:30:04 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 1000 episodes (20000 timesteps)
+Early stop threshold: 0.0016 Hartree
+-----------------------------
+| time/              |      |
+|    fps             | 4    |
+|    iterations      | 1    |
+|    time_elapsed    | 487  |
+|    total_timesteps | 2048 |
+-----------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 2           |
+|    time_elapsed         | 974         |
+|    total_timesteps      | 4096        |
+| train/                  |             |
+|    approx_kl            | 0.008188914 |
+|    clip_fraction        | 0.0585      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.23       |
+|    explained_variance   | -1.24       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0978     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.043      |
+|    value_loss           | 0.0928      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 3           |
+|    time_elapsed         | 1462        |
+|    total_timesteps      | 6144        |
+| train/                  |             |
+|    approx_kl            | 0.008061683 |
+|    clip_fraction        | 0.0541      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.23       |
+|    explained_variance   | -0.759      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.126      |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0445     |
+|    value_loss           | 0.0187      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 4           |
+|    time_elapsed         | 1964        |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.008945919 |
+|    clip_fraction        | 0.067       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.22       |
+|    explained_variance   | -0.265      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.114      |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0488     |
+|    value_loss           | 0.0131      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 5           |
+|    time_elapsed         | 2494        |
+|    total_timesteps      | 10240       |
+| train/                  |             |
+|    approx_kl            | 0.010546083 |
+|    clip_fraction        | 0.0899      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.21       |
+|    explained_variance   | -0.000209   |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.123      |
+|    n_updates            | 40          |
+|    policy_gradient_loss | -0.0518     |
+|    value_loss           | 0.0156      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 6           |
+|    time_elapsed         | 3005        |
+|    total_timesteps      | 12288       |
+| train/                  |             |
+|    approx_kl            | 0.011386788 |
+|    clip_fraction        | 0.107       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.2        |
+|    explained_variance   | -0.00316    |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.14       |
+|    n_updates            | 50          |
+|    policy_gradient_loss | -0.057      |
+|    value_loss           | 0.013       |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 7           |
+|    time_elapsed         | 3509        |
+|    total_timesteps      | 14336       |
+| train/                  |             |
+|    approx_kl            | 0.012086491 |
+|    clip_fraction        | 0.108       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.19       |
+|    explained_variance   | -0.122      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.122      |
+|    n_updates            | 60          |
+|    policy_gradient_loss | -0.0581     |
+|    value_loss           | 0.0126      |
+-----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 8           |
+|    time_elapsed         | 4016        |
+|    total_timesteps      | 16384       |
+| train/                  |             |
+|    approx_kl            | 0.011594916 |
+|    clip_fraction        | 0.108       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.18       |
+|    explained_variance   | -0.176      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.116      |
+|    n_updates            | 70          |
+|    policy_gradient_loss | -0.0578     |
+|    value_loss           | 0.0164      |
+-----------------------------------------
+----------------------------------------
+| time/                   |            |
+|    fps                  | 4          |
+|    iterations           | 9          |
+|    time_elapsed         | 4523       |
+|    total_timesteps      | 18432      |
+| train/                  |            |
+|    approx_kl            | 0.01357636 |
+|    clip_fraction        | 0.124      |
+|    clip_range           | 0.2        |
+|    entropy_loss         | -4.15      |
+|    explained_variance   | -0.149     |
+|    learning_rate        | 0.0003     |
+|    loss                 | -0.126     |
+|    n_updates            | 80         |
+|    policy_gradient_loss | -0.0595    |
+|    value_loss           | 0.0186     |
+----------------------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 4           |
+|    iterations           | 10          |
+|    time_elapsed         | 5032        |
+|    total_timesteps      | 20480       |
+| train/                  |             |
+|    approx_kl            | 0.013918885 |
+|    clip_fraction        | 0.136       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -4.13       |
+|    explained_variance   | -0.14       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.146      |
+|    n_updates            | 90          |
+|    policy_gradient_loss | -0.0631     |
+|    value_loss           | 0.0168      |
+-----------------------------------------
+Search completed. Best energy: -3.217832 Hartree
+Best excitations: 30 operators
+    → energy=-3.217832 Ha  error=18.23 mHa  ops=30  ✗ not converged  (5043.6s)
+  [GRPO] H6 @ 1.0 Å  (1000 ep, max_ops=50) ...
+2026-04-08 00:54:05 - rlqas_chem.molecule.processor - INFO - Processed molecule H6 with active space (6, 6), transform jordan_wigner, qubits=12, FCI energy=-3.236066
+2026-04-08 00:54:05 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 1000 episodes (20000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 250 groups x 4 episodes = 1000 episodes
+GRPO search completed. Best energy: -3.210710 Hartree
+    → energy=-3.210710 Ha  error=25.36 mHa  ops=23  ✗ not converged  (2706.2s)
+
+======================================================================
+Molecule Agent     Energy (Ha)  Error (mHa)   Ops  ChemAcc
+----------------------------------------------------------------------
+LiH      ppo         -7.784205        0.255    13      YES
+LiH      grpo        -7.783781        0.680    12      YES
+BeH2     ppo        -15.480142        1.600    22      YES
+BeH2     grpo       -15.478370        3.371    27       NO
+H6       ppo         -3.217832       18.234    30       NO
+H6       grpo        -3.210710       25.356    23       NO
+======================================================================
+
+Results saved to: results/rlqas_efficiency_20260407_204414.json
+Finished: Wed Apr  8 01:39:08 AM CST 2026
+
+=== All done at Wed Apr  8 01:39:08 AM CST 2026 ===

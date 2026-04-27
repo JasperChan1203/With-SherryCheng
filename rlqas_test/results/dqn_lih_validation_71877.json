@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-04-27 16:31:59.636316",
+  "agent": "dqn",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883502,
+  "best_energy": -7.880724546562527,
+  "energy_error_mha": 1.5998323209753806,
+  "best_ops": 5,
+  "target_ops": 6,
+  "chemical_accuracy_pass": true,
+  "operator_efficiency_pass": true,
+  "diagnostics": {
+    "n_samples": 2,
+    "n_loss_samples": 2,
+    "q_loss_first": 0.018656423315405846,
+    "q_loss_last": 0.004408473614603281,
+    "q_loss_trend_pass": true,
+    "exploration_rate_first": 0.35178333333333345,
+    "exploration_rate_last": 0.05,
+    "exploration_decay_pass": true,
+    "best_energy_first": -7.880671335970383,
+    "best_energy_last": -7.880709675342092,
+    "energy_trend_pass": true,
+    "overall_pass": true
+  },
+  "overall_pass": true
+}

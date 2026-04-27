@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-04-26 22:19:49.635998",
+  "agent": "a2c",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883502,
+  "best_energy": -7.880758293643955,
+  "energy_error_mha": 1.5660852395473768,
+  "best_ops": 5,
+  "target_ops": 6,
+  "chemical_accuracy_pass": 

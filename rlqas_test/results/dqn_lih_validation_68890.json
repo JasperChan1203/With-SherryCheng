@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-04-20 17:02:28.863248",
+  "agent": "dqn",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883502,
+  "best_energy": -7.881242298110672,
+  "energy_error_mha": 1.0820807728304516,
+  "best_ops": 6,
+  "target_ops": 6,
+  "chemical_accuracy_pass": 

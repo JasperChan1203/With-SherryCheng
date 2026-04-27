@@ -1,0 +1,14 @@
+[
+  {
+    "step": 2048,
+    "q_loss": 0.018656428903341293,
+    "exploration_rate": 0.35178333333333345,
+    "global_best_energy": -7.880671335970413
+  },
+  {
+    "step": 4096,
+    "q_loss": 0.004408476408571005,
+    "exploration_rate": 0.05,
+    "global_best_energy": -7.880709675342117
+  }
+]
