@@ -1,0 +1,52 @@
+## 2026-04-29 - US-ALG-001: GiGPO: Group-Relative Policy Optimization with Intra-Episode Credit Assignment
+- Status: COMPLETE
+- Files created/modified:
+  - rlqas-chem/src/rlqas_chem/rl/gigpo_agent.py (created)
+  - rlqas-chem/src/rlqas_chem/rl/agent_factory.py (modified, gigppo registration)
+  - rlqas-chem/src/rlqas_chem/rl/__init__.py (modified, GiGPOAgent export)
+  - rlqas-chem/src/rlqas_chem/search/ucc/controller.py (modified, gigppo routing)
+  - rlqas-chem/src/rlqas_chem/api.py (modified, gigppo in _VALID_AGENTS/_UCC_AGENTS)
+- Acceptance criteria results: 19/19 PASS (bash rlqas_acceptance_system/run_acceptance.sh --agent gigppo)
+  - Level 0: 17/17 (interface contract, AgentFactory, act(), save/load, learn callback)
+  - Level 1: 4/4 (global_best monotonic, reset preservation, obs types, no NaN/Inf)
+  - Level 2: 2/2 (JSON serialization, chemical_accuracy is Python bool)
+  - Level 3: 8/8 (UCC and HEA search, regression tests)
+  - Level 4: 2/2 (n_episodes respected, max_excitations respected)
+  - Level 5: 3/3 (LiH UCC 1.389 mHa, H2 HEA 0.000 mHa, ppo regression)
+- Notes: Used argmax in act() for save/load determinism. anchor-group normalization: anchor_size = max(1, T//3).
+---
+
+## 2026-04-29 - US-ALG-002: Tree-GRPO: Tree-based GRPO with Prefix Sharing and VQE Caching
+- Status: COMPLETE
+- Files created/modified:
+  - rlqas-chem/src/rlqas_chem/rl/tree_grpo_agent.py (created)
+  - rlqas-chem/src/rlqas_chem/search/ucc/prefix_cache.py (created)
+  - rlqas-chem/src/rlqas_chem/rl/agent_factory.py (modified, tree_grpo registration)
+  - rlqas-chem/src/rlqas_chem/rl/__init__.py (modified, TreeGRPOAgent export)
+  - rlqas-chem/src/rlqas_chem/search/ucc/controller.py (modified, tree_grpo routing)
+  - rlqas-chem/src/rlqas_chem/api.py (modified, tree_grpo in _VALID_AGENTS/_UCC_AGENTS)
+- Acceptance criteria results: 19/19 PASS (bash rlqas_acceptance_system/run_acceptance.sh --agent tree_grpo)
+  - Level 0-5: all pass
+  - Level 5 LiH UCC: 1.544 mHa < 1.6 mHa chemical accuracy
+  - Level 5 H2 HEA: 0.000 mHa
+- Notes: PrefixCache maps tuple(actions) -> float energy. cache.get() increments hit counter.
+  Used torch.load(weights_only=False) for PyTorch 2.6 compatibility.
+---
+
+## 2026-04-29 - US-ALG-003: Double-DQN: Double Deep Q-Network with Replay Buffer
+- Status: COMPLETE
+- Files created/modified:
+  - rlqas-chem/src/rlqas_chem/rl/double_dqn_agent.py (created)
+  - rlqas-chem/src/rlqas_chem/rl/agent_factory.py (modified, double_dqn registration)
+  - rlqas-chem/src/rlqas_chem/rl/__init__.py (modified, DoubleDQNAgent export)
+  - rlqas-chem/src/rlqas_chem/search/ucc/controller.py (modified, _double_dqn_search added)
+  - rlqas-chem/src/rlqas_chem/api.py (modified, double_dqn in _VALID_AGENTS/_UCC_AGENTS)
+- Acceptance criteria results: 19/19 PASS (bash rlqas_acceptance_system/run_acceptance.sh --agent double_dqn)
+  - Level 0-5: all pass
+  - Level 5 LiH UCC: 0.582 mHa < 1.6 mHa chemical accuracy
+  - Level 5 H2 HEA: 0.000 mHa
+- Notes: act() uses argmax (deterministic) for save/load test. Epsilon-greedy only in learn().
+  Double-DQN: online net selects next_action, target net evaluates value.
+  Added _double_dqn_search() to UCCSearchController; stored _buffer_capacity separately.
+  Used torch.load(weights_only=False) for PyTorch 2.6 compatibility.
+---
