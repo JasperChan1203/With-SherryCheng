@@ -8,11 +8,12 @@ from rlqas_chem.search.ucc.controller import UCCSearchController
 from rlqas_chem.search.hybrid.controller import HybridSearchController
 
 _VALID_ANSATZ = ("UCC", "HEA", "HYBRID")
-_VALID_AGENTS = ("ppo", "dqn", "a2c", "sac_discrete", "grpo")
+_VALID_AGENTS = ("ppo", "dqn", "a2c", "sac_discrete", "grpo",
+                 "gigppo", "tree_grpo", "double_dqn")
 _VALID_OPERATOR_POOLS = ("fop", "qop")
 
-# UCCSearchController supports PPO and GRPO; all others route to HybridSearchController
-_UCC_AGENTS = ("ppo", "grpo")
+# UCCSearchController supports these agents directly; all others use HybridSearchController
+_UCC_AGENTS = ("ppo", "grpo", "gigppo", "tree_grpo", "double_dqn")
 
 _BASE_CONFIG = {
     "run_classical_opt": True,      # MUST stay True — disabling breaks energy evaluation

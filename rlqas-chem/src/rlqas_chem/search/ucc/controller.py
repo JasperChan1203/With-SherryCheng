@@ -154,6 +154,43 @@ class UCCSearchController:
                 "use_gpu": raw.get("use_gpu", False),
             }
             self.agent = SACDiscreteAgent(config=sac_config, env=self.env)
+        elif agent_type.lower() == 'gigppo':
+            from rlqas_chem.rl.gigpo_agent import GiGPOAgent
+            raw = config or {}
+            gigppo_config = {
+                "lr": raw.get("lr", 3e-4),
+                "gamma": raw.get("gamma", 0.99),
+                "group_size": raw.get("group_size", 8),
+                "clip_range": raw.get("clip_range", 0.2),
+                "entropy_coef": raw.get("entropy_coef", 0.01),
+                "anchor_ratio": raw.get("anchor_ratio", 0.33),
+            }
+            self.agent = GiGPOAgent(config=gigppo_config, env=self.env)
+        elif agent_type.lower() == 'tree_grpo':
+            from rlqas_chem.rl.tree_grpo_agent import TreeGRPOAgent
+            raw = config or {}
+            tree_grpo_config = {
+                "lr": raw.get("lr", 3e-4),
+                "gamma": raw.get("gamma", 0.99),
+                "group_size": raw.get("group_size", 8),
+                "clip_range": raw.get("clip_range", 0.2),
+                "entropy_coef": raw.get("entropy_coef", 0.01),
+            }
+            self.agent = TreeGRPOAgent(config=tree_grpo_config, env=self.env)
+        elif agent_type.lower() == 'double_dqn':
+            from rlqas_chem.rl.double_dqn_agent import DoubleDQNAgent
+            raw = config or {}
+            ddqn_config = {
+                "lr": raw.get("lr", 1e-3),
+                "gamma": raw.get("gamma", 0.99),
+                "epsilon_start": raw.get("epsilon_start", 1.0),
+                "epsilon_end": raw.get("epsilon_end", 0.05),
+                "epsilon_decay": raw.get("epsilon_decay", 0.995),
+                "target_update_freq": raw.get("target_update_freq", 100),
+                "batch_size": raw.get("batch_size", 32),
+                "buffer_capacity": raw.get("buffer_capacity", 10000),
+            }
+            self.agent = DoubleDQNAgent(config=ddqn_config, env=self.env)
         else:
             raise ValueError(f"Unsupported agent type: {agent_type}")
 
@@ -215,11 +252,14 @@ class UCCSearchController:
         print(f"Starting UCC search for {n_episodes} episodes ({total_timesteps} timesteps)")
         print(f"Early stop threshold: {early_stop_threshold} Hartree")
 
-        if self.agent_type.lower() == 'grpo':
+        if self.agent_type.lower() in ('grpo', 'gigppo', 'tree_grpo'):
             return self._grpo_search(n_episodes, early_stop_threshold, callbacks=callbacks)
 
         if self.agent_type.lower() == 'sac_discrete':
             return self._sac_search(n_episodes, early_stop_threshold, callbacks=callbacks)
+
+        if self.agent_type.lower() == 'double_dqn':
+            return self._double_dqn_search(n_episodes, early_stop_threshold, callbacks=callbacks)
 
         # FIX: For DQN (and PPO), wire early stopping via an SB3 callback so that
         # training terminates as soon as chemical accuracy is reached, rather than
@@ -326,6 +366,41 @@ class UCCSearchController:
         self.results['convergence_reached'] = self._check_convergence(early_stop_threshold)
 
         print(f"GRPO search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
+        return self.results
+
+    def _double_dqn_search(self, n_episodes: int, early_stop_threshold: float,
+                           callbacks=None) -> Dict[str, Any]:
+        """Double-DQN step-by-step search loop."""
+        raw_config = self.env._raw_config
+        env_max_excitations = (
+            raw_config.get("environment", {}).get("max_excitations")
+            or raw_config.get("max_excitations")
+            or self.env.config.get("max_excitations", 20)
+        )
+        total_timesteps = n_episodes * env_max_excitations
+
+        print(f"Starting Double-DQN search: {total_timesteps} timesteps "
+              f"({n_episodes} episodes × {env_max_excitations} steps)")
+
+        self.agent.learn(total_timesteps=total_timesteps, env=self.env)
+
+        # Read global best from environment
+        self.best_overall_energy = self.env.global_best_energy
+        self.best_overall_excitations = (
+            self.env.global_best_excitations.copy()
+            if self.env.global_best_excitations else []
+        )
+        self.best_overall_params = (
+            self.env.global_best_params.copy()
+            if self.env.global_best_params is not None else None
+        )
+
+        self.results['best_energy'] = self.best_overall_energy
+        self.results['best_excitations'] = self.best_overall_excitations
+        self.results['best_params'] = self.best_overall_params
+        self.results['convergence_reached'] = self._check_convergence(early_stop_threshold)
+
+        print(f"Double-DQN search completed. Best energy: {self.best_overall_energy:.6f} Hartree")
         return self.results
 
     def _sac_search(self, n_episodes: int, early_stop_threshold: float,

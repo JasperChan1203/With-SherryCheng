@@ -6,10 +6,14 @@ from .dqn_agent import DQNAgent
 from .a2c_agent import A2CAgent
 from .sac_discrete_agent import SACDiscreteAgent
 from .grpo_agent import GRPOAgent
+from .gigpo_agent import GiGPOAgent
+from .tree_grpo_agent import TreeGRPOAgent
+from .double_dqn_agent import DoubleDQNAgent
 from .agent_factory import AgentFactory
 from .diagnostics_callback import DiagnosticsCallback
 
 __all__ = [
     "RLAgent", "PPOAgent", "DQNAgent", "A2CAgent", "SACDiscreteAgent",
-    "GRPOAgent", "AgentFactory", "AgentConfig", "DiagnosticsCallback",
+    "GRPOAgent", "GiGPOAgent", "TreeGRPOAgent", "DoubleDQNAgent",
+    "AgentFactory", "AgentConfig", "DiagnosticsCallback",
 ]

@@ -15,6 +15,9 @@ from rlqas_chem.rl.dqn_agent import DQNAgent
 from rlqas_chem.rl.a2c_agent import A2CAgent
 from rlqas_chem.rl.sac_discrete_agent import SACDiscreteAgent
 from rlqas_chem.rl.grpo_agent import GRPOAgent
+from rlqas_chem.rl.gigpo_agent import GiGPOAgent
+from rlqas_chem.rl.tree_grpo_agent import TreeGRPOAgent
+from rlqas_chem.rl.double_dqn_agent import DoubleDQNAgent
 
 
 class AgentFactory:
@@ -45,6 +48,9 @@ class AgentFactory:
         "a2c": A2CAgent,
         "sac_discrete": SACDiscreteAgent,
         "grpo": GRPOAgent,
+        "gigppo": GiGPOAgent,
+        "tree_grpo": TreeGRPOAgent,
+        "double_dqn": DoubleDQNAgent,
     }
 
     @classmethod
