@@ -1,0 +1,17 @@
+=== RLQAS LiH HEA GRPO Learning Validation ===
+Job ID  : 83018
+Node    : curie-gpu003
+Started : Mon May 25 03:49:47 PM CST 2026
+
+2026-05-25 15:50:34 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-25 15:51:08 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH HEA GRPO Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(2, 3)
+Transform   : jordan_wigner  max_layers=3
+Episodes    : 500  (run in groups of 8)
+Started     : 2026-05-25 15:51:09.203494
+============================================================
+
+=== Finished at Mon May 25 03:51:13 PM CST 2026 -- exit code: 1 ===

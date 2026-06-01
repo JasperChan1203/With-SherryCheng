@@ -1,0 +1,57 @@
+=== RLQAS LiH HEA SAC-Discrete Learning Validation ===
+Job ID  : 83486
+Node    : curie-gpu002
+Started : Mon May 25 07:18:41 PM CST 2026
+
+2026-05-25 19:19:35 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-25 19:20:18 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH HEA SAC-Discrete Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(2, 3)
+Transform   : jordan_wigner  max_layers=3
+Episodes    : 500
+Started     : 2026-05-25 19:20:19.366939
+============================================================
+2026-05-25 19:20:23 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (2, 3), aslst=[1, 2, 5], transform jordan_wigner, qubits=6, FCI energy=-7.881072
+FCI energy  : -7.881072 Ha
+HF energy   : -7.861865 Ha
+HF error    : 19.207 mHa
+
+============================================================
+HEA Search Starting
+  Agent: sac_discrete
+  Episodes: 500
+  Timesteps: 1500
+  Classical opt: True
+============================================================
+
+2026-05-25 19:20:23 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+2026-05-25 19:20:28 - jax._src.xla_bridge - INFO - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+
+============================================================
+HEA Search Complete
+  Best energy: -7.881027
+  Results saved to: results/checkpoints
+============================================================
+
+
+============================================================
+SAC-DISCRETE HEA VALIDATION SUMMARY
+============================================================
+  Best energy        : -7.881027 Ha
+  FCI energy         : -7.881072 Ha
+  Energy error       : 0.045 mHa  PASS
+  Better than HF     : -7.881027 < -7.861865  PASS
+  Circuit structure  : layers=3  PASS
+  Entanglement       : ['circular', 'linear', 'full']
+  Rotations          : ['ry', 'ry', 'ry']
+  Parameters         : 54
+
+============================================================
+  OVERALL: PASS -- SAC-Discrete is learning
+============================================================
+
+Report saved -> results/sac_discrete_lih_hea_validation_83486.json
+
+=== Finished at Mon May 25 08:43:21 PM CST 2026 -- exit code: 0 ===

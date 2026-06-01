@@ -1,0 +1,98 @@
+{
+  "project": "RLQAS Phase 5: Fix 003 — QOP Correct Implementation + Hybrid GRPO + HEA Cleanup",
+  "branchName": "ralph/Phase5/fix003",
+  "description": "Four independent bugs block the remaining 3/5 functional requirements of rlqas-chem. (1) operator_pool='qop' routes to QubitUCCSearchController which builds its own Pauli pool from the Hamiltonian but runs energy evaluations through UCCSearchEnv with mode='fermion' — so QOP search is identical to FOP search plus a fake qubit_pool_size statistic. The fix is to pass mode='qubit' to TenCirChem UCCSD in UCCCircuitBuilder when ucc_mode='qubit'. (2) api.py search() results are missing the cnot_count field, blocking the test_qop_cnot_less_than_fop acceptance test. (3) HybridSearchController.search() uses a generic episode loop with self.agent.train() (REINFORCE via _AgentAdapter) for ALL agents including GRPO/GiGPO — these agents implement learning through train_one_group(env), not REINFORCE, so Hybrid+GiGPO never actually trains. (4) Tree-GRPO is listed in HEASearchController._run_grpo_loop as a supported agent, but Tree-GRPO's core optimization (prefix-sharing circuit cache) requires deterministic prefix semantics that only hold for UCC — in HEA there are no reusable prefixes, so Tree-GRPO silently degrades to standard GRPO without its key benefit.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Fix QOP: pass mode='qubit' to TenCirChem UCCSD in UCCCircuitBuilder",
+      "priority": 1,
+      "passes": false,
+      "description": "As a researcher, I want operator_pool='qop' to produce genuinely shorter circuits by using TenCirChem's native mode='qubit' (Qubit-ADAPT-VQE), so that the RL agent searches over the qubit-space excitation landscape rather than silently running FOP search.",
+      "problem": "UCCCircuitBuilder.__init__ always creates UCCSD(mol, ...) without a mode argument — defaulting to mode='fermion'. When api.py routes operator_pool='qop', it calls QubitUCCSearchController, which builds a QubitOperatorPool from the Hamiltonian's off-diagonal Pauli terms but then creates UCCSearchEnv with the default fermion circuit builder. The qubit pool is used only to record performance_metrics['qubit_pool_size']. The RL agent trains on fermion circuits throughout. QOP search == FOP search plus a fake statistic.",
+      "fix": [
+        "Step 1 — UCCCircuitBuilder: add ucc_mode parameter. In __init__, read mode = (config or {}).get('ucc_mode', 'fermion'). If mode == 'qubit': skip the ucc_sd_object/ucc_object branches and always build a fresh UCCSD(mol_pyscf, mode='qubit', active_space=active_space, init_method='zeros') where mol_pyscf and active_space come from molecule_data. Add a helper _rebuild_ucc(mol_data, active_space, mode) that reconstructs the pyscf mol object (already done in the fallback branch) and creates the UCCSD.",
+        "Step 2 — UCCSearchEnv: no changes needed — it already passes config to UCCCircuitBuilder, so setting config['ucc_mode']='qubit' will propagate automatically.",
+        "Step 3 — api.py: replace the QubitUCCSearchController branch with UCCSearchController + ucc_mode='qubit'. Change lines 105-113: when ansatz_type=='UCC' and operator_pool=='qop', set ctrl_config['ucc_mode'] = 'qubit' and use UCCSearchController (same as FOP path). Delete the QubitUCCSearchController import.",
+        "Step 4 — UCCCircuitBuilder: add get_cnot_count() method: call self.ucc.get_circuit(decompose_multicontrol=True).gate_summary().get('cnot', 0). Handle exceptions by returning 0.",
+        "Step 5 — UCCSearchController.search() + _grpo_search() + _double_dqn_search(): add cnot_count to the returned results dict: self.results['cnot_count'] = self.env.circuit_builder.get_cnot_count()",
+        "Step 6 — api.py: in the UCC+FOP and UCC+QOP branches, extract cnot_count = _extract(result, 'cnot_count', default=None) and add it to the returned dict."
+      ],
+      "acceptanceCriteria": [
+        "PYTHON=/curie-home/jpchen/.conda/envs/llm/bin/python3 && $PYTHON -c \"import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', operator_pool='qop', n_episodes=20); print(r); assert r['energy_error_mha'] < 10.0, f\\\"QOP silent failure: {r['energy_error_mha']:.2f} mHa\\\"\"",
+        "$PYTHON -c \"import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', operator_pool='fop', n_episodes=5); assert r.get('cnot_count') is not None, 'Missing cnot_count in FOP result'\"",
+        "$PYTHON -c \"import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='UCC', operator_pool='qop', n_episodes=5); assert r.get('cnot_count') is not None, 'Missing cnot_count in QOP result'\"",
+        "Run acceptance test: $PYTHON -m pytest rlqas_acceptance_system/rl_algorithms/test_acceptance_level1_5.py -k 'qop_tencirchem or qop_search_basic or qop_cnot' -v and all 3 tests must PASS",
+        "Anti-hollow: $PYTHON -c \"import rlqas_chem; r_f=rlqas_chem.search('H2',0.74,operator_pool='fop',n_episodes=5); r_q=rlqas_chem.search('H2',0.74,operator_pool='qop',n_episodes=5); print(f\\\"FOP cnot={r_f['cnot_count']} QOP cnot={r_q['cnot_count']}\\\"); assert r_q['cnot_count'] < r_f['cnot_count'], 'QOP must have fewer CNOTs than FOP'\""
+      ],
+      "files": [
+        "../../rlqas-chem/src/rlqas_chem/search/ucc/circuit_builder.py",
+        "../../rlqas-chem/src/rlqas_chem/search/ucc/controller.py",
+        "../../rlqas-chem/src/rlqas_chem/api.py"
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Fix Hybrid GRPO-family: add _run_grpo_loop dispatch to HybridSearchController",
+      "priority": 2,
+      "passes": false,
+      "description": "As a researcher, I want rlqas_chem.search(..., ansatz_type='HYBRID', agent_type='gigppo') to use GiGPO's group-based training loop (train_one_group), so that sparse-reward molecules (BeH2, H6) receive GiGPO's per-step credit assignment in hybrid circuit search — not REINFORCE which lacks this ability.",
+      "problem": "HybridSearchController.search() runs a single per-episode loop calling self.agent.select_action() / store_experience() / train(). self.agent is an _AgentAdapter wrapping the base agent. For GRPO/GiGPO/Tree-GRPO, train() is a no-op (REINFORCE in _AgentAdapter fires but the base agent's policy is not updated — the base agent's learn() method is a stub). The correct training path for these agents is base_agent.train_one_group(env), which is called in UCCSearchController._grpo_search() and HEASearchController._run_grpo_loop(). HybridSearchController has no equivalent.",
+      "fix": [
+        "Step 1 — HybridSearchController.search(): add dispatch at the start of search(), before the episode loop. Add: _GRPO_TYPES = ('grpo', 'gigppo', 'tree_grpo'). If self.agent_type.lower() in _GRPO_TYPES: call self._run_grpo_loop(n_episodes=n_eps, early_stop_threshold=threshold) and return its result. Otherwise fall through to the existing episode loop.",
+        "Step 2 — Add _run_grpo_loop method to HybridSearchController: mirrors UCCSearchController._grpo_search() and HEASearchController._run_grpo_loop(). Use group_size = getattr(self.agent._agent, 'group_size', 8), n_groups = max(1, n_eps // group_size). For each group: call self.agent._agent.train_one_group(self.env). After each group, check self.env.global_best_energy for early stop. After the loop, read best results from self.env.global_best_energy and self.env.global_best_excitations.",
+        "Step 3 — Ensure _run_grpo_loop returns a SearchResult identical in structure to what the episode loop returns (same fields: best_circuit, best_energy, best_error, training_history, performance_metrics, fusion_template, convergence_reached).",
+        "Step 4 — api.py: add 'gigppo', 'tree_grpo', 'double_dqn' to _UCC_AGENTS list so that Hybrid routing in api.py does not silently fall into the wrong branch. IMPORTANT: also check the HYBRID branch in api.py does not exclude any of these agents."
+      ],
+      "acceptanceCriteria": [
+        "$PYTHON -c \"import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='HYBRID', agent_type='gigppo', n_episodes=40); print(r); assert r['energy_error_mha'] < 50.0, 'GiGPO Hybrid must produce valid energy'\"",
+        "$PYTHON -c \"import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='HYBRID', agent_type='grpo', n_episodes=40); assert r['best_energy'] is not None\"",
+        "Anti-hollow: verify training actually runs — $PYTHON -c \"import rlqas_chem; import time; t=time.time(); rlqas_chem.search('H2',0.74,ansatz_type='HYBRID',agent_type='gigppo',n_episodes=40); elapsed=time.time()-t; print(f'Elapsed: {elapsed:.1f}s'); assert elapsed > 5, 'Too fast — likely a no-op'\""
+      ],
+      "files": [
+        "../../rlqas-chem/src/rlqas_chem/search/hybrid/controller.py",
+        "../../rlqas-chem/src/rlqas_chem/api.py"
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Block Tree-GRPO from HEA and update HEA acceptance EXISTING_AGENTS",
+      "priority": 3,
+      "passes": false,
+      "description": "As a researcher, I want HEASearchController to reject Tree-GRPO with a clear error message, and GiGPO/Double-DQN to be included in HEA regression tests, so that incorrect usage is caught early and the acceptance system covers all supported algorithms.",
+      "problem": "(A) Tree-GRPO's core optimization is prefix-sharing: episodes that share a common operator prefix reuse the same cached VQE result, saving expensive quantum simulations. This requires that the action sequence be deterministic given the prefix (UCC operators are uniquely identified by their excitation tuple). HEA actions are (pattern, gate_type) combinations whose circuit effect depends on the current layer index — two episodes with the same first action at layer 0 produce the same sub-circuit, but the VQE result of that sub-circuit changes as layers are added. In practice Tree-GRPO falls back to standard GRPO without the cache benefit, but it wastes memory on a cache that never hits. Better to raise a clear error. (B) HEA EXISTING_AGENTS list is ['ppo','dqn','a2c','sac_discrete','grpo'] — GiGPO and Double-DQN have been implemented and tested for UCC but are not in HEA regression, so a future change could break them silently.",
+      "fix": [
+        "Step 1 — HEASearchController.search(): add validation before setup_agent(). If agent_type.lower() == 'tree_grpo': raise ValueError(\"Tree-GRPO is UCC-only (prefix caching requires deterministic operator sequences). Use GiGPO for HEA sparse-reward problems instead.\").",
+        "Step 2 — Also add the same guard in HEASearchController._run_grpo_loop() as a belt-and-suspenders check: _grpo_types = ('grpo', 'gigppo') — remove 'tree_grpo' from this tuple.",
+        "Step 3 — rlqas_acceptance_system/hea_algorithms/test_acceptance_hea_level1_5.py: change EXISTING_AGENTS from ['ppo','dqn','a2c','sac_discrete','grpo'] to ['ppo','dqn','a2c','sac_discrete','grpo','gigppo','double_dqn'].",
+        "Step 4 — api.py: if ansatz_type='HEA' and agent_type='tree_grpo': raise ValueError before creating the controller, so the error is surfaced at the API level too."
+      ],
+      "acceptanceCriteria": [
+        "$PYTHON -c \"import rlqas_chem; rlqas_chem.search('H2', 0.74, ansatz_type='HEA', agent_type='tree_grpo', n_episodes=5)\" 2>&1 | grep -i 'tree.grpo\\|ucc.only\\|ValueError'",
+        "$PYTHON -c \"import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='HEA', agent_type='gigppo', n_episodes=20); print(r); assert r['best_energy'] is not None\"",
+        "$PYTHON -c \"import rlqas_chem; r = rlqas_chem.search('H2', 0.74, ansatz_type='HEA', agent_type='double_dqn', n_episodes=20); assert r['best_energy'] is not None\"",
+        "Run HEA regression test with new EXISTING_AGENTS: $PYTHON -m pytest rlqas_acceptance_system/hea_algorithms/test_acceptance_hea_level1_5.py -k 'gigppo' -v and it must PASS (at minimum minimal training test)"
+      ],
+      "files": [
+        "../../rlqas-chem/src/rlqas_chem/search/hea/controller.py",
+        "../../rlqas-chem/src/rlqas_chem/api.py",
+        "../../rlqas_acceptance_system/hea_algorithms/test_acceptance_hea_level1_5.py"
+      ]
+    },
+    {
+      "id": "US-004",
+      "title": "Verify all 3 QOP acceptance tests pass (Level 3 + Level 5)",
+      "priority": 4,
+      "passes": false,
+      "description": "As a researcher, I want the full QOP acceptance test suite (Level 3 basic search, Level 3 CNOT comparison, Level 5 LiH chemical accuracy) to pass after US-001, confirming that the QOP fix is complete and meets the scientific criterion.",
+      "prerequisite": "US-001 must be complete before attempting this story.",
+      "fix": "No new code changes required. Run the three QOP acceptance tests. If test_qop_search_basic or test_qop_cnot_less_than_fop fail, investigate UCCCircuitBuilder mode handling. If test_chemical_accuracy_qop fails (LiH > 1.6 mHa with 300 episodes), try increasing n_episodes to 500 in the test or investigate whether the mode='qubit' UCCSD is being created correctly with the right active_space. Document findings in progress.txt.",
+      "acceptanceCriteria": [
+        "Run from RLQAS repo root: /curie-home/jpchen/.conda/envs/llm/bin/python3 -m pytest rlqas_acceptance_system/rl_algorithms/test_acceptance_level1_5.py -k 'qop' -v and ALL 4 QOP tests must show PASSED",
+        "Specifically: test_qop_tencirchem_mode_cnot_reduction PASSED, test_qop_search_basic[ppo] PASSED, test_qop_cnot_less_than_fop[ppo] PASSED, test_chemical_accuracy_qop[ppo] PASSED",
+        "No regressions: re-run full Level 1-5 for PPO and all previously-passing tests must still pass"
+      ],
+      "files": []
+    }
+  ]
+}

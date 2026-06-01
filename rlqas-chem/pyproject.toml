@@ -14,7 +14,7 @@ dependencies = [
     "stable-baselines3>=2.0",
     "gymnasium",
     "click",
-    "tencirchem",
+    "tencirchem-ng",
     "openfermion",
     "openfermionpyscf",
 ]

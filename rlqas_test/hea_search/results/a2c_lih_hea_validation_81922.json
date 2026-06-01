@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-05-19 18:44:49.936762",
+  "agent": "a2c",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "active_space": [
+    2,
+    3
+  ],
+  "transform": "jordan_wigner",
+  "max_layers": 3,
+  "n_episodes": 500,
+  "total_timesteps": 1500,
+  "fci_energy": -7.8629193366023475,
+  "hf_energy": -7.861864769808656,
+  "best_energy": -7.86269411152029,
+  "energy_error_mha": 0.22522508205735647,
+  "chemical_accuracy_pass": true,
+  "energy_improvement_pass": true,
+  "circuit_structure_pass": true,
+  "best_circuit": {
+    "entanglement_history": [
+      "linear",
+      "full",
+      "full"
+    ],
+    "rotation_history": [
+      "ry",
+      "ry",
+      "ry"
+    ],
+    "n_parameters": 54
+  },
+  "overall_pass": true
+}

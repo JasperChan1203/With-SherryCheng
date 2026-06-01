@@ -25,20 +25,19 @@ def get_hartree_fock_bitstring(n_qubits: int, n_electrons: int, transform: str) 
         ValueError: If transform not supported or parameters invalid.
     """
     if transform == "jordan_wigner":
-        # Jordan-Wigner: each spin orbital maps to a qubit
-        # RHF: occupy first n_electrons spin orbitals (assuming alpha then beta ordering)
-        # For unrestricted? Assume RHF with paired electrons.
-        # We'll assume spin orbital ordering: alpha then beta for each spatial orbital.
-        # So first n_electrons//2 spatial orbitals fully occupied (both alpha and beta).
-        hf_bitstring = 0
-        for i in range(n_electrons // 2):
-            # alpha qubit index = 2*i
-            hf_bitstring |= 1 << (2 * i)
-            # beta qubit index = 2*i + 1
-            hf_bitstring |= 1 << (2 * i + 1)
-        # For odd n_electrons (unrestricted) not handled; fallback brute-force
+        # Tencirchem-ng uses "all alpha first, then all beta" spin-orbital ordering:
+        #   qubit i            = alpha spin-orbital i   (i = 0 .. n_orb-1)
+        #   qubit n_orb + j    = beta  spin-orbital j   (j = 0 .. n_orb-1)
+        # where n_orb = n_qubits // 2 (number of spatial orbitals).
+        # RHF: n_alpha = n_beta = n_electrons // 2 electrons each.
         if n_electrons % 2 != 0:
             raise ValueError("Unrestricted HF (odd n_electrons) not supported for Jordan-Wigner mapping")
+        n_orb = n_qubits // 2
+        n_half = n_electrons // 2
+        hf_bitstring = 0
+        for i in range(n_half):
+            hf_bitstring |= 1 << i            # alpha spin-orbital i
+            hf_bitstring |= 1 << (n_orb + i)  # beta  spin-orbital i
         return hf_bitstring
 
     elif transform == "parity":

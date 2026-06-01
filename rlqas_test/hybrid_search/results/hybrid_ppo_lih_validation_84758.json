@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-05-29 20:35:30.195858",
+  "agent": "ppo",
+  "search_type": "hybrid",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "active_space": null,
+  "transform": "jordan_wigner",
+  "n_qubits": 12,
+  "n_episodes": 500,
+  "fci_energy": -7.882324378883495,
+  "hf_energy": -7.861864769808654,
+  "best_energy": -7.880775601245243,
+  "energy_error_mha": 1.548777638252119,
+  "chemical_accuracy_pass": true,
+  "energy_improvement_pass": true,
+  "circuit_structure_pass": true,
+  "best_excitations": [
+    [
+      5,
+      11,
+      7,
+      1
+    ],
+    [
+      2,
+      11,
+      7,
+      1
+    ],
+    [
+      4,
+      10,
+      6,
+      0
+    ],
+    [
+      3,
+      9,
+      7,
+      1
+    ],
+    [
+      2,
+      8,
+      6,
+      0
+    ]
+  ],
+  "convergence_reached": 

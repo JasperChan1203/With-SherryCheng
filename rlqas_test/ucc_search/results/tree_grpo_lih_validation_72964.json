@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-04-30 18:41:38.721250",
+  "agent": "tree_grpo",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883506,
+  "best_energy": -7.881198010267059,
+  "energy_error_mha": 1.1263686164468822,
+  "best_ops": 5,
+  "target_ops": 6,
+  "chemical_accuracy_pass": true,
+  "operator_efficiency_pass": true,
+  "diagnostics": {
+    "n_groups": 250,
+    "n_loss_samples": 250,
+    "loss_first": -0.0647428839188069,
+    "loss_last": -0.05753975135885412,
+    "loss_trend_pass": false,
+    "best_energy_first": -7.865165657535051,
+    "best_energy_last": -7.881198010267059,
+    "energy_trend_pass": true,
+    "overall_pass": false,
+    "final_cache_hits": 21,
+    "cache_used": true
+  },
+  "overall_pass": false
+}

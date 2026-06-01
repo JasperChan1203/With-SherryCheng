@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-04-30 19:09:18.124649",
+  "agent": "double_dqn",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883502,
+  "best_energy": -7.880780240438777,
+  "energy_error_mha": 1.5441384447250073,
+  "best_ops": 5,
+  "target_ops": 6,
+  "chemical_accuracy_pass": true,
+  "operator_efficiency_pass": true,
+  "diagnostics": {
+    "epsilon_initial": 1.0,
+    "epsilon_final": 0.05,
+    "epsilon_decay_pass": true,
+    "best_energy_final": -7.880780240438777,
+    "overall_pass": true
+  },
+  "overall_pass": true
+}

@@ -1,0 +1,58 @@
+=== RLQAS LiH HEA GRPO Learning Validation ===
+Job ID  : 83487
+Node    : curie-gpu003
+Started : Mon May 25 07:18:41 PM CST 2026
+2026-05-25 19:19:37 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-25 19:20:19 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH HEA GRPO Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(2, 3)
+Transform   : jordan_wigner  max_layers=3
+Episodes    : 500  (run in groups of 8)
+Started     : 2026-05-25 19:20:20.408496
+============================================================
+2026-05-25 19:20:26 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (2, 3), aslst=[1, 2, 5], transform jordan_wigner, qubits=6, FCI energy=-7.881072
+FCI energy  : -7.881072 Ha
+HF energy   : -7.861865 Ha
+HF error    : 19.207 mHa
+
+============================================================
+HEA Search Starting
+  Agent: grpo
+  Episodes: 500
+  Timesteps: 1500
+  Classical opt: True
+============================================================
+
+2026-05-25 19:20:26 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+[HEASearchController] GRPO loop: 62 groups × 8 episodes = 496 episodes
+2026-05-25 19:20:31 - jax._src.xla_bridge - INFO - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+  GRPO early stop at group 33: error=0.0775 mHa
+
+============================================================
+HEA Search Complete
+  Best energy: -7.880995
+  Results saved to: results/checkpoints
+============================================================
+
+
+============================================================
+GRPO HEA VALIDATION SUMMARY
+============================================================
+  Best energy        : -7.880995 Ha
+  FCI energy         : -7.881072 Ha
+  Energy error       : 0.077 mHa  PASS
+  Better than HF     : -7.880995 < -7.861865  PASS
+  Circuit structure  : layers=3  PASS
+  Entanglement       : ['circular', 'full', 'full']
+  Rotations          : ['ry', 'ry', 'ry']
+  Parameters         : 54
+
+============================================================
+  OVERALL: PASS -- GRPO is learning
+============================================================
+
+Report saved -> results/grpo_lih_hea_validation_83487.json
+
+=== Finished at Mon May 25 08:08:50 PM CST 2026 -- exit code: 0 ===

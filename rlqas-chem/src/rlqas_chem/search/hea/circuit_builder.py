@@ -308,10 +308,15 @@ class HEACircuitBuilder:
             self.build()
         return self._parameters.copy()
 
-    def to_tensorcircuit(self) -> "tc.Circuit":
+    def to_tensorcircuit(self, inputs=None) -> "tc.Circuit":
         """Convert built circuit dict to tensorcircuit.Circuit for simulation.
 
         Must call build() before calling this method.
+
+        Args:
+            inputs: Optional initial state vector. If provided, the circuit is
+                    initialized with this state (e.g., Hartree-Fock reference).
+                    If None, the circuit starts from |0...0>.
 
         Returns:
             tensorcircuit.Circuit with all gates applied
@@ -321,7 +326,10 @@ class HEACircuitBuilder:
         if not self._layers:
             self.build()
 
-        c = tc.Circuit(self.n_qubits)
+        if inputs is not None:
+            c = tc.Circuit(self.n_qubits, inputs=inputs)
+        else:
+            c = tc.Circuit(self.n_qubits)
 
         for layer in self._layers:
             # Apply rotation gates

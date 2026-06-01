@@ -1,0 +1,38 @@
+=== RLQAS LiH Double-DQN Learning Validation ===
+Job ID  : 72962
+Node    : curie-gpu002
+Started : Thu Apr 30 06:21:43 PM CST 2026
+2026-04-30 18:22:29 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-04-30 18:23:04 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH Double-DQN Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(4, 6)
+Episodes    : 2000
+Started     : 2026-04-30 18:23:05.197676
+============================================================
+2026-04-30 18:23:15 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha  (from processor)
+Target ops  : <= 6 (ADAPT-VQE @ 1.6 A needs 5)
+2026-04-30 18:23:15 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Epsilon initial : 1.000
+Starting UCC search for 2000 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 10000 timesteps (2000 episodes × 5 steps)
+Double-DQN search completed. Best energy: -7.880780 Hartree
+Epsilon final   : 0.050
+
+============================================================
+DOUBLE-DQN LEARNING DIAGNOSTICS SUMMARY
+============================================================
+  Exploration decay  : eps 1.000 -> 0.050  PASS
+  Chemical accuracy  : error=1.544 mHa  PASS
+  Operator efficiency: 5 ops (target <= 6)  PASS
+
+============================================================
+  OVERALL: PASS -- Double-DQN is learning
+============================================================
+
+Report saved -> results/double_dqn_lih_validation_72962.json
+
+=== Finished at Thu Apr 30 07:09:21 PM CST 2026 — exit code: 0 ===

@@ -1,0 +1,2002 @@
+[
+  {
+    "group": 0,
+    "best_energy": -7.880113903218128,
+    "mean_energy": -7.865526928013651,
+    "loss": -0.03734089434146881,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 1,
+    "best_energy": -7.87658215433079,
+    "mean_energy": -7.864768053203372,
+    "loss": -0.037337422370910645,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 2,
+    "best_energy": -7.876483240828336,
+    "mean_energy": -7.863936698611053,
+    "loss": -0.03733639046549797,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 3,
+    "best_energy": -7.865547318156676,
+    "mean_energy": -7.8634735408106,
+    "loss": -0.03733783960342407,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 4,
+    "best_energy": -7.876583084510826,
+    "mean_energy": -7.864653135240104,
+    "loss": -0.037337832152843475,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 5,
+    "best_energy": -7.876719924394551,
+    "mean_energy": -7.8643688383117505,
+    "loss": -0.037338800728321075,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 6,
+    "best_energy": -7.876600829471429,
+    "mean_energy": -7.864241658352727,
+    "loss": -0.037338633090257645,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 7,
+    "best_energy": -7.862700479522929,
+    "mean_energy": -7.862023963175641,
+    "loss": -0.037338294088840485,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 8,
+    "best_energy": -7.876583093968404,
+    "mean_energy": -7.864152172791286,
+    "loss": -0.03733570873737335,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 9,
+    "best_energy": -7.876627897243691,
+    "mean_energy": -7.866712407273722,
+    "loss": -0.037333011627197266,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 10,
+    "best_energy": -7.876482881721999,
+    "mean_energy": -7.864818733717015,
+    "loss": -0.03733523562550545,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 11,
+    "best_energy": -7.865588043317369,
+    "mean_energy": -7.863444130692632,
+    "loss": -0.037337806075811386,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 12,
+    "best_energy": -7.876585336765953,
+    "mean_energy": -7.864757446714931,
+    "loss": -0.037334930151700974,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 13,
+    "best_energy": -7.876469702746479,
+    "mean_energy": -7.866917604272775,
+    "loss": -0.037336062639951706,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 14,
+    "best_energy": -7.865909445453265,
+    "mean_energy": -7.8628199613639,
+    "loss": -0.03733708709478378,
+    "advantage_std": null,
+    "global_best_energy": -7.880113903218128
+  },
+  {
+    "group": 15,
+    "best_energy": -7.880671259515705,
+    "mean_energy": -7.866168470786605,
+    "loss": -0.0373348668217659,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 16,
+    "best_energy": -7.86653716406398,
+    "mean_energy": -7.863411779511978,
+    "loss": -0.03733302652835846,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 17,
+    "best_energy": -7.865873477500059,
+    "mean_energy": -7.863600922391685,
+    "loss": -0.03733937814831734,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 18,
+    "best_energy": -7.8764812757102645,
+    "mean_energy": -7.866119922200195,
+    "loss": -0.037335652858018875,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 19,
+    "best_energy": -7.876482342205892,
+    "mean_energy": -7.8638994080848255,
+    "loss": -0.03733759745955467,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 20,
+    "best_energy": -7.876527357049297,
+    "mean_energy": -7.865789813350032,
+    "loss": -0.03733411803841591,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 21,
+    "best_energy": -7.880217762467702,
+    "mean_energy": -7.867571025192642,
+    "loss": -0.037333305925130844,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 22,
+    "best_energy": -7.865253947977508,
+    "mean_energy": -7.863210274766966,
+    "loss": -0.03733403608202934,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 23,
+    "best_energy": -7.876436640475489,
+    "mean_energy": -7.8654614223250245,
+    "loss": -0.037335354834795,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 24,
+    "best_energy": -7.876453170460027,
+    "mean_energy": -7.864806623621224,
+    "loss": -0.03733627125620842,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 25,
+    "best_energy": -7.862737484071903,
+    "mean_energy": -7.862108647640216,
+    "loss": -0.037336111068725586,
+    "advantage_std": null,
+    "global_best_energy": -7.880671259515705
+  },
+  {
+    "group": 26,
+    "best_energy": -7.880686405197333,
+    "mean_energy": -7.865101332823071,
+    "loss": -0.03733014687895775,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 27,
+    "best_energy": -7.865587021299157,
+    "mean_energy": -7.862465044914431,
+    "loss": -0.03733403980731964,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 28,
+    "best_energy": -7.8802377194641755,
+    "mean_energy": -7.869768879356354,
+    "loss": -0.03733457252383232,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 29,
+    "best_energy": -7.880193404078946,
+    "mean_energy": -7.864394728586686,
+    "loss": -0.037331659346818924,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 30,
+    "best_energy": -7.8651136989699095,
+    "mean_energy": -7.862493525170335,
+    "loss": -0.03732990473508835,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 31,
+    "best_energy": -7.865986545686558,
+    "mean_energy": -7.862843421544762,
+    "loss": -0.03733564540743828,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 32,
+    "best_energy": -7.880166665305082,
+    "mean_energy": -7.86442069994963,
+    "loss": -0.037333711981773376,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 33,
+    "best_energy": -7.862694111747316,
+    "mean_energy": -7.862230726708429,
+    "loss": -0.03733357787132263,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 34,
+    "best_energy": -7.876455489842759,
+    "mean_energy": -7.866294131868527,
+    "loss": -0.03733344003558159,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 35,
+    "best_energy": -7.876434568483529,
+    "mean_energy": -7.864255663377662,
+    "loss": -0.037334926426410675,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 36,
+    "best_energy": -7.866533426065163,
+    "mean_energy": -7.862642928364262,
+    "loss": -0.03733234480023384,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 37,
+    "best_energy": -7.877186895655748,
+    "mean_energy": -7.868624225762115,
+    "loss": -0.03733042627573013,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 38,
+    "best_energy": -7.880209057918063,
+    "mean_energy": -7.866522285122514,
+    "loss": -0.037331998348236084,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 39,
+    "best_energy": -7.865113661954417,
+    "mean_energy": -7.86251695841344,
+    "loss": -0.037334151566028595,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 40,
+    "best_energy": -7.865118361968137,
+    "mean_energy": -7.862429472324644,
+    "loss": -0.037330787628889084,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 41,
+    "best_energy": -7.876436213977468,
+    "mean_energy": -7.864280606176294,
+    "loss": -0.03733520209789276,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 42,
+    "best_energy": -7.876436647355448,
+    "mean_energy": -7.865180121481334,
+    "loss": -0.037335269153118134,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 43,
+    "best_energy": -7.877186216588213,
+    "mean_energy": -7.867439098352625,
+    "loss": -0.037330783903598785,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 44,
+    "best_energy": -7.876453148307401,
+    "mean_energy": -7.864271351768696,
+    "loss": -0.037329934537410736,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 45,
+    "best_energy": -7.876524974519561,
+    "mean_energy": -7.8647157241585495,
+    "loss": -0.03732752799987793,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 46,
+    "best_energy": -7.876437758130279,
+    "mean_energy": -7.86381339911947,
+    "loss": -0.03733280673623085,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 47,
+    "best_energy": -7.877169074126075,
+    "mean_energy": -7.865046742146568,
+    "loss": -0.03733137995004654,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 48,
+    "best_energy": -7.876472034906667,
+    "mean_energy": -7.864145207465111,
+    "loss": -0.03733327239751816,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 49,
+    "best_energy": -7.865131409814457,
+    "mean_energy": -7.8629267815027655,
+    "loss": -0.03733100742101669,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 50,
+    "best_energy": -7.876503225006009,
+    "mean_energy": -7.866376426210863,
+    "loss": -0.03732842952013016,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 51,
+    "best_energy": -7.876480996000331,
+    "mean_energy": -7.864625803626201,
+    "loss": -0.03733299672603607,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 52,
+    "best_energy": -7.880129038154554,
+    "mean_energy": -7.867266592629264,
+    "loss": -0.037332963198423386,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 53,
+    "best_energy": -7.877127366986129,
+    "mean_energy": -7.868046125895334,
+    "loss": -0.037334464490413666,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 54,
+    "best_energy": -7.876483239249162,
+    "mean_energy": -7.86778406778663,
+    "loss": -0.03733036667108536,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 55,
+    "best_energy": -7.865891876134387,
+    "mean_energy": -7.863369636844833,
+    "loss": -0.03733261302113533,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 56,
+    "best_energy": -7.876627196394543,
+    "mean_energy": -7.866062726538577,
+    "loss": -0.037326641380786896,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 57,
+    "best_energy": -7.865848973860396,
+    "mean_energy": -7.863084702169823,
+    "loss": -0.03733416646718979,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 58,
+    "best_energy": -7.876583685569737,
+    "mean_energy": -7.86785839186655,
+    "loss": -0.03733031451702118,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 59,
+    "best_energy": -7.876676958599922,
+    "mean_energy": -7.866247122989318,
+    "loss": -0.03732612356543541,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 60,
+    "best_energy": -7.876502336521788,
+    "mean_energy": -7.866637405071271,
+    "loss": -0.03732824698090553,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 61,
+    "best_energy": -7.865125252050775,
+    "mean_energy": -7.862627379338988,
+    "loss": -0.03732945770025253,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 62,
+    "best_energy": -7.880191016059531,
+    "mean_energy": -7.86881446814551,
+    "loss": -0.03732715919613838,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 63,
+    "best_energy": -7.865848084223567,
+    "mean_energy": -7.863200464200819,
+    "loss": -0.03733116760849953,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 64,
+    "best_energy": -7.865931713390409,
+    "mean_energy": -7.862844065470696,
+    "loss": -0.03732842579483986,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 65,
+    "best_energy": -7.87649874405196,
+    "mean_energy": -7.864722589981518,
+    "loss": -0.037328749895095825,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 66,
+    "best_energy": -7.8655946015666265,
+    "mean_energy": -7.862961369454302,
+    "loss": -0.03732895478606224,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 67,
+    "best_energy": -7.876500983041939,
+    "mean_energy": -7.866278599066442,
+    "loss": -0.03732672333717346,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 68,
+    "best_energy": -7.8665334642634095,
+    "mean_energy": -7.863504759554974,
+    "loss": -0.03732781857252121,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 69,
+    "best_energy": -7.880159914349822,
+    "mean_energy": -7.865126029021958,
+    "loss": -0.0373302586376667,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 70,
+    "best_energy": -7.8806782211240725,
+    "mean_energy": -7.870655875547389,
+    "loss": -0.03732280433177948,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 71,
+    "best_energy": -7.876583572453382,
+    "mean_energy": -7.864763994539666,
+    "loss": -0.037325046956539154,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 72,
+    "best_energy": -7.866363828340526,
+    "mean_energy": -7.863291480089617,
+    "loss": -0.03732770308852196,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 73,
+    "best_energy": -7.865844932340518,
+    "mean_energy": -7.8628207602843885,
+    "loss": -0.03732907027006149,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 74,
+    "best_energy": -7.8764823446228265,
+    "mean_energy": -7.863885810651651,
+    "loss": -0.037329234182834625,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 75,
+    "best_energy": -7.876436647490542,
+    "mean_energy": -7.864605806100621,
+    "loss": -0.037324536591768265,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 76,
+    "best_energy": -7.865153524558628,
+    "mean_energy": -7.862437174311776,
+    "loss": -0.03733302280306816,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 77,
+    "best_energy": -7.86637141355994,
+    "mean_energy": -7.862977963121975,
+    "loss": -0.03732607886195183,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 78,
+    "best_energy": -7.862736769857741,
+    "mean_energy": -7.862065792300239,
+    "loss": -0.037324678152799606,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 79,
+    "best_energy": -7.86588222971904,
+    "mean_energy": -7.862597629395204,
+    "loss": -0.0373239628970623,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 80,
+    "best_energy": -7.865844990085329,
+    "mean_energy": -7.862968437691285,
+    "loss": -0.03732960298657417,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 81,
+    "best_energy": -7.876482884581123,
+    "mean_energy": -7.865374996985408,
+    "loss": -0.03732907027006149,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 82,
+    "best_energy": -7.880159516189511,
+    "mean_energy": -7.868441974605053,
+    "loss": -0.03732633590698242,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 83,
+    "best_energy": -7.865113691323905,
+    "mean_energy": -7.862577714835856,
+    "loss": -0.0373215451836586,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 84,
+    "best_energy": -7.880163578926964,
+    "mean_energy": -7.868366924746265,
+    "loss": -0.0373314768075943,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 85,
+    "best_energy": -7.865905999778522,
+    "mean_energy": -7.863379525393565,
+    "loss": -0.03732527792453766,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 86,
+    "best_energy": -7.876674812099098,
+    "mean_energy": -7.866084206477877,
+    "loss": -0.03732580691576004,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 87,
+    "best_energy": -7.865162309227663,
+    "mean_energy": -7.863018762907869,
+    "loss": -0.03732555732131004,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 88,
+    "best_energy": -7.865166825527925,
+    "mean_energy": -7.862742578433098,
+    "loss": -0.037322454154491425,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 89,
+    "best_energy": -7.877080735262456,
+    "mean_energy": -7.866185355989893,
+    "loss": -0.037321265786886215,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 90,
+    "best_energy": -7.877082842095487,
+    "mean_energy": -7.869844782507018,
+    "loss": -0.03731508180499077,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 91,
+    "best_energy": -7.865545014272695,
+    "mean_energy": -7.86277128537233,
+    "loss": -0.03732742369174957,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 92,
+    "best_energy": -7.877082304334798,
+    "mean_energy": -7.865609491046085,
+    "loss": -0.037321899086236954,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 93,
+    "best_energy": -7.865969784743439,
+    "mean_energy": -7.8643497045517385,
+    "loss": -0.03732013702392578,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 94,
+    "best_energy": -7.87648127732204,
+    "mean_energy": -7.866447838205351,
+    "loss": -0.03732477128505707,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 95,
+    "best_energy": -7.877143756571891,
+    "mean_energy": -7.864297341145864,
+    "loss": -0.03732435777783394,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 96,
+    "best_energy": -7.876452052532287,
+    "mean_energy": -7.86436540102046,
+    "loss": -0.037320930510759354,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 97,
+    "best_energy": -7.877098482380625,
+    "mean_energy": -7.866717687212956,
+    "loss": -0.03732040897011757,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 98,
+    "best_energy": -7.865862261074921,
+    "mean_energy": -7.862430358132895,
+    "loss": -0.03732384741306305,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 99,
+    "best_energy": -7.876452078963701,
+    "mean_energy": -7.865520236824111,
+    "loss": -0.037324607372283936,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 100,
+    "best_energy": -7.8772297258826525,
+    "mean_energy": -7.864986475683516,
+    "loss": -0.03732428699731827,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 101,
+    "best_energy": -7.866363828340478,
+    "mean_energy": -7.862958666833368,
+    "loss": -0.03731923550367355,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 102,
+    "best_energy": -7.866352777641485,
+    "mean_energy": -7.8629832593073195,
+    "loss": -0.03732380270957947,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 103,
+    "best_energy": -7.877119134525173,
+    "mean_energy": -7.865946308717401,
+    "loss": -0.03732137382030487,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 104,
+    "best_energy": -7.880159353070147,
+    "mean_energy": -7.868564173971,
+    "loss": -0.03732205182313919,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 105,
+    "best_energy": -7.876480991345985,
+    "mean_energy": -7.86626364598448,
+    "loss": -0.0373191274702549,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 106,
+    "best_energy": -7.876434334838334,
+    "mean_energy": -7.864534325143818,
+    "loss": -0.03731929138302803,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 107,
+    "best_energy": -7.8801342969912875,
+    "mean_energy": -7.872443099623313,
+    "loss": -0.03731667250394821,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 108,
+    "best_energy": -7.86553926493091,
+    "mean_energy": -7.862336542862648,
+    "loss": -0.037322867661714554,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 109,
+    "best_energy": -7.865968900899584,
+    "mean_energy": -7.862627201983978,
+    "loss": -0.037320151925086975,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 110,
+    "best_energy": -7.876583726626955,
+    "mean_energy": -7.864854814605202,
+    "loss": -0.03731559216976166,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 111,
+    "best_energy": -7.880162728493427,
+    "mean_energy": -7.864879725120053,
+    "loss": -0.03731916472315788,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 112,
+    "best_energy": -7.877143760475822,
+    "mean_energy": -7.864524775663089,
+    "loss": -0.03732067346572876,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 113,
+    "best_energy": -7.876570700579429,
+    "mean_energy": -7.864752413226304,
+    "loss": -0.03731798380613327,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 114,
+    "best_energy": -7.876500088560488,
+    "mean_energy": -7.866349790370681,
+    "loss": -0.03731923550367355,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 115,
+    "best_energy": -7.8801167460105495,
+    "mean_energy": -7.866242345778021,
+    "loss": -0.0373147614300251,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 116,
+    "best_energy": -7.876528903312077,
+    "mean_energy": -7.864844896530416,
+    "loss": -0.03732150420546532,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 117,
+    "best_energy": -7.876482660255596,
+    "mean_energy": -7.86395507521814,
+    "loss": -0.037316497415304184,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 118,
+    "best_energy": -7.876481277322076,
+    "mean_energy": -7.863920820256956,
+    "loss": -0.03731895983219147,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 119,
+    "best_energy": -7.876470785157649,
+    "mean_energy": -7.864490283278812,
+    "loss": -0.03731127828359604,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 120,
+    "best_energy": -7.8765793940823565,
+    "mean_energy": -7.864872165331201,
+    "loss": -0.03731601685285568,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 121,
+    "best_energy": -7.8771273687754,
+    "mean_energy": -7.869522128950195,
+    "loss": -0.037310339510440826,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 122,
+    "best_energy": -7.876583746744953,
+    "mean_energy": -7.864102678697781,
+    "loss": -0.037314437329769135,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 123,
+    "best_energy": -7.876454394199508,
+    "mean_energy": -7.864231603049944,
+    "loss": -0.03730719909071922,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 124,
+    "best_energy": -7.880112990893088,
+    "mean_energy": -7.867229508143568,
+    "loss": -0.03731181472539902,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 125,
+    "best_energy": -7.876454385849743,
+    "mean_energy": -7.8668916871447445,
+    "loss": -0.037310682237148285,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 126,
+    "best_energy": -7.8771651673533585,
+    "mean_energy": -7.864141474325752,
+    "loss": -0.03730793297290802,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 127,
+    "best_energy": -7.865599852896245,
+    "mean_energy": -7.862776561953246,
+    "loss": -0.03731407970190048,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 128,
+    "best_energy": -7.8771191369032225,
+    "mean_energy": -7.866102010903673,
+    "loss": -0.03730913624167442,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 129,
+    "best_energy": -7.87708185225318,
+    "mean_energy": -7.866301142657312,
+    "loss": -0.03731560707092285,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 130,
+    "best_energy": -7.865172239715018,
+    "mean_energy": -7.862837897859622,
+    "loss": -0.03730816766619682,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 131,
+    "best_energy": -7.880189817651497,
+    "mean_energy": -7.867034859517382,
+    "loss": -0.037308018654584885,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 132,
+    "best_energy": -7.866365563464613,
+    "mean_energy": -7.863664285420492,
+    "loss": -0.037308380007743835,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 133,
+    "best_energy": -7.865990317441827,
+    "mean_energy": -7.862956137392613,
+    "loss": -0.03730623796582222,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 134,
+    "best_energy": -7.876436639917075,
+    "mean_energy": -7.865731451742532,
+    "loss": -0.0373050719499588,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 135,
+    "best_energy": -7.8801132649947805,
+    "mean_energy": -7.8684315747552835,
+    "loss": -0.03730317950248718,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 136,
+    "best_energy": -7.865212503829182,
+    "mean_energy": -7.863138423603943,
+    "loss": -0.037311892956495285,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 137,
+    "best_energy": -7.877185174817071,
+    "mean_energy": -7.867085532360929,
+    "loss": -0.03730825334787369,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 138,
+    "best_energy": -7.866534030497147,
+    "mean_energy": -7.862641052807485,
+    "loss": -0.03730928525328636,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 139,
+    "best_energy": -7.86511366195442,
+    "mean_energy": -7.862711930777351,
+    "loss": -0.03730571269989014,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 140,
+    "best_energy": -7.876483434964286,
+    "mean_energy": -7.866520651607473,
+    "loss": -0.03730569779872894,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 141,
+    "best_energy": -7.880116424329329,
+    "mean_energy": -7.866689249805155,
+    "loss": -0.03730831295251846,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 142,
+    "best_energy": -7.866581444504997,
+    "mean_energy": -7.864543118540338,
+    "loss": -0.037303097546100616,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 143,
+    "best_energy": -7.880671335970411,
+    "mean_energy": -7.865218416724751,
+    "loss": -0.03731010481715202,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 144,
+    "best_energy": -7.880174095910911,
+    "mean_energy": -7.868387044091489,
+    "loss": -0.0373019278049469,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 145,
+    "best_energy": -7.8651620487134535,
+    "mean_energy": -7.862802731360271,
+    "loss": -0.03730481117963791,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 146,
+    "best_energy": -7.865844677026947,
+    "mean_energy": -7.863363111745473,
+    "loss": -0.037307258695364,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 147,
+    "best_energy": -7.8765906161323285,
+    "mean_energy": -7.864334582893574,
+    "loss": -0.03730405494570732,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 148,
+    "best_energy": -7.87708295339728,
+    "mean_energy": -7.86586587908092,
+    "loss": -0.03730923682451248,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 149,
+    "best_energy": -7.865535916137335,
+    "mean_energy": -7.862668486498734,
+    "loss": -0.03730526193976402,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 150,
+    "best_energy": -7.8801775885160685,
+    "mean_energy": -7.872419848549493,
+    "loss": -0.037299010902643204,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 151,
+    "best_energy": -7.88019340407894,
+    "mean_energy": -7.868572982017198,
+    "loss": -0.037298716604709625,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 152,
+    "best_energy": -7.8766870313479,
+    "mean_energy": -7.866635743019679,
+    "loss": -0.037294160574674606,
+    "advantage_std": null,
+    "global_best_energy": -7.880686405197333
+  },
+  {
+    "group": 153,
+    "best_energy": -7.880711813081088,
+    "mean_energy": -7.866646792318247,
+    "loss": -0.03730335831642151,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 154,
+    "best_energy": -7.877169527442274,
+    "mean_energy": -7.868267639921086,
+    "loss": -0.037295546382665634,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 155,
+    "best_energy": -7.876601256742005,
+    "mean_energy": -7.866108521998731,
+    "loss": -0.03728993982076645,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 156,
+    "best_energy": -7.876525091859873,
+    "mean_energy": -7.86481654651786,
+    "loss": -0.037301234900951385,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 157,
+    "best_energy": -7.876453921153458,
+    "mean_energy": -7.865490878008534,
+    "loss": -0.037296611815690994,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 158,
+    "best_energy": -7.867034393558648,
+    "mean_energy": -7.863614435474118,
+    "loss": -0.037302836775779724,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 159,
+    "best_energy": -7.865587043104006,
+    "mean_energy": -7.863103068382282,
+    "loss": -0.03729656711220741,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 160,
+    "best_energy": -7.876436874573577,
+    "mean_energy": -7.864336875230216,
+    "loss": -0.03729690983891487,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 161,
+    "best_energy": -7.876500979045674,
+    "mean_energy": -7.866135036996926,
+    "loss": -0.03729148209095001,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 162,
+    "best_energy": -7.865173155356957,
+    "mean_energy": -7.862850928899499,
+    "loss": -0.037302616983652115,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 163,
+    "best_energy": -7.877169330283343,
+    "mean_energy": -7.8683275603317995,
+    "loss": -0.037289027124643326,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 164,
+    "best_energy": -7.880193404078789,
+    "mean_energy": -7.867067208348399,
+    "loss": -0.037293169647455215,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 165,
+    "best_energy": -7.876484340947289,
+    "mean_energy": -7.867346208303875,
+    "loss": -0.037297870963811874,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 166,
+    "best_energy": -7.8771284609048715,
+    "mean_energy": -7.864842483588085,
+    "loss": -0.03730129450559616,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 167,
+    "best_energy": -7.8801165372720225,
+    "mean_energy": -7.868195647127431,
+    "loss": -0.037293240427970886,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 168,
+    "best_energy": -7.865553834972098,
+    "mean_energy": -7.8628618603011295,
+    "loss": -0.037301577627658844,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 169,
+    "best_energy": -7.87662414472408,
+    "mean_energy": -7.863978301591537,
+    "loss": -0.037288598716259,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 170,
+    "best_energy": -7.8801770985707735,
+    "mean_energy": -7.8653820617236825,
+    "loss": -0.037294331938028336,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 171,
+    "best_energy": -7.876482378064927,
+    "mean_energy": -7.864928677964522,
+    "loss": -0.03729737550020218,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 172,
+    "best_energy": -7.865249918579651,
+    "mean_energy": -7.862733097766311,
+    "loss": -0.03729498013854027,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 173,
+    "best_energy": -7.877088463848749,
+    "mean_energy": -7.864287442510335,
+    "loss": -0.0372944250702858,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 174,
+    "best_energy": -7.880236949023478,
+    "mean_energy": -7.86958652176878,
+    "loss": -0.03728575259447098,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 175,
+    "best_energy": -7.865604778127175,
+    "mean_energy": -7.863033302854899,
+    "loss": -0.03728780522942543,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 176,
+    "best_energy": -7.876575489004041,
+    "mean_energy": -7.86609423856598,
+    "loss": -0.03728458657860756,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 177,
+    "best_energy": -7.877186895655785,
+    "mean_energy": -7.8656803986080845,
+    "loss": -0.037289880216121674,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 178,
+    "best_energy": -7.876488422334959,
+    "mean_energy": -7.865285105874586,
+    "loss": -0.037293028086423874,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 179,
+    "best_energy": -7.867031566768751,
+    "mean_energy": -7.862945861132763,
+    "loss": -0.03729080408811569,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 180,
+    "best_energy": -7.880114075943468,
+    "mean_energy": -7.868725835280357,
+    "loss": -0.03729702904820442,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 181,
+    "best_energy": -7.87708829031151,
+    "mean_energy": -7.86436322013377,
+    "loss": -0.03728801757097244,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 182,
+    "best_energy": -7.880159382234107,
+    "mean_energy": -7.86850814116724,
+    "loss": -0.03728282451629639,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 183,
+    "best_energy": -7.87657437093885,
+    "mean_energy": -7.863990520598522,
+    "loss": -0.03728272020816803,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 184,
+    "best_energy": -7.876621047235171,
+    "mean_energy": -7.865966503051682,
+    "loss": -0.037295665591955185,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 185,
+    "best_energy": -7.876482348942159,
+    "mean_energy": -7.864777463114281,
+    "loss": -0.03729524463415146,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 186,
+    "best_energy": -7.865180949703155,
+    "mean_energy": -7.863557504527559,
+    "loss": -0.037288930267095566,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 187,
+    "best_energy": -7.876443808223621,
+    "mean_energy": -7.864872737692883,
+    "loss": -0.03727933019399643,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 188,
+    "best_energy": -7.865162318608843,
+    "mean_energy": -7.863312281319718,
+    "loss": -0.03728478029370308,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 189,
+    "best_energy": -7.880671084061782,
+    "mean_energy": -7.864757188697222,
+    "loss": -0.037279605865478516,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 190,
+    "best_energy": -7.876435423579308,
+    "mean_energy": -7.865384956503898,
+    "loss": -0.03728790581226349,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 191,
+    "best_energy": -7.876488744069685,
+    "mean_energy": -7.864807413326133,
+    "loss": -0.037281543016433716,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 192,
+    "best_energy": -7.876583257204419,
+    "mean_energy": -7.864974048427589,
+    "loss": -0.03728002309799194,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 193,
+    "best_energy": -7.880189315072973,
+    "mean_energy": -7.867031935550896,
+    "loss": -0.037276364862918854,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 194,
+    "best_energy": -7.876443023619694,
+    "mean_energy": -7.8649974622576355,
+    "loss": -0.037286777049303055,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 195,
+    "best_energy": -7.877202891466928,
+    "mean_energy": -7.865728182847083,
+    "loss": -0.03726772964000702,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 196,
+    "best_energy": -7.877081211326762,
+    "mean_energy": -7.86665989028781,
+    "loss": -0.037270236760377884,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 197,
+    "best_energy": -7.8659132072094105,
+    "mean_energy": -7.862600113543704,
+    "loss": -0.03728242218494415,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 198,
+    "best_energy": -7.876436640475329,
+    "mean_energy": -7.865448503168045,
+    "loss": -0.037284597754478455,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 199,
+    "best_energy": -7.877080739175727,
+    "mean_energy": -7.866142574398859,
+    "loss": -0.03727983310818672,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 200,
+    "best_energy": -7.876583195634869,
+    "mean_energy": -7.867007982703682,
+    "loss": -0.03727548569440842,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 201,
+    "best_energy": -7.877127376009429,
+    "mean_energy": -7.8675575626585506,
+    "loss": -0.03727031499147415,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 202,
+    "best_energy": -7.876624037528464,
+    "mean_energy": -7.865692363067605,
+    "loss": -0.03726683184504509,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 203,
+    "best_energy": -7.876483240828361,
+    "mean_energy": -7.864927795921075,
+    "loss": -0.03727172687649727,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 204,
+    "best_energy": -7.865118902857879,
+    "mean_energy": -7.862476624061801,
+    "loss": -0.03727186098694801,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 205,
+    "best_energy": -7.880678904598121,
+    "mean_energy": -7.8675164463317415,
+    "loss": -0.037259094417095184,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 206,
+    "best_energy": -7.876585336766035,
+    "mean_energy": -7.864838824871297,
+    "loss": -0.0372769795358181,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 207,
+    "best_energy": -7.8770826304889185,
+    "mean_energy": -7.868674095789575,
+    "loss": -0.03726012259721756,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 208,
+    "best_energy": -7.876435401913949,
+    "mean_energy": -7.864709041610167,
+    "loss": -0.037263162434101105,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 209,
+    "best_energy": -7.876482884581141,
+    "mean_energy": -7.863966740184608,
+    "loss": -0.03725872188806534,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 210,
+    "best_energy": -7.87769590258281,
+    "mean_energy": -7.865855687195059,
+    "loss": -0.0372602678835392,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 211,
+    "best_energy": -7.877098687780671,
+    "mean_energy": -7.867544898632858,
+    "loss": -0.037258975207805634,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 212,
+    "best_energy": -7.865113919980243,
+    "mean_energy": -7.863227982629526,
+    "loss": -0.03726552799344063,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 213,
+    "best_energy": -7.87718794989103,
+    "mean_energy": -7.86382526188147,
+    "loss": -0.037261713296175,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 214,
+    "best_energy": -7.876453336390829,
+    "mean_energy": -7.864256009948017,
+    "loss": -0.03726276382803917,
+    "advantage_std": null,
+    "global_best_energy": -7.880711813081088
+  },
+  {
+    "group": 215,
+    "best_energy": -7.880778535591143,
+    "mean_energy": -7.873855185425491,
+    "loss": -0.037246815860271454,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 216,
+    "best_energy": -7.876453907215736,
+    "mean_energy": -7.864751909104298,
+    "loss": -0.03725329041481018,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 217,
+    "best_energy": -7.8801593530701455,
+    "mean_energy": -7.866709298330263,
+    "loss": -0.03725694492459297,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 218,
+    "best_energy": -7.88018981765146,
+    "mean_energy": -7.870275730233566,
+    "loss": -0.037255190312862396,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 219,
+    "best_energy": -7.880131058622729,
+    "mean_energy": -7.8692256878077025,
+    "loss": -0.037261370569467545,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 220,
+    "best_energy": -7.876528466406028,
+    "mean_energy": -7.865981403081454,
+    "loss": -0.03725825250148773,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 221,
+    "best_energy": -7.8765835848589765,
+    "mean_energy": -7.866975151080588,
+    "loss": -0.03724583238363266,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 222,
+    "best_energy": -7.876591057702936,
+    "mean_energy": -7.864589182879891,
+    "loss": -0.037247445434331894,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 223,
+    "best_energy": -7.876483239249173,
+    "mean_energy": -7.864524764165194,
+    "loss": -0.03725016117095947,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 224,
+    "best_energy": -7.876452055531682,
+    "mean_energy": -7.8645409897841425,
+    "loss": -0.03724728524684906,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 225,
+    "best_energy": -7.876638793673176,
+    "mean_energy": -7.86426327560655,
+    "loss": -0.037253983318805695,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 226,
+    "best_energy": -7.877083816822556,
+    "mean_energy": -7.866180273541673,
+    "loss": -0.0372389554977417,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 227,
+    "best_energy": -7.876522643395966,
+    "mean_energy": -7.864229115914902,
+    "loss": -0.03723857179284096,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 228,
+    "best_energy": -7.865161007368651,
+    "mean_energy": -7.863745511248388,
+    "loss": -0.03727104887366295,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 229,
+    "best_energy": -7.876482342205972,
+    "mean_energy": -7.865854727988607,
+    "loss": -0.03725411370396614,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 230,
+    "best_energy": -7.880114075943454,
+    "mean_energy": -7.869139904468561,
+    "loss": -0.03724147751927376,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 231,
+    "best_energy": -7.876500983041939,
+    "mean_energy": -7.868004576995126,
+    "loss": -0.037236038595438004,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 232,
+    "best_energy": -7.876434564819804,
+    "mean_energy": -7.864841478659688,
+    "loss": -0.03723549842834473,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 233,
+    "best_energy": -7.876677241404752,
+    "mean_energy": -7.864939689990739,
+    "loss": -0.03722803667187691,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 234,
+    "best_energy": -7.87722200592616,
+    "mean_energy": -7.86574238456062,
+    "loss": -0.03723355382680893,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 235,
+    "best_energy": -7.876531576800974,
+    "mean_energy": -7.866961446767261,
+    "loss": -0.03723742812871933,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 236,
+    "best_energy": -7.880159888427166,
+    "mean_energy": -7.866911325207685,
+    "loss": -0.03723161295056343,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 237,
+    "best_energy": -7.880114075943481,
+    "mean_energy": -7.866162260180725,
+    "loss": -0.037233296781778336,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 238,
+    "best_energy": -7.86588206887138,
+    "mean_energy": -7.8635500297745,
+    "loss": -0.03722915053367615,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 239,
+    "best_energy": -7.880159353070153,
+    "mean_energy": -7.8698659165988,
+    "loss": -0.03722461313009262,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 240,
+    "best_energy": -7.876435832863405,
+    "mean_energy": -7.864540937752738,
+    "loss": -0.03721752390265465,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 241,
+    "best_energy": -7.876593253539055,
+    "mean_energy": -7.86481688588959,
+    "loss": -0.0372212752699852,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 242,
+    "best_energy": -7.876677241404011,
+    "mean_energy": -7.866630937090523,
+    "loss": -0.03723524883389473,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 243,
+    "best_energy": -7.877185149411651,
+    "mean_energy": -7.866979087246408,
+    "loss": -0.0372256375849247,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 244,
+    "best_energy": -7.876489843692512,
+    "mean_energy": -7.870086761789523,
+    "loss": -0.03721245005726814,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 245,
+    "best_energy": -7.876454398964543,
+    "mean_energy": -7.8653163095834895,
+    "loss": -0.037220027297735214,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 246,
+    "best_energy": -7.876484619663706,
+    "mean_energy": -7.867154271719725,
+    "loss": -0.03722396492958069,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 247,
+    "best_energy": -7.876436667956873,
+    "mean_energy": -7.865182085007387,
+    "loss": -0.03721890598535538,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 248,
+    "best_energy": -7.876481275710268,
+    "mean_energy": -7.864753996150543,
+    "loss": -0.03721039742231369,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  },
+  {
+    "group": 249,
+    "best_energy": -7.863624088328268,
+    "mean_energy": -7.862416671752315,
+    "loss": -0.03722216188907623,
+    "advantage_std": null,
+    "global_best_energy": -7.880778535591143
+  }
+]

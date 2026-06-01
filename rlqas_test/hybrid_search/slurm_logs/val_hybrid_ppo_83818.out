@@ -1,0 +1,39 @@
+=== RLQAS LiH Hybrid PPO Validation ===
+Job ID  : 83818
+Node    : curie-gpu002
+Started : Tue May 26 08:07:59 PM CST 2026
+2026-05-26 20:08:45 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-26 20:09:19 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH Hybrid (HEA+UCC) PPO Validation
+Molecule    : LiH @ 1.6 Å  full space
+Transform   : jordan_wigner
+Episodes    : 500
+Started     : 2026-05-26 20:09:20.043843
+============================================================
+2026-05-26 20:09:35 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), aslst=None, transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha
+HF energy   : -7.861865 Ha
+HF error    : 20.460 mHa
+Qubits      : 12
+[HybridSearchController] Starting hybrid search: 500 episodes, threshold=0.0016 Ha, molecule=LiH
+  Episode    0: energy=-7.876627, best=-7.876627
+  Converged at episode 7: error=1.5488 mHa (threshold=1.60 mHa)
+
+============================================================
+HYBRID PPO VALIDATION SUMMARY
+============================================================
+  Best energy        : -7.880776 Ha
+  FCI energy         : -7.882324 Ha
+  Energy error       : 1.549 mHa  PASS
+  Better than HF     : -7.880776 < -7.861865  PASS
+  Circuit (UCC ops)  : 5  PASS
+  Best excitations   : [[5, 11, 7, 1], [2, 11, 7, 1], [3, 9, 6, 0], [4, 10, 7, 1], [2, 8, 6, 0]]
+  Converged          : True
+
+============================================================
+  OVERALL: PASS
+============================================================
+
+=== Finished at Tue May 26 08:09:50 PM CST 2026 -- exit code: 1 ===

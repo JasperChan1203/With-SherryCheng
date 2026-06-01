@@ -75,6 +75,7 @@ class HEASearchController:
         molecule_data: Optional[Any] = None,
         target_energy: Optional[float] = None,
         parameter_sharing: str = "layer_wise",
+        run_classical_opt: bool = True,
     ) -> HEASearchEnv:
         """Set up the HEA search environment.
 
@@ -82,6 +83,8 @@ class HEASearchController:
             molecule_data: Optional molecule data for real energy computation
             target_energy: Optional target energy for the search
             parameter_sharing: Parameter sharing strategy
+            run_classical_opt: If True, run L-BFGS-B after each layer to get
+                the true minimum energy for the chosen architecture.
 
         Returns:
             Configured HEASearchEnv instance
@@ -94,6 +97,7 @@ class HEASearchController:
             parameter_sharing=parameter_sharing,
             target_energy=target_energy,
             molecule_data=molecule_data,
+            run_classical_opt=run_classical_opt,
         )
 
         if self.verbose >= 2:
@@ -142,6 +146,8 @@ class HEASearchController:
         target_energy: Optional[float] = None,
         checkpoint_interval: int = 10,
         molecule_data: Optional[Any] = None,
+        early_stop_threshold: float = 1.6e-3,
+        run_classical_opt: bool = True,
     ) -> Dict[str, Any]:
         """Run the HEA search process.
 
@@ -152,6 +158,10 @@ class HEASearchController:
             total_timesteps: Total training timesteps
             target_energy: Optional target energy
             checkpoint_interval: Interval for saving checkpoints
+            molecule_data: Optional molecule data
+            early_stop_threshold: Early stop threshold (Ha)
+            run_classical_opt: If True, run L-BFGS-B after each layer so that
+                rewards reflect the true minimum energy for each architecture.
 
         Returns:
             Dictionary containing search results
@@ -162,11 +172,13 @@ class HEASearchController:
             print(f"  Agent: {agent_type}")
             print(f"  Episodes: {n_episodes}")
             print(f"  Timesteps: {total_timesteps}")
+            print(f"  Classical opt: {run_classical_opt}")
             print(f"{'='*60}\n")
 
         # Set up environment and agent
         mol_data = molecule_data if molecule_data is not None else self._molecule_data
-        self.setup_environment(molecule_data=mol_data, target_energy=target_energy)
+        self.setup_environment(molecule_data=mol_data, target_energy=target_energy,
+                               run_classical_opt=run_classical_opt)
         self.setup_agent(agent_type=agent_type, config=agent_config)
 
         # Training loop
@@ -174,8 +186,17 @@ class HEASearchController:
         self._best_energy = float("inf")
         self._best_circuit = None
 
-        # Use total_timesteps for training
-        train_metrics = self._agent.learn(total_timesteps=total_timesteps)
+        # Dispatch: GRPO-family agents use a group-based episode loop;
+        # all others (PPO, DQN, A2C, Double-DQN, SAC-Discrete) use agent.learn().
+        _grpo_types = ('grpo', 'gigppo', 'tree_grpo')
+        if agent_type.lower() in _grpo_types:
+            self._run_grpo_loop(
+                n_episodes=n_episodes,
+                fci_energy=target_energy,
+                early_stop_threshold=early_stop_threshold,
+            )
+        else:
+            self._agent.learn(total_timesteps=total_timesteps)
 
         # FIX: Read both best_energy AND best_circuit_config from the environment.
         # Previously only best_energy was read; best_circuit was always None in results.
@@ -194,7 +215,6 @@ class HEASearchController:
             "total_timesteps": total_timesteps,
             "best_energy": self._best_energy,
             "best_circuit": self._best_circuit,
-            "training_metrics": train_metrics,
             "training_history": self._training_history,
             "timestamp": datetime.now().isoformat(),
         }
@@ -260,6 +280,38 @@ class HEASearchController:
             print(f"  Episode {episode_idx}: reward={episode_reward:.4f}, energy={episode_result['final_energy']:.6f}")
 
         return episode_result
+
+    def _run_grpo_loop(
+        self,
+        n_episodes: int,
+        fci_energy: Optional[float] = None,
+        early_stop_threshold: float = 1.6e-3,
+    ) -> None:
+        """Run group-based episode loop for GRPO-family agents.
+
+        GRPO/GiGPO/Tree-GRPO implement learning in train_one_group(env);
+        their learn() is a stub.  The env tracks best_energy per step.
+        """
+        group_size = getattr(self._agent, 'group_size', 8)
+        n_groups = max(1, n_episodes // group_size)
+
+        print(
+            f"[HEASearchController] GRPO loop: {n_groups} groups × {group_size} "
+            f"episodes = {n_groups * group_size} episodes"
+        )
+
+        for g in range(n_groups):
+            self._agent.train_one_group(self._env)
+
+            env_best = getattr(self._env, 'best_energy', float('inf'))
+
+            if fci_energy is not None and env_best != float('inf'):
+                if abs(env_best - fci_energy) < early_stop_threshold:
+                    print(
+                        f"  GRPO early stop at group {g}: "
+                        f"error={abs(env_best - fci_energy)*1000:.4f} mHa"
+                    )
+                    break
 
     def get_best_circuit(self) -> Optional[Dict]:
         """Get the best circuit found so far.

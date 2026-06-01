@@ -1,0 +1,512 @@
+=== RLQAS HEA Acceptance Test - Level 1-5 ===
+Job ID  : 79693
+Node    : curie-gpu003
+Agent   : ppo
+Started : Fri May 15 03:13:06 PM CST 2026
+Python  : Python 3.10.13
+2026-05-15 15:14:25 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+================================================================================
+RLQAS HEA 验收系统 - Level 1-5  |  回归测试 (PPO)
+================================================================================
+
+Running: Level 1: episode 步数严格等于 max_layers...
+2026-05-15 15:15:13 - root - INFO - Logging configured with level INFO
+  ✅ PASS [Level 1] - Level 1: episode 步数严格等于 max_layers
+    episode_lengths: [3, 3, 3, 3, 3]
+    max_layers: 3
+
+Running: Level 1: history 长度匹配步数...
+  ❌ FAIL [Level 1] - Level 1: history 长度匹配步数
+    Error: entanglement_history len=1, expected 3; rotation_history len=1, expected 3
+
+Running: Level 1: history 值合法...
+  ✅ PASS [Level 1] - Level 1: history 值合法
+    entanglement_history: ['linear', 'linear', 'circular']
+    rotation_history: ['rx', 'rx', 'ry']
+
+Running: Level 1: 完整 episode obs 无 NaN/Inf...
+  ✅ PASS [Level 1] - Level 1: 完整 episode obs 无 NaN/Inf
+    message: All observations finite over 3 steps
+
+Running: Level 1: global_best 跨 episode 单调不增...
+  ✅ PASS [Level 1] - Level 1: global_best 跨 episode 单调不增
+    global_bests: ['-6.869657', '-6.869657', '-6.869657', '-6.869657', '-6.870482']
+
+Running: Level 1: reset 后 global_best 保留...
+  ✅ PASS [Level 1] - Level 1: reset 后 global_best 保留
+    best_before_reset: -6.280010
+    best_after_reset: -6.280010
+
+Running: Level 1: step() info 含 HEA 特有键...
+  ✅ PASS [Level 1] - Level 1: step() info 含 HEA 特有键
+    entanglement: circular
+    rotation: ry
+    energy_delta: 0.549883
+
+Running: Level 2: n_operators 为 None [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 2
+  Timesteps: 6
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 94 |
+|    total_timesteps | 6  |
+---------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+  ✅ PASS [Level 2] - Level 2: n_operators 为 None [ppo]
+    agent: ppo
+    n_operators: None
+
+Running: Level 2: best_circuit 结构 [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 2
+  Timesteps: 6
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 92 |
+|    total_timesteps | 6  |
+---------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+  ✅ PASS [Level 2] - Level 2: best_circuit 结构 [ppo]
+    agent: ppo
+    entanglement_history: ['full']
+    rotation_history: ['rx']
+    n_parameters: 54
+
+Running: Level 2: JSON 序列化 [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 2
+  Timesteps: 6
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 87 |
+|    total_timesteps | 6  |
+---------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+  ✅ PASS [Level 2] - Level 2: JSON 序列化 [ppo]
+    agent: ppo
+    keys: ['best_energy', 'fci_energy', 'energy_error_mha', 'chemical_accuracy', 'n_operators', 'fusion_template', 'molecule', 'bond_length', 'ansatz_type', 'agent_type', 'n_episodes_run', 'n_qubits']
+
+Running: Level 2: chemical_accuracy 类型 [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 2
+  Timesteps: 6
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 93 |
+|    total_timesteps | 6  |
+---------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+  ✅ PASS [Level 2] - Level 2: chemical_accuracy 类型 [ppo]
+    agent: ppo
+    chemical_accuracy: False
+
+Running: Level 3: LiH HEA 字段完整 [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 5
+  Timesteps: 15
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 92 |
+|    total_timesteps | 6  |
+---------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 0           |
+|    iterations           | 2           |
+|    time_elapsed         | 194         |
+|    total_timesteps      | 12          |
+| train/                  |             |
+|    approx_kl            | 0.006321957 |
+|    clip_fraction        | 0           |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.2        |
+|    explained_variance   | -1.96       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0579     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0493     |
+|    value_loss           | 0.287       |
+-----------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 0            |
+|    iterations           | 3            |
+|    time_elapsed         | 332          |
+|    total_timesteps      | 18           |
+| train/                  |              |
+|    approx_kl            | 0.0018797319 |
+|    clip_fraction        | 0            |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -2.2         |
+|    explained_variance   | 0.481        |
+|    learning_rate        | 0.0003       |
+|    loss                 | 0.00304      |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0232      |
+|    value_loss           | 0.31         |
+------------------------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+  ✅ PASS [Level 3] - Level 3: LiH HEA 字段完整 [ppo]
+    agent: ppo
+    best_energy: -6.869657
+    fci_energy: -7.862919
+    n_qubits: 6
+
+Running: Level 3: LiH HEA 能量物理合理 [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 10
+  Timesteps: 30
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 88 |
+|    total_timesteps | 6  |
+---------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 0           |
+|    iterations           | 2           |
+|    time_elapsed         | 185         |
+|    total_timesteps      | 12          |
+| train/                  |             |
+|    approx_kl            | 0.006321947 |
+|    clip_fraction        | 0           |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.2        |
+|    explained_variance   | -1.96       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0579     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0493     |
+|    value_loss           | 0.287       |
+-----------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 0            |
+|    iterations           | 3            |
+|    time_elapsed         | 331          |
+|    total_timesteps      | 18           |
+| train/                  |              |
+|    approx_kl            | 0.0018796921 |
+|    clip_fraction        | 0            |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -2.2         |
+|    explained_variance   | 0.481        |
+|    learning_rate        | 0.0003       |
+|    loss                 | 0.00305      |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0232      |
+|    value_loss           | 0.31         |
+------------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 0            |
+|    iterations           | 4            |
+|    time_elapsed         | 406          |
+|    total_timesteps      | 24           |
+| train/                  |              |
+|    approx_kl            | 0.0025989215 |
+|    clip_fraction        | 0            |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -2.19        |
+|    explained_variance   | -1.91        |
+|    learning_rate        | 0.0003       |
+|    loss                 | 0.0101       |
+|    n_updates            | 30           |
+|    policy_gradient_loss | -0.0254      |
+|    value_loss           | 0.243        |
+------------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 0            |
+|    iterations           | 5            |
+|    time_elapsed         | 518          |
+|    total_timesteps      | 30           |
+| train/                  |              |
+|    approx_kl            | 0.0009971063 |
+|    clip_fraction        | 0            |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -2.19        |
+|    explained_variance   | -4.33        |
+|    learning_rate        | 0.0003       |
+|    loss                 | 0.495        |
+|    n_updates            | 40           |
+|    policy_gradient_loss | -0.0167      |
+|    value_loss           | 1.6          |
+------------------------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+  ❌ FAIL [Level 3] - Level 3: LiH HEA 能量物理合理 [ppo]
+    Error: best_energy -6.869657 > fci_energy -7.862919 + 0.1 — VQE may not be running correctly
+
+Running: Level 4: max_layers=3 生效 [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 5
+  Timesteps: 15
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 94 |
+|    total_timesteps | 6  |
+---------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 0           |
+|    iterations           | 2           |
+|    time_elapsed         | 198         |
+|    total_timesteps      | 12          |
+| train/                  |             |
+|    approx_kl            | 0.006321957 |
+|    clip_fraction        | 0           |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.2        |
+|    explained_variance   | -1.96       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0579     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0493     |
+|    value_loss           | 0.287       |
+-----------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 0            |
+|    iterations           | 3            |
+|    time_elapsed         | 344          |
+|    total_timesteps      | 18           |
+| train/                  |              |
+|    approx_kl            | 0.0018796623 |
+|    clip_fraction        | 0            |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -2.2         |
+|    explained_variance   | 0.481        |
+|    learning_rate        | 0.0003       |
+|    loss                 | 0.00304      |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0232      |
+|    value_loss           | 0.31         |
+------------------------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 5
+  Timesteps: 15
+  Classical opt: True
+============================================================
+
+Using cuda device
+---------------------------
+| time/              |    |
+|    fps             | 0  |
+|    iterations      | 1  |
+|    time_elapsed    | 92 |
+|    total_timesteps | 6  |
+---------------------------
+-----------------------------------------
+| time/                   |             |
+|    fps                  | 0           |
+|    iterations           | 2           |
+|    time_elapsed         | 188         |
+|    total_timesteps      | 12          |
+| train/                  |             |
+|    approx_kl            | 0.006321957 |
+|    clip_fraction        | 0           |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -2.2        |
+|    explained_variance   | -1.96       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0579     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0493     |
+|    value_loss           | 0.287       |
+-----------------------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 0            |
+|    iterations           | 3            |
+|    time_elapsed         | 328          |
+|    total_timesteps      | 18           |
+| train/                  |              |
+|    approx_kl            | 0.0018796425 |
+|    clip_fraction        | 0            |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -2.2         |
+|    explained_variance   | 0.481        |
+|    learning_rate        | 0.0003       |
+|    loss                 | 0.00304      |
+|    n_updates            | 20           |
+|    policy_gradient_loss | -0.0232      |
+|    value_loss           | 0.31         |
+------------------------------------------
+
+============================================================
+HEA Search Complete
+  Best energy: -6.869657
+  Results saved to: results/hea_search
+============================================================
+
+  ✅ PASS [Level 4] - Level 4: max_layers=3 生效 [ppo]
+    agent: ppo
+    entanglement_history_len: 2
+    rotation_history_len: 2
+    max_layers: 3
+
+Running: Level 5: LiH HEA 化学精度 [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 200
+  Timesteps: 600
+  Classical opt: True
+============================================================
+
+Using cuda device
+-----------------------------
+| time/              |      |
+|    fps             | 0    |
+|    iterations      | 1    |
+|    time_elapsed    | 1173 |
+|    total_timesteps | 64   |
+-----------------------------
+------------------------------------------
+| time/                   |              |
+|    fps                  | 0            |
+|    iterations           | 2            |
+|    time_elapsed         | 2186         |
+|    total_timesteps      | 128          |
+| train/                  |              |
+|    approx_kl            | 0.0031915447 |
+|    clip_fraction        | 0            |
+|    clip_range           | 0.2          |
+|    entropy_loss         | -2.2         |
+|    explained_variance   | -1.58        |
+|    learning_rate        | 0.0003       |
+|    loss                 | 0.05         |
+|    n_updates            | 10           |
+|    policy_gradient_loss | -0.0293      |
+|    value_loss           | 0.353        |
+------------------------------------------
+----------------------------------------
+| time/                   |            |
+|    fps                  | 0          |
+|    iterations           | 3          |
+|    time_elapsed         | 3432       |
+|    total_timesteps      | 192        |
+| train/                  |            |
+|    approx_kl            | 0.00140505 |
+|    clip_fraction        | 0          |
+|    clip_range           | 0.2        |
+|    entropy_loss         | -2.19      |
+|    explained_variance   | -0.899     |
+|    learning_rate        | 0.0003     |
+|    loss                 | 0.0409     |
+|    n_updates            | 20         |
+|    policy_gradient_loss | -0.0152    |
+|    value_loss           | 0.313      |
+----------------------------------------

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-04-30 18:41:32.008677",
+  "agent": "gigppo",
+  "molecule": "LiH",
+  "bond_length": 1.6,
+  "n_episodes": 2000,
+  "fci_energy": -7.882324378883506,
+  "best_energy": -7.880778535591143,
+  "energy_error_mha": 1.5458432923622922,
+  "best_ops": 5,
+  "target_ops": 6,
+  "chemical_accuracy_pass": true,
+  "operator_efficiency_pass": true,
+  "diagnostics": {
+    "n_groups": 250,
+    "n_loss_samples": 250,
+    "loss_first": -0.037334483712911606,
+    "loss_last": -0.03724602222442627,
+    "loss_trend_pass": false,
+    "best_energy_first": -7.880113903218128,
+    "best_energy_last": -7.880778535591143,
+    "energy_trend_pass": true,
+    "overall_pass": false
+  },
+  "overall_pass": false
+}

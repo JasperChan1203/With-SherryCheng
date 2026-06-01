@@ -1,0 +1,36 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+ERROR:2026-05-29 20:26:59,645:jax._src.xla_bridge:444: Jax plugin configuration error: Exception when calling jax_plugins.xla_cuda12.initialize()
+Traceback (most recent call last):
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/jax/_src/xla_bridge.py", line 442, in discover_pjrt_plugins
+    plugin_module.initialize()
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/jax_plugins/xla_cuda12/__init__.py", line 324, in initialize
+    _check_cuda_versions(raise_on_first_error=True)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/jax_plugins/xla_cuda12/__init__.py", line 281, in _check_cuda_versions
+    local_device_count = cuda_versions.cuda_device_count()
+RuntimeError: jaxlib/cuda/versions_helpers.cc:113: operation cuInit(0) failed: Unknown CUDA error 303; cuGetErrorName failed. This probably means that JAX was unable to load the CUDA libraries.
+INFO:2026-05-29 20:26:59,768:jax._src.xla_bridge:752: Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+Traceback (most recent call last):
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/hybrid_search/validate_lih_hybrid_ppo.py", line 170, in <module>
+    main()
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/hybrid_search/validate_lih_hybrid_ppo.py", line 165, in main
+    passed = run_validation(args.episodes, args.output)
+  File "/curie-home/jpchen/scratch/LLM/code/RLQAS/rlqas_test/hybrid_search/validate_lih_hybrid_ppo.py", line 153, in run_validation
+    json.dump(_to_serializable(report), f, indent=2)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool_ is not JSON serializable

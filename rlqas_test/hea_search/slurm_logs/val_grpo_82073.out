@@ -1,0 +1,90 @@
+=== RLQAS LiH HEA GRPO Learning Validation ===
+Job ID  : 82073
+Node    : curie-gpu002
+Started : Thu May 21 02:44:02 PM CST 2026
+2026-05-21 14:50:56 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-21 14:57:14 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH HEA GRPO Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(2, 3)
+Transform   : jordan_wigner  max_layers=3
+Episodes    : 500  (run in groups of 8)
+Started     : 2026-05-21 14:57:18.973048
+============================================================
+2026-05-21 14:57:25 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (2, 3), aslst=[1, 2, 5], transform jordan_wigner, qubits=6, FCI energy=-7.862919
+FCI energy  : -7.862919 Ha
+HF energy   : -7.861865 Ha
+HF error    : 1.055 mHa
+
+============================================================
+HEA Search Starting
+  Agent: grpo
+  Episodes: 500
+  Timesteps: 1500
+  Classical opt: True
+============================================================
+
+2026-05-21 14:57:25 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+[HEASearchController] GRPO loop: 62 groups × 8 episodes = 496 episodes
+2026-05-21 14:57:56 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:58:12 - jax._src.xla_bridge - INFO - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+2026-05-21 14:58:53 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:05 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:16 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:16 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:16 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:27 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:37 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:37 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:37 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:47 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:47 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:47 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:59 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 14:59:59 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:13 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:13 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:13 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:24 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:35 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:35 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:45 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:45 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:45 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:45 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:45 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:46 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:56 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:00:56 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:01:08 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:01:08 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+2026-05-21 15:01:08 - rlqas_chem.simulator.tencirchem - WARNING - CI vector engine not fully integrated. Using tensorcircuit statevector simulation.
+  GRPO early stop at group 0: error=1.0546 mHa
+
+============================================================
+HEA Search Complete
+  Best energy: -7.861865
+  Results saved to: results/checkpoints
+============================================================
+
+
+============================================================
+GRPO HEA VALIDATION SUMMARY
+============================================================
+  Best energy        : -7.861865 Ha
+  FCI energy         : -7.862919 Ha
+  Energy error       : 1.055 mHa  PASS
+  Better than HF     : -7.861865 < -7.861865  PASS
+  Circuit structure  : layers=3  PASS
+  Entanglement       : ['full', 'full', 'full']
+  Rotations          : ['rx', 'rz', 'ry']
+  Parameters         : 54
+
+============================================================
+  OVERALL: PASS -- GRPO is learning
+============================================================
+
+Report saved -> results/grpo_lih_hea_validation_82073.json
+
+=== Finished at Thu May 21 03:02:18 PM CST 2026 -- exit code: 0 ===

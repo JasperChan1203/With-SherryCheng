@@ -1,0 +1,24 @@
+{
+  "n_qubits": 6,
+  "max_layers": 3,
+  "agent_type": "sac_discrete",
+  "n_episodes": 2,
+  "total_timesteps": 2048,
+  "best_energy": -6.74989237206576,
+  "best_circuit": {
+    "n_qubits": 6,
+    "max_layers": 3,
+    "current_layer": 1,
+    "entanglement_history": [
+      "circular"
+    ],
+    "rotation_history": [
+      "ry"
+    ],
+    "parameter_sharing": "layer_wise",
+    "current_energy": -6.74989237206576,
+    "n_parameters": 54
+  },
+  "training_history": [],
+  "timestamp": "2026-05-18T14:48:43.807810"
+}

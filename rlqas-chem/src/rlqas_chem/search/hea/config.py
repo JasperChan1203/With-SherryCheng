@@ -45,6 +45,7 @@ class HEAConfig:
     total_timesteps: int = 10000
     n_episodes: int = 100
     target_energy: Optional[float] = None
+    run_classical_opt: bool = True
 
     # Output configuration
     output_dir: str = "results/hea_search"
@@ -119,6 +120,7 @@ class HEAConfig:
             "total_timesteps": self.total_timesteps,
             "n_episodes": self.n_episodes,
             "target_energy": self.target_energy,
+            "run_classical_opt": self.run_classical_opt,
             "output_dir": self.output_dir,
             "verbose": self.verbose,
         }

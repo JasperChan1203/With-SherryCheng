@@ -1,0 +1,51 @@
+=== RLQAS LiH Hybrid PPO Validation ===
+Job ID  : 84759
+Node    : curie-cpu001
+Started : Fri May 29 08:37:03 PM CST 2026
+2026-05-29 20:37:41 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-29 20:38:11 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH Hybrid (HEA+UCC) PPO Validation
+Molecule    : LiH @ 1.6 Å  full space
+Transform   : jordan_wigner
+Episodes    : 500
+Started     : 2026-05-29 20:38:12.737569
+============================================================
+2026-05-29 20:38:23 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), aslst=None, transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha
+HF energy   : -7.861865 Ha
+HF error    : 20.460 mHa
+Qubits      : 12
+[HybridSearchController] Starting hybrid search: 500 episodes, threshold=0.0016 Ha, molecule=LiH
+2026-05-29 20:38:27 - jax._src.xla_bridge - ERROR - Jax plugin configuration error: Exception when calling jax_plugins.xla_cuda12.initialize()
+Traceback (most recent call last):
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/jax/_src/xla_bridge.py", line 442, in discover_pjrt_plugins
+    plugin_module.initialize()
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/jax_plugins/xla_cuda12/__init__.py", line 324, in initialize
+    _check_cuda_versions(raise_on_first_error=True)
+  File "/curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/jax_plugins/xla_cuda12/__init__.py", line 281, in _check_cuda_versions
+    local_device_count = cuda_versions.cuda_device_count()
+RuntimeError: jaxlib/cuda/versions_helpers.cc:113: operation cuInit(0) failed: Unknown CUDA error 303; cuGetErrorName failed. This probably means that JAX was unable to load the CUDA libraries.
+2026-05-29 20:38:27 - jax._src.xla_bridge - INFO - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+  Episode    0: energy=-7.766005, best=-7.876434
+  Converged at episode 7: error=1.5488 mHa (threshold=1.60 mHa)
+
+============================================================
+HYBRID PPO VALIDATION SUMMARY
+============================================================
+  Best energy        : -7.880776 Ha
+  FCI energy         : -7.882324 Ha
+  Energy error       : 1.549 mHa  PASS
+  Better than HF     : -7.880776 < -7.861865  PASS
+  Circuit (UCC ops)  : 5  PASS
+  Best excitations   : [[5, 11, 7, 1], [2, 11, 7, 1], [3, 9, 6, 0], [4, 10, 7, 1], [2, 8, 6, 0]]
+  Converged          : True
+
+============================================================
+  OVERALL: PASS
+============================================================
+
+Report saved -> results/hybrid_ppo_lih_validation_84759.json
+
+=== Finished at Fri May 29 08:47:10 PM CST 2026 -- exit code: 0 ===

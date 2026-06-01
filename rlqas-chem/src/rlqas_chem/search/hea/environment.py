@@ -58,13 +58,14 @@ class HEASearchEnv(gym.Env):
         target_energy: Optional[float] = None,
         molecule_data: Optional[Any] = None,
         encoding_method: str = "matrix",
+        run_classical_opt: bool = True,
     ):
         """Initialize HEA search environment.
 
         Supports two calling conventions:
         - Legacy: HEASearchEnv(n_qubits=4, max_layers=4, ...)
         - New:    HEASearchEnv(molecule_data, config_dict) where config_dict may
-                  contain keys: max_layers, encoding_method, etc.
+                  contain keys: max_layers, encoding_method, run_classical_opt, etc.
         """
         # --- New-style: HEASearchEnv(molecule_data, config_dict) ---
         if hasattr(n_qubits, 'n_qubits'):
@@ -75,6 +76,7 @@ class HEASearchEnv(gym.Env):
             n_qubits = int(_mol.n_qubits)
             max_layers = int(_cfg.get("max_layers", 4))
             encoding_method = _cfg.get("encoding_method", encoding_method)
+            run_classical_opt = _cfg.get("run_classical_opt", run_classical_opt)
         super().__init__()
 
         self.n_qubits = n_qubits
@@ -82,6 +84,7 @@ class HEASearchEnv(gym.Env):
         self.target_energy = target_energy
         self.molecule_data = molecule_data
         self.encoding_method = encoding_method  # store for potential future use
+        self.run_classical_opt = run_classical_opt
 
         # Configuration
         self.entanglement_patterns = entanglement_patterns or ["linear", "circular", "full"]
@@ -168,6 +171,12 @@ class HEASearchEnv(gym.Env):
         # Apply action to circuit
         self._apply_action(entanglement_idx, rotation_idx)
 
+        # If classical optimization is enabled, run L-BFGS-B over the current
+        # architecture's parameters so that reward reflects the true minimum
+        # energy achievable by this architecture, not a random perturbation.
+        if self.run_classical_opt and self._simulator is not None and self.molecule_data is not None:
+            self._optimize_params()
+
         # Compute new energy
         new_energy = self._compute_energy()
 
@@ -181,16 +190,16 @@ class HEASearchEnv(gym.Env):
         self._current_layer += 1
 
         # Track global best across all episodes.
-        # FIX: Previously best_circuit_config was never stored, so the controller
-        # could not reconstruct the best solution after training.
-        # Also removed the `molecule_data is not None` guard — dummy environments
-        # used in unit tests should still track best_energy correctly.
-        if new_energy < self.best_energy:
+        # Check if episode is done
+        done = self._current_layer >= self.max_layers
+
+        # Track global best only over complete circuits (all max_layers layers chosen).
+        # Mid-episode energy improvements drive the reward signal; best_circuit_config
+        # must always contain a full-length history so it can be reconstructed.
+        if done and new_energy < self.best_energy:
             self.best_energy = new_energy
             self.best_circuit_config = self.get_circuit_config()
 
-        # Check if episode is done
-        done = self._current_layer >= self.max_layers
         truncated = False
 
         observation = self._get_observation()
@@ -233,6 +242,190 @@ class HEASearchEnv(gym.Env):
                 scale = 0.1 * (entanglement_idx + 1)
                 self._circuit_params[param_idx] += self.np_random.uniform(-scale, scale)
 
+    def _get_active_indices(self) -> List[int]:
+        """Return flat list of active parameter indices in _circuit_params.
+
+        Layout: params[l * n_qubits * 3 + q * 3 + rotation_idx[l]]
+        Each (layer, qubit) pair has exactly one active slot determined by the
+        rotation gate chosen for that layer.
+        """
+        n_qubits = self.n_qubits
+        rot_history = self._rotation_history if self._rotation_history else []
+        n_layers = len(rot_history)
+        return [
+            l * n_qubits * 3 + q * 3 + rot_history[l]
+            for l in range(n_layers)
+            for q in range(n_qubits)
+        ]
+
+    def _per_layer_arch(self):
+        """Return (pairs_per_layer, rotation_types) tuples for current history."""
+        n_qubits = self.n_qubits
+        ent_history = self._entanglement_history if self._entanglement_history else []
+        rot_history = self._rotation_history if self._rotation_history else []
+        n_layers = len(rot_history)
+
+        def make_pairs(pattern_raw):
+            p = "fully_connected" if pattern_raw == "full" else pattern_raw
+            if p == "linear":
+                return tuple((i, i + 1) for i in range(n_qubits - 1))
+            elif p == "circular":
+                return tuple((i, i + 1) for i in range(n_qubits - 1)) + ((n_qubits - 1, 0),)
+            else:
+                return tuple((i, j) for i in range(n_qubits) for j in range(i + 1, n_qubits))
+
+        pairs_per_layer = tuple(
+            make_pairs(self.entanglement_patterns[ent_history[l]]) for l in range(n_layers)
+        )
+        rotation_types = tuple(self.rotation_gates[rot_history[l]] for l in range(n_layers))
+        return pairs_per_layer, rotation_types
+
+    def _get_ham_terms(self):
+        """Parse and cache Hamiltonian as list of (coeff, xl, yl, zl) tuples."""
+        if not hasattr(self, "_ham_terms_cache"):
+            ham_terms = []
+            for term, coeff in self.molecule_data.hamiltonian.terms.items():
+                xl, yl, zl = [], [], []
+                for qi, pauli in term:
+                    if pauli == "X":
+                        xl.append(qi)
+                    elif pauli == "Y":
+                        yl.append(qi)
+                    elif pauli == "Z":
+                        zl.append(qi)
+                c_real = float(coeff.real) if hasattr(coeff, "real") else float(coeff)
+                ham_terms.append((c_real, xl, yl, zl))
+            self._ham_terms_cache = ham_terms
+        return self._ham_terms_cache
+
+    def _optimize_params(self):
+        """Run L-BFGS-B with JAX autodiff via TensorCircuit.
+
+        Uses jax.value_and_grad so each L-BFGS iteration costs one forward pass
+        instead of (n_params + 1) evaluations from finite differences.
+        JIT-compiled functions are cached per unique circuit architecture so
+        recompilation happens at most once per (n_layers, per-layer entanglement,
+        per-layer rotation) combination across all episodes.
+
+        Falls back to finite-difference L-BFGS if JAX is unavailable.
+        """
+        try:
+            self._optimize_params_jax()
+        except Exception:
+            self._optimize_params_finite_diff()
+
+    def _optimize_params_jax(self):
+        """L-BFGS-B with JAX autodiff (O(1) gradient cost per iteration)."""
+        import jax
+        import jax.numpy as jnp
+        import tensorcircuit as tc
+        from scipy.optimize import minimize
+
+        # Must be called before first JAX operation; idempotent on repeat calls.
+        jax.config.update("jax_enable_x64", True)
+
+        n_layers_now = self._current_layer + 1
+        n_qubits = self.n_qubits
+        ref_state = self.molecule_data.reference_state
+        ham_terms = self._get_ham_terms()
+
+        pairs_per_layer, rotation_types = self._per_layer_arch()
+        active_indices = self._get_active_indices()
+        x0 = self._circuit_params[active_indices].copy()
+
+        # JIT cache: compile once per unique (n_layers, per-layer entanglement+rotation).
+        if not hasattr(self, "_jit_energy_grad_cache"):
+            self._jit_energy_grad_cache = {}
+        cache_key = (n_layers_now, pairs_per_layer, rotation_types)
+
+        with tc.runtime_backend("jax"), tc.runtime_dtype("complex128"):
+            if cache_key not in self._jit_energy_grad_cache:
+                ref_jax = jnp.array(ref_state, dtype=jnp.complex128)
+                _ham = ham_terms
+                _ppl = pairs_per_layer
+                _nl = n_layers_now
+                _nq = n_qubits
+                _rots = rotation_types
+
+                def energy_fn(theta):
+                    c = tc.Circuit(_nq, inputs=ref_jax)
+                    for li in range(_nl):
+                        rot = _rots[li]
+                        for q in range(_nq):
+                            idx = li * _nq + q
+                            if rot == "rx":
+                                c.rx(q, theta=theta[idx])
+                            elif rot == "ry":
+                                c.ry(q, theta=theta[idx])
+                            else:
+                                c.rz(q, theta=theta[idx])
+                        for ctrl, tgt in _ppl[li]:
+                            c.cnot(ctrl, tgt)
+                    e_terms = [
+                        coeff * jnp.real(c.expectation_ps(x=xl, y=yl, z=zl))
+                        for coeff, xl, yl, zl in _ham
+                    ]
+                    return sum(e_terms) if e_terms else jnp.float64(0.0)
+
+                self._jit_energy_grad_cache[cache_key] = jax.jit(
+                    jax.value_and_grad(energy_fn)
+                )
+
+            energy_and_grad_jit = self._jit_energy_grad_cache[cache_key]
+
+            def scipy_func(theta_np):
+                e, g = energy_and_grad_jit(jnp.array(theta_np, dtype=jnp.float64))
+                return float(e), np.array(g, dtype=np.float64)
+
+            result = minimize(
+                scipy_func, x0, method="L-BFGS-B", jac=True,
+                options={"maxiter": 200, "ftol": 1e-12, "gtol": 1e-9},
+            )
+
+        for i, idx in enumerate(active_indices):
+            self._circuit_params[idx] = result.x[i]
+
+    def _optimize_params_finite_diff(self):
+        """Fallback: L-BFGS-B with finite-difference gradients."""
+        import tensorcircuit as tc
+        from scipy.optimize import minimize
+
+        n_layers_now = self._current_layer + 1
+        n_qubits = self.n_qubits
+        ref_state = self.molecule_data.reference_state
+        ham_terms = self._get_ham_terms()
+
+        pairs_per_layer, rotation_types = self._per_layer_arch()
+        active_indices = self._get_active_indices()
+
+        def energy_func(theta):
+            with tc.runtime_backend("numpy"), tc.runtime_dtype("complex128"):
+                c = tc.Circuit(n_qubits, inputs=ref_state.astype(complex))
+                for li in range(n_layers_now):
+                    rot = rotation_types[li]
+                    for q in range(n_qubits):
+                        idx = li * n_qubits + q
+                        if rot == "rx":
+                            c.rx(q, theta=float(theta[idx]))
+                        elif rot == "ry":
+                            c.ry(q, theta=float(theta[idx]))
+                        else:
+                            c.rz(q, theta=float(theta[idx]))
+                    for ctrl, tgt in pairs_per_layer[li]:
+                        c.cnot(ctrl, tgt)
+                return float(sum(
+                    coeff * float(c.expectation_ps(x=xl, y=yl, z=zl).real)
+                    for coeff, xl, yl, zl in ham_terms
+                ))
+
+        x0 = self._circuit_params[active_indices].copy()
+        result = minimize(
+            energy_func, x0, method="L-BFGS-B",
+            options={"maxiter": 200, "ftol": 1e-12, "gtol": 1e-9},
+        )
+        for i, idx in enumerate(active_indices):
+            self._circuit_params[idx] = result.x[i]
+
     def _compute_energy(self) -> float:
         """Compute circuit energy.
 
@@ -246,38 +439,37 @@ class HEASearchEnv(gym.Env):
             # Dummy energy for unit tests that don't need real chemistry
             return -1.0 - float(self._current_layer) * 0.01
 
-        # Build tensorcircuit.Circuit from current parameters
-        entanglement_pattern_raw = self.entanglement_patterns[
-            self._entanglement_history[-1] if self._entanglement_history else 0
-        ]
-        # Map "full" alias to "fully_connected" for circuit builder
-        if entanglement_pattern_raw == "full":
-            entanglement_pattern = "fully_connected"
-        else:
-            entanglement_pattern = entanglement_pattern_raw
+        import tensorcircuit as tc
 
-        rotation_type = self.rotation_gates[
-            self._rotation_history[-1] if self._rotation_history else 0
-        ]
+        n_layers_now = self._current_layer + 1
+        n_qubits = self.n_qubits
+        ref_state = self.molecule_data.reference_state
+        ham_terms = self._get_ham_terms()
 
-        from rlqas_chem.search.hea.circuit_builder import HEACircuitBuilder
-        builder = HEACircuitBuilder(
-            n_qubits=self.n_qubits,
-            n_layers=self._current_layer + 1,
-            entanglement_pattern=entanglement_pattern,
-            rotation_gates=[rotation_type],
-            parameter_sharing="none",
-        )
-        builder.build(self._circuit_params[:builder._count_total_parameters()])
-        tc_circuit = builder.to_tensorcircuit()
+        pairs_per_layer, rotation_types = self._per_layer_arch()
+        active_indices = self._get_active_indices()
+        theta = self._circuit_params[active_indices]
 
         try:
-            energy = self._simulator.compute_energy(
-                tc_circuit,
-                self.molecule_data.hamiltonian,
-                initial_state=self.molecule_data.reference_state,
-            )
-            return float(energy)
+            with tc.runtime_backend("numpy"), tc.runtime_dtype("complex128"):
+                c = tc.Circuit(n_qubits, inputs=ref_state.astype(complex))
+                for li in range(n_layers_now):
+                    rot = rotation_types[li]
+                    for q in range(n_qubits):
+                        idx = li * n_qubits + q
+                        if rot == "rx":
+                            c.rx(q, theta=float(theta[idx]))
+                        elif rot == "ry":
+                            c.ry(q, theta=float(theta[idx]))
+                        else:
+                            c.rz(q, theta=float(theta[idx]))
+                    for ctrl, tgt in pairs_per_layer[li]:
+                        c.cnot(ctrl, tgt)
+                energy = float(sum(
+                    coeff * float(c.expectation_ps(x=xl, y=yl, z=zl).real)
+                    for coeff, xl, yl, zl in ham_terms
+                ))
+            return energy
         except Exception:
             return self._current_energy  # Keep previous energy on failure
 

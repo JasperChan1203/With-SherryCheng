@@ -8,29 +8,32 @@ Copied from Task 001, with minimal adaptations for integration.
 """
 
 from dataclasses import dataclass
-from typing import Optional, Tuple, Dict, Any
+from typing import Optional, Tuple, Dict, Any, List
 import numpy as np
 import warnings
 from rlqas_chem.utils.logger import get_logger
 from rlqas_chem.utils.transforms import compute_reference_state
 from openfermion import QubitOperator
 from openfermion.transforms import jordan_wigner, bravyi_kitaev
-from pyscf import gto, scf, fci, ao2mo, mcscf
+from openfermion.linalg import get_ground_state, get_sparse_operator
+from pyscf import gto, scf
 import tencirchem
 from tencirchem import parity, UCC, UCCSD
+from tencirchem.static.hamiltonian import get_integral_from_hf
 
 logger = get_logger(__name__)
 
 @dataclass
 class MoleculeData:
     """Container for molecule processing results."""
-    hamiltonian: QubitOperator      # Qubit Hamiltonian
+    hamiltonian: QubitOperator      # Qubit Hamiltonian (electronic only, no nuclear repulsion)
     n_qubits: int                   # Number of qubits
     reference_state: np.ndarray     # Reference state (Hartree-Fock)
-    fci_energy: float               # Exact FCI energy
+    fci_energy: float               # Exact FCI energy (electronic + nuclear repulsion)
     molecular_info: Dict            # Original molecular information
     ucc_object: Any = None          # Tencirchem UCC object (for consistency)
     ucc_sd_object: Any = None       # Tencirchem UCCSD object (for circuit building)
+    nuclear_repulsion: float = 0.0  # Always 0.0: nuclear repulsion is embedded in Hamiltonian's constant term (e_core)
 
 
 def process_molecule(
@@ -39,7 +42,8 @@ def process_molecule(
     ansatz_type: str,
     active_space: Optional[Tuple[int, int]] = None,
     basis_set: str = "sto-3g",
-    transform: str = "jordan_wigner"
+    transform: str = "jordan_wigner",
+    aslst: Optional[List[int]] = None,
 ) -> MoleculeData:
     """
     Process a molecule and generate quantum computation inputs.
@@ -51,6 +55,9 @@ def process_molecule(
         active_space: Optional (number of active electrons, number of active orbitals)
         basis_set: Basis set
         transform: Fermion-to-qubit transformation: 'parity', 'jordan_wigner', 'bravyi_kitaev'
+        aslst: Optional list of active orbital indices (0-indexed, tencirchem-ng convention) for
+               active space orbital selection.  E.g. [1, 2, 5] for LiH (2,3).  Ignored for
+               full-space calculations.  When None, default near-HOMO/LUMO selection is used.
 
     Returns:
         MoleculeData object containing Hamiltonian, qubit count, reference state,
@@ -128,9 +135,6 @@ def process_molecule(
     if not hf.converged:
         raise RuntimeError("Hartree-Fock calculation did not converge")
 
-    # FCI energy (will be computed after active space determination)
-    fci_energy = None
-
     # Determine active space (full space if None)
     n_elec = mol.nelectron
     n_orb = mol.nao_nr()
@@ -138,54 +142,17 @@ def process_molecule(
         active_space = (n_elec, n_orb)
     n_elec_active, n_orb_active = active_space
 
-    # Compute active-space FCI energy
-    if active_space == (n_elec, n_orb):
-        # Full space, use regular FCI
-        fci_solver = fci.FCI(hf)
-        fci_energy, _ = fci_solver.kernel()
+    is_full_space = (active_space == (n_elec, n_orb))
+
+    if is_full_space:
+        # Full space: use tencirchem-ng's get_integral_from_hf (no aslst)
+        h1_active, h2_active, e_core = get_integral_from_hf(hf)
     else:
-        # Active space smaller than full space: use CASCI
-        cas = mcscf.CASCI(hf, n_orb_active, n_elec_active)
-        cas.kernel()
-        fci_energy = cas.e_tot
+        # Active space: use tencirchem-ng's get_integral_from_hf with aslst (0-indexed)
+        h1_active, h2_active, e_core = get_integral_from_hf(hf, active_space, aslst)
 
-    # Get integrals in MO basis for active space
-    mo_coeff = hf.mo_coeff
-    mo_energy = hf.mo_energy
-
-    # Determine active orbital indices
-    if active_space == (n_elec, n_orb):
-        # Full space: all orbitals
-        active_indices = list(range(n_orb_active))
-        # Transform integrals directly
-        h1_ao = hf.get_hcore()
-        h1_mo = np.einsum("pi,pq,qj->ij", mo_coeff, h1_ao, mo_coeff)
-        h1_active = h1_mo[np.ix_(active_indices, active_indices)]
-        h2_mo = ao2mo.full(mol, mo_coeff)
-        h2_mo = ao2mo.restore(1, h2_mo, n_orb)
-        h2_active = h2_mo[np.ix_(active_indices, active_indices, active_indices, active_indices)]
-        e_core = 0.0
-    else:
-        # Active space smaller than full space: use CASCI to get integrals
-        # Select active orbitals as highest-energy orbitals (valence)
-        # Sort orbitals by energy descending (higher energy first)
-        sorted_indices = np.argsort(mo_energy)[::-1]  # descending
-        # Take the first n_orb_active highest-energy orbitals
-        active_indices = sorted_indices[:n_orb_active].tolist()
-        active_indices.sort()  # keep original order for consistency
-        # Create CASCI object
-        cas = mcscf.CASCI(hf, n_orb_active, n_elec_active)
-        # Use sort_mo to reorder orbitals (1-indexed)
-        cas.sort_mo([i+1 for i in active_indices])
-        cas.kernel()
-        # Get integrals and core energy from CASCI
-        h1_active, e_core = cas.get_h1eff()
-        h2_active = cas.get_h2eff()
-        # h2_active is in chemists' notation with symmetry, restore full 4-index array
-        h2_active = ao2mo.restore(1, h2_active, n_orb_active)
-
-    # Build UCC from integrals
-    ucc = UCC.from_integral(h1_active, h2_active, n_elec_active, e_core=e_core, hcb=False)
+    # Build UCC from integrals (e_core embeds nuclear repulsion so Hamiltonian is self-contained)
+    ucc = UCC.from_integral(h1_active, h2_active, n_elec_active, e_core=e_core)
     # Also create UCCSD object for circuit builder (uses Jordan-Wigner mapping)
     ucc_sd = UCCSD(mol, active_space=active_space, init_method='mp2')
 
@@ -211,6 +178,11 @@ def process_molecule(
                 max_idx = idx
     n_qubits = max_idx + 1
 
+    # FCI energy = exact lowest eigenvalue of the qubit Hamiltonian.
+    # This is self-consistent: it is the true ground state of the Hamiltonian
+    # being optimized by VQE, regardless of how the active space was constructed.
+    fci_energy, _ = get_ground_state(get_sparse_operator(qubit_op))
+
     # Compute reference state using optimized utility function
     reference_state = compute_reference_state(
         qubit_op, n_qubits, transform, n_elec_active
@@ -222,6 +194,7 @@ def process_molecule(
         "bond_length_angstrom": bond_length,
         "basis_set": basis_set,
         "active_space": active_space,
+        "aslst": aslst,
         "transform": transform,
         "ansatz_type": ansatz_type,
         "hf_energy": hf_energy,
@@ -231,7 +204,7 @@ def process_molecule(
     }
 
     logger.info(f"Processed molecule {molecule} with active space {active_space}, "
-                f"transform {transform}, qubits={n_qubits}, FCI energy={fci_energy:.6f}")
+                f"aslst={aslst}, transform {transform}, qubits={n_qubits}, FCI energy={fci_energy:.6f}")
 
     return MoleculeData(
         hamiltonian=qubit_op,
@@ -241,4 +214,5 @@ def process_molecule(
         molecular_info=molecular_info,
         ucc_object=ucc,
         ucc_sd_object=ucc_sd,
+        nuclear_repulsion=0.0,  # Already included in Hamiltonian's constant term (e_core)
     )

@@ -193,15 +193,20 @@ class HybridSearchEnv(gym.Env):
         """Reset all episode state variables."""
         hf_e = self._get_hf_energy()
         self.current_ucc_excitations: List = []
-        # Parameter vector: zero-initialized so L-BFGS-B starts at HF geometry
+        # UCC parameter vector: zero-initialized so L-BFGS-B starts at HF geometry
         self.current_ucc_params = np.zeros(self._n_ucc_params, dtype=np.float64)
         self.active_ucc_params = np.zeros(self._n_ucc_params, dtype=bool)
         self.current_hea_blocks: List[Dict] = []
+        # HEA parameter buffer: grows as HEA blocks are added (n_qubits params per block)
+        self.current_hea_params: np.ndarray = np.array([], dtype=np.float64)
+        # Ordered sequence of all blocks chosen by the agent (UCC and HEA interleaved)
+        self.current_block_sequence: List[Dict] = []
         self.current_energy: float = hf_e
         self.best_energy: float = hf_e
         self.global_best_energy: float = hf_e
         self.global_best_excitations: List = []
         self.global_best_ucc_params: Optional[np.ndarray] = None
+        self.global_best_hea_params: Optional[np.ndarray] = None
         self.step_count: int = 0
         self.done: bool = False
         self._n_blocks: int = 0
@@ -267,9 +272,12 @@ class HybridSearchEnv(gym.Env):
             self.current_ucc_excitations.append(excitation)
             param_idx = self._excitation_to_param_idx[excitation]
             if not self.active_ucc_params[param_idx]:
-                # Initialize to 0.0: L-BFGS-B will find optimal value
                 self.current_ucc_params[param_idx] = 0.0
                 self.active_ucc_params[param_idx] = True
+            self.current_block_sequence.append({
+                "type": "ucc",
+                "excitation": excitation,
+            })
             self._n_blocks += 1
 
         else:
@@ -278,7 +286,20 @@ class HybridSearchEnv(gym.Env):
             ent_pattern = self._hea_entanglement_options[
                 hea_idx % len(self._hea_entanglement_options)
             ]
+            hea_block_idx = len(self.current_hea_blocks)
             self.current_hea_blocks.append({"entanglement_pattern": ent_pattern})
+            # Initialize HEA params for this block with small random values
+            new_hea_params = self.np_random.uniform(
+                -0.1, 0.1, size=self.molecule_data.n_qubits
+            )
+            self.current_hea_params = np.concatenate(
+                [self.current_hea_params, new_hea_params]
+            )
+            self.current_block_sequence.append({
+                "type": "hea",
+                "entanglement_pattern": ent_pattern,
+                "block_idx": hea_block_idx,
+            })
             self._n_blocks += 1
 
         # Evaluate energy of current circuit
@@ -301,6 +322,7 @@ class HybridSearchEnv(gym.Env):
             self.global_best_energy = energy
             self.global_best_excitations = list(self.current_ucc_excitations)
             self.global_best_ucc_params = self.current_ucc_params.copy()
+            self.global_best_hea_params = self.current_hea_params.copy()
 
         if energy < self.best_energy:
             self.best_energy = energy
@@ -349,55 +371,226 @@ class HybridSearchEnv(gym.Env):
     # Private helpers
     # ------------------------------------------------------------------
 
-    def _evaluate_energy(self) -> float:
-        """Evaluate circuit energy using the VQE inner loop.
+    def _get_jw_pauli_terms(self, excitation: tuple) -> List:
+        """Return JW-mapped Pauli terms for a UCC excitation.
 
-        When run_classical_opt=True and there are UCC excitations, runs
-        scipy.optimize.minimize over the active parameter slots only.
-        This is the critical path for achieving chemical accuracy.
+        Uses openfermion JW mapping without index reversal so qubit indices
+        match molecule_data.hamiltonian (same convention as HEASearchEnv).
 
-        Returns:
-            Energy in Hartree.
+        Returns list of (pauli_string_tuple, complex_coeff) pairs.
         """
+        from openfermion import FermionOperator, hermitian_conjugated, jordan_wigner
+
+        if len(excitation) == 2:
+            fop = FermionOperator(f"{excitation[0]}^ {excitation[1]}")
+        else:
+            fop = FermionOperator(
+                f"{excitation[0]}^ {excitation[1]}^ {excitation[2]} {excitation[3]}"
+            )
+        fop = fop - hermitian_conjugated(fop)
+        qop = jordan_wigner(fop)
+        return [(ps, c) for ps, c in qop.terms.items() if ps]
+
+    def _get_entanglement_pairs(self, pattern: str, n_qubits: int) -> List:
+        """Return CNOT (ctrl, tgt) pairs for the given entanglement pattern."""
+        if pattern == "linear":
+            return [(i, i + 1) for i in range(n_qubits - 1)]
+        elif pattern == "circular":
+            return [(i, i + 1) for i in range(n_qubits - 1)] + [(n_qubits - 1, 0)]
+        else:  # full
+            return [(i, j) for i in range(n_qubits) for j in range(i + 1, n_qubits)]
+
+    def _get_ham_terms_cache(self) -> List:
+        """Parse and cache qubit Hamiltonian as (coeff, xl, yl, zl) tuples."""
+        if not hasattr(self, "_ham_terms_cache"):
+            ham_terms = []
+            for term, coeff in self.molecule_data.hamiltonian.terms.items():
+                xl, yl, zl = [], [], []
+                for qi, pauli in term:
+                    if pauli == "X":
+                        xl.append(qi)
+                    elif pauli == "Y":
+                        yl.append(qi)
+                    elif pauli == "Z":
+                        zl.append(qi)
+                c_real = float(coeff.real) if hasattr(coeff, "real") else float(coeff)
+                ham_terms.append((c_real, xl, yl, zl))
+            self._ham_terms_cache = ham_terms
+        return self._ham_terms_cache
+
+    def _evaluate_energy(self) -> float:
+        """Build a hybrid UCC+HEA circuit in tensorcircuit and evaluate ⟨H⟩.
+
+        Blocks are applied in the ORDER chosen by the agent:
+          - UCC block: Pauli exponentials from JW mapping (e^{iθP})
+          - HEA block: layer of Ry rotations + CNOT entanglement
+
+        All parameters (UCC amplitudes + HEA angles) are jointly optimized
+        with JAX autodiff + L-BFGS-B when run_classical_opt=True.
+
+        Falls back to plain UCC evaluation (tencirchem) when no HEA blocks
+        have been chosen yet, and to HF energy when no blocks at all.
+        """
+        if not self.current_block_sequence:
+            return self._get_hf_energy()
+
+        # If only UCC blocks chosen: use the fast tencirchem engine
+        if not self.current_hea_blocks:
+            return self._evaluate_energy_ucc_only()
+
+        # Full hybrid path: tensorcircuit + JAX
+        try:
+            return self._evaluate_energy_hybrid_jax()
+        except Exception:
+            # Fallback to UCC-only if JAX fails
+            return self._evaluate_energy_ucc_only()
+
+    def _evaluate_energy_ucc_only(self) -> float:
+        """Fast UCC-only evaluation using tencirchem engine."""
         if not self.current_ucc_excitations:
-            # No UCC excitations yet: energy stays at HF level
             return self._get_hf_energy()
 
         if self.run_classical_opt:
             from scipy.optimize import minimize
 
-            # Deduplicate while preserving order
-            active_param_indices = list(dict.fromkeys(
+            active_indices = list(dict.fromkeys(
                 self._excitation_to_param_idx[exc]
                 for exc in self.current_ucc_excitations
             ))
 
             def energy_func(theta: np.ndarray) -> float:
                 p = self.current_ucc_params.copy()
-                for i, idx in enumerate(active_param_indices):
+                for i, idx in enumerate(active_indices):
                     p[idx] = theta[i]
                 return float(self._ucc_builder.evaluate_energy(None, p))
 
-            x0 = np.array(
-                [self.current_ucc_params[idx] for idx in active_param_indices],
-                dtype=np.float64,
-            )
-            result = minimize(
-                energy_func,
-                x0,
-                method="L-BFGS-B",
-                options={"maxiter": 200, "ftol": 1e-14, "gtol": 1e-10},
-            )
-            # Write optimized values back to active slots only
-            for i, idx in enumerate(active_param_indices):
+            x0 = np.array([self.current_ucc_params[i] for i in active_indices])
+            result = minimize(energy_func, x0, method="L-BFGS-B",
+                              options={"maxiter": 200, "ftol": 1e-14, "gtol": 1e-10})
+            for i, idx in enumerate(active_indices):
                 self.current_ucc_params[idx] = result.x[i]
             return float(result.fun)
-
         else:
-            # No classical optimization: evaluate at current parameters
-            return float(
-                self._ucc_builder.evaluate_energy(None, self.current_ucc_params)
-            )
+            return float(self._ucc_builder.evaluate_energy(None, self.current_ucc_params))
+
+    def _evaluate_energy_hybrid_jax(self) -> float:
+        """Hybrid UCC+HEA evaluation: tensorcircuit circuit + JAX + L-BFGS-B.
+
+        Qubit index convention:
+          - mol.reference_state and mol.hamiltonian use OF/LSB convention: qubit q = bit q
+          - tensorcircuit uses MSB convention: qubit 0 = MSB, qubit q = bit (n-1-q)
+          - All qubit indices are reversed (q -> n-1-q) before passing to TC operations
+            so that the reference state and Hamiltonian remain in OF convention.
+        """
+        import jax
+        import jax.numpy as jnp
+        import tensorcircuit as tc
+        from scipy.optimize import minimize
+        from tencirchem.utils.circuit import evolve_pauli
+
+        jax.config.update("jax_enable_x64", True)
+
+        n_qubits = self.molecule_data.n_qubits
+        ref_state = self.molecule_data.reference_state
+        ham_terms = self._get_ham_terms_cache()
+
+        # Reverse OF qubit index to TC (MSB) qubit index
+        def _rev(q: int) -> int:
+            return n_qubits - 1 - q
+
+        # Active UCC param indices (deduplicated, preserving order)
+        active_ucc_indices = list(dict.fromkeys(
+            self._excitation_to_param_idx[b["excitation"]]
+            for b in self.current_block_sequence if b["type"] == "ucc"
+        ))
+        n_ucc_active = len(active_ucc_indices)
+        ucc_idx_map = {idx: i for i, idx in enumerate(active_ucc_indices)}
+
+        # Pre-compute JW Pauli terms (with reversed indices) and entanglement pairs
+        block_specs = []
+        for blk in self.current_block_sequence:
+            if blk["type"] == "ucc":
+                pauli_terms_of = self._get_jw_pauli_terms(blk["excitation"])
+                # Reverse qubit indices for TC convention
+                pauli_terms_tc = [
+                    (tuple((_rev(q), p) for q, p in ps), coeff)
+                    for ps, coeff in pauli_terms_of
+                ]
+                param_slot = ucc_idx_map[self._excitation_to_param_idx[blk["excitation"]]]
+                block_specs.append(("ucc", pauli_terms_tc, param_slot))
+            else:
+                pairs_of = self._get_entanglement_pairs(blk["entanglement_pattern"], n_qubits)
+                pairs_tc = [(_rev(ctrl), _rev(tgt)) for ctrl, tgt in pairs_of]
+                hea_start = blk["block_idx"] * n_qubits
+                block_specs.append(("hea", pairs_tc, hea_start))
+
+        # JIT cache key: circuit structure (immutable)
+        cache_key = tuple(
+            (s[0], s[2]) for s in block_specs
+        )
+        if not hasattr(self, "_hybrid_jit_cache"):
+            self._hybrid_jit_cache = {}
+
+        # Hamiltonian terms in TC qubit convention (reversed indices)
+        ham_terms_tc = [
+            (c, [_rev(x) for x in xl], [_rev(y) for y in yl], [_rev(z) for z in zl])
+            for c, xl, yl, zl in ham_terms
+        ]
+
+        with tc.runtime_backend("jax"), tc.runtime_dtype("complex128"):
+            if cache_key not in self._hybrid_jit_cache:
+                ref_jax = jnp.array(ref_state, dtype=jnp.complex128)
+                _ham = ham_terms_tc
+                _specs = block_specs
+                _nq = n_qubits
+                _n_ucc = n_ucc_active
+                # HEA qubit indices in TC convention
+                _hea_qubits_tc = [_rev(q) for q in range(n_qubits)]
+
+                def energy_fn(theta):
+                    c = tc.Circuit(_nq, inputs=ref_jax)
+                    for spec in _specs:
+                        if spec[0] == "ucc":
+                            _, pauli_terms, param_slot = spec
+                            t = theta[param_slot]
+                            for ps, coeff in pauli_terms:
+                                c = evolve_pauli(c, ps, -2.0 * coeff.imag * t)
+                        else:
+                            _, pairs, hea_start = spec
+                            for i_q, q_tc in enumerate(_hea_qubits_tc):
+                                c.ry(q_tc, theta=theta[_n_ucc + hea_start + i_q])
+                            for ctrl, tgt in pairs:
+                                c.cnot(ctrl, tgt)
+                    e_terms = [
+                        coeff * jnp.real(c.expectation_ps(x=xl, y=yl, z=zl))
+                        for coeff, xl, yl, zl in _ham
+                    ]
+                    return sum(e_terms) if e_terms else jnp.float64(0.0)
+
+                self._hybrid_jit_cache[cache_key] = jax.jit(
+                    jax.value_and_grad(energy_fn)
+                )
+
+            value_and_grad_jit = self._hybrid_jit_cache[cache_key]
+
+            def scipy_func(theta_np):
+                e, g = value_and_grad_jit(jnp.array(theta_np, dtype=jnp.float64))
+                return float(e), np.array(g, dtype=np.float64)
+
+            x0 = np.concatenate([
+                [self.current_ucc_params[i] for i in active_ucc_indices],
+                self.current_hea_params,
+            ])
+
+            result = minimize(scipy_func, x0, method="L-BFGS-B", jac=True,
+                              options={"maxiter": 300, "ftol": 1e-12, "gtol": 1e-9})
+
+        # Write back optimized parameters
+        for i, idx in enumerate(active_ucc_indices):
+            self.current_ucc_params[idx] = result.x[i]
+        self.current_hea_params = result.x[n_ucc_active:].copy()
+
+        return float(result.fun)
 
     def _check_termination(self) -> bool:
         """Return True when the episode should end."""

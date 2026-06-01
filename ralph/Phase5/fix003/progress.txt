@@ -1,0 +1,3 @@
+# RLQAS Phase 5 Fix 003 - Progress
+# Stories: US-001 (QOP mode=qubit) | US-002 (Hybrid GRPO) | US-003 (HEA block) | US-004 (acceptance)
+# Started: (pending)

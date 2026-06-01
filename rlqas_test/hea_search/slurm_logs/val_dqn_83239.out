@@ -1,0 +1,16 @@
+=== RLQAS LiH HEA DQN Learning Validation ===
+Job ID  : 83239
+Node    : curie-gpu002
+Started : Mon May 25 04:30:04 PM CST 2026
+2026-05-25 16:30:53 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-25 16:31:27 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH HEA DQN Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(2, 3)
+Transform   : jordan_wigner  max_layers=3
+Episodes    : 500
+Started     : 2026-05-25 16:31:28.056743
+============================================================
+
+=== Finished at Mon May 25 04:31:32 PM CST 2026 -- exit code: 1 ===

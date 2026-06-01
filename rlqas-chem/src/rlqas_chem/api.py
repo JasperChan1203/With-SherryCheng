@@ -5,6 +5,7 @@ from typing import Optional, Tuple, Dict, Any
 
 from rlqas_chem.molecule.processor import process_molecule
 from rlqas_chem.search.ucc.controller import UCCSearchController
+from rlqas_chem.search.hea.controller import HEASearchController
 from rlqas_chem.search.hybrid.controller import HybridSearchController
 
 _VALID_ANSATZ = ("UCC", "HEA", "HYBRID")
@@ -121,8 +122,33 @@ def search(
         n_operators = len(n_ops) if n_ops else None
         fusion_template = None
 
+    elif ansatz_type == "HEA":
+        max_layers = max_operators or 4
+        ctrl = HEASearchController(
+            n_qubits=mol.n_qubits,
+            max_layers=max_layers,
+        )
+        total_ts = n_episodes * max_layers
+        # Only pass agent-relevant hyperparams (lr, batch_size, etc.); strip UCC/controller keys.
+        _CTRL_ONLY_KEYS = {"run_classical_opt", "complexity_penalty", "param_init_strategy",
+                           "controller", "environment", "alpha", "use_early_stop",
+                           "max_operators", "reward_function", "circuit_builder"}
+        hea_agent_config = {k: v for k, v in ctrl_config.items() if k not in _CTRL_ONLY_KEYS} or None
+        result = ctrl.search(
+            agent_type=agent_type,
+            agent_config=hea_agent_config,
+            n_episodes=n_episodes,
+            total_timesteps=total_ts,
+            target_energy=float(mol.fci_energy),
+            early_stop_threshold=early_stop_threshold,
+            molecule_data=mol,
+        )
+        best_energy = float(result.get("best_energy", float('inf')))
+        n_operators = None
+        fusion_template = None
+
     else:
-        # HEA, HYBRID, or UCC+non-PPO: use HybridSearchController
+        # HYBRID: HEA+UCC mixed circuit search
         ctrl = HybridSearchController(mol, agent_type=agent_type, config=ctrl_config)
         result = ctrl.search(n_episodes=n_episodes,
                              early_stop_threshold=early_stop_threshold)

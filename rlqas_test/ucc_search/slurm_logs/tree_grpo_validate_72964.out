@@ -1,0 +1,66 @@
+=== RLQAS LiH Tree-GRPO Learning Validation ===
+Job ID  : 72964
+Node    : curie-gpu003
+Started : Thu Apr 30 06:21:43 PM CST 2026
+2026-04-30 18:22:29 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-04-30 18:23:03 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH Tree-GRPO Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(4, 6)
+Episodes    : 2000
+Started     : 2026-04-30 18:23:04.252375
+============================================================
+2026-04-30 18:23:11 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+FCI energy  : -7.882324 Ha  (from processor)
+Target ops  : <= 6 (ADAPT-VQE @ 1.6 A needs 5)
+2026-04-30 18:23:11 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2000 episodes (10000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 250 groups x 8 episodes = 2000 episodes
+[GRPODiagnosticsTracker] saved 10 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 20 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 30 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 40 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 50 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 60 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 70 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 80 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 90 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 100 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 110 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 120 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 130 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 140 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 150 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 160 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 170 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 180 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 190 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 200 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 210 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 220 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 230 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 240 groups → results/tree_grpo_lih_diagnostics_72964.json
+[GRPODiagnosticsTracker] saved 250 groups → results/tree_grpo_lih_diagnostics_72964.json
+GRPO search completed. Best energy: -7.881198 Hartree
+[GRPODiagnosticsTracker] saved 250 groups → results/tree_grpo_lih_diagnostics_72964.json
+
+============================================================
+TREE-GRPO LEARNING DIAGNOSTICS SUMMARY
+============================================================
+  Groups completed   : 250
+  Policy loss trend  : -0.0647 -> -0.0575  FAIL (loss should decrease)
+  Energy trend       : -7.865166 -> -7.881198 Ha  PASS
+  Chemical accuracy  : error=1.126 mHa  PASS
+  Operator efficiency: 5 ops (target <= 6)  PASS
+  Prefix cache hits  : 21  PASS
+
+============================================================
+  OVERALL: FAIL -- Tree-GRPO may not be learning
+============================================================
+
+Report saved -> results/tree_grpo_lih_validation_72964.json
+Tree-GRPO diagnostics -> results/tree_grpo_lih_diagnostics_72964.json
+
+=== Finished at Thu Apr 30 06:41:39 PM CST 2026 — exit code: 1 ===

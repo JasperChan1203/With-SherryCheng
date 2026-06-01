@@ -1,0 +1,57 @@
+=== RLQAS HEA Acceptance Test - Level 1-5 ===
+Job ID  : 78977
+Node    : curie-gpu003
+Agent   : ppo
+Started : Thu May 14 04:41:38 PM CST 2026
+Python  : Python 3.10.13
+2026-05-14 16:42:29 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+================================================================================
+RLQAS HEA 验收系统 - Level 1-5  |  回归测试 (PPO)
+================================================================================
+
+Running: Level 1: episode 步数严格等于 max_layers...
+2026-05-14 16:43:08 - root - INFO - Logging configured with level INFO
+  ✅ PASS [Level 1] - Level 1: episode 步数严格等于 max_layers
+    episode_lengths: [3, 3, 3, 3, 3]
+    max_layers: 3
+
+Running: Level 1: history 长度匹配步数...
+  ❌ FAIL [Level 1] - Level 1: history 长度匹配步数
+    Error: entanglement_history len=2, expected 3; rotation_history len=2, expected 3
+
+Running: Level 1: history 值合法...
+  ✅ PASS [Level 1] - Level 1: history 值合法
+    entanglement_history: ['linear', 'linear', 'linear']
+    rotation_history: ['rx', 'rz', 'ry']
+
+Running: Level 1: 完整 episode obs 无 NaN/Inf...
+  ✅ PASS [Level 1] - Level 1: 完整 episode obs 无 NaN/Inf
+    message: All observations finite over 3 steps
+
+Running: Level 1: global_best 跨 episode 单调不增...
+  ✅ PASS [Level 1] - Level 1: global_best 跨 episode 单调不增
+    global_bests: ['-6.869657', '-6.869657', '-6.869657', '-6.869657', '-6.869657']
+
+Running: Level 1: reset 后 global_best 保留...
+  ✅ PASS [Level 1] - Level 1: reset 后 global_best 保留
+    best_before_reset: -6.869657
+    best_after_reset: -6.869657
+
+Running: Level 1: step() info 含 HEA 特有键...
+  ✅ PASS [Level 1] - Level 1: step() info 含 HEA 特有键
+    entanglement: linear
+    rotation: ry
+    energy_delta: 0.373657
+
+Running: Level 2: n_operators 为 None [ppo]...
+
+============================================================
+HEA Search Starting
+  Agent: ppo
+  Episodes: 2
+  Timesteps: 6
+  Classical opt: True
+============================================================
+
+Using cuda device

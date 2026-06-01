@@ -1,0 +1,1494 @@
+=== RLQAS Phase 5: New Algorithms (GiGPO, Tree-GRPO, Double-DQN) ===
+Job ID: 72701
+Started at: Wed Apr 29 06:33:35 PM CST 2026
+Running on node: curie-gpu002
+Working directory: /curie-home/jpchen/scratch/LLM/code/RLQAS/ralph/Phase5/gigppo_tree_grpo_double_dqn
+Warning: claude binary not found at /curie-home/jpchen/.vscode-server/extensions/anthropic.claude-code-2.1.77-linux-x64/resources/native-binary
+Conda llm activated: /curie-home/jpchen/.conda/envs/llm/bin/python3
+Python: Python 3.10.13
+2026-04-29 18:34:08 - root - INFO - Logging configured with level INFO
+rlqas_chem OK: 1.0.0
+
+Starting Ralph at: Wed Apr 29 06:34:12 PM CST 2026
+  US-ALG-001: GiGPO  — step-level credit assignment
+  US-ALG-002: Tree-GRPO — prefix sharing + VQE caching
+  US-ALG-003: Double-DQN — decoupled Q-value + replay buffer
+
+Starting Ralph — Phase 5: New Algorithms
+Tool: claude | Max iterations: 30
+Stories:
+  US-ALG-001: GiGPO (P1) — Step-level credit assignment
+  US-ALG-002: Tree-GRPO (P2) — Prefix sharing + VQE caching
+  US-ALG-003: Double-DQN (P3) — Decoupled Q-value estimation + replay buffer
+
+================================================================
+  Ralph Iteration 1 of 30 (claude)
+  Phase 5 New Algorithms
+================================================================
+[Iter 1 | 2026-04-29 20:03] cost=$5.335545750000001  session_total=$5.335546  duration=95311ms  turns=1
+Iteration 1 complete. Continuing...
+
+================================================================
+  Ralph Iteration 2 of 30 (claude)
+  Phase 5 New Algorithms
+================================================================
+[Iter 2 | 2026-04-29 20:05] cost=$0.0825549  session_total=$5.418101  duration=108500ms  turns=3
+
+Ralph completed all new algorithm stories!
+Completed at iteration 2 of 30
+
+=== Session Cost Summary ===
+  Iterations: 2  |  Cost: $5.418101
+
+=== Ralph completed at: Wed Apr 29 08:05:30 PM CST 2026 ===
+Exit code: 0
+
+=== Post-run Smoke Check ===
+
+--- gigppo ---
+2026-04-29 20:05:59 - root - INFO - Logging configured with level INFO
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-04-29 20:06:01 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:06:01 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (200 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  [] best_energy=-1.1372838344885023
+
+--- tree_grpo ---
+2026-04-29 20:06:36 - root - INFO - Logging configured with level INFO
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-04-29 20:06:38 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:06:38 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (200 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  [] best_energy=-1.1372838344885023
+
+--- double_dqn ---
+2026-04-29 20:07:11 - root - INFO - Logging configured with level INFO
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-04-29 20:07:13 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:07:13 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (200 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 200 timesteps (10 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.137284 Hartree
+  [] best_energy=-1.1372838344885023
+
+=== Acceptance System Final Check ===
+
+--- run_acceptance.sh --agent gigppo ---
+========================================
+  RLQAS 验收系统
+  新算法验收: gigppo
+  2026-04-29 20:07:44
+========================================
+
+>>> 运行 Level 0: 接口契约测试...
+
+================================================================================
+RLQAS 验收系统 - Level 0: 接口契约测试  |  新算法验收: gigppo
+================================================================================
+
+Running: 1.1 AgentFactory 注册 [gigppo]...
+2026-04-29 20:08:10 - root - INFO - Logging configured with level INFO
+2026-04-29 20:08:12 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:12 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [gigppo]
+    agent: gigppo
+    class: GiGPOAgent
+
+Running: 1.1 learn(callback) 签名 [gigppo]...
+2026-04-29 20:08:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.122665 Hartree
+  ✅ PASS - 1.1 learn(callback) 签名 [gigppo]
+    agent: gigppo
+    message: learn() accepts callback parameter
+
+Running: 1.1 act() 返回格式 [gigppo]...
+2026-04-29 20:08:18 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:18 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 act() 返回格式 [gigppo]
+    agent: gigppo
+    action: 2
+
+Running: 1.1 save/load 一致性 [gigppo]...
+2026-04-29 20:08:19 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:19 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 save/load 一致性 [gigppo]
+    agent: gigppo
+    action_before: 0
+    action_after: 0
+
+Running: 1.2 Config 已知 key [gigppo]...
+2026-04-29 20:08:21 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:21 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.2 Config 已知 key [gigppo]
+    agent: gigppo
+    config: {'gamma': 0.99}
+
+Running: 1.3 最小化训练 [gigppo]...
+2026-04-29 20:08:22 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:22 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.119835 Hartree
+  ✅ PASS - 1.3 最小化训练 [gigppo]
+    agent: gigppo
+    message: 2-episode training completed without crash
+
+Running: 1.3 训练后 act() 合法 [gigppo]...
+2026-04-29 20:08:23 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:23 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.121790 Hartree
+  ✅ PASS - 1.3 训练后 act() 合法 [gigppo]
+    agent: gigppo
+    action: 0
+    action_space_n: 3
+
+Running: 1.1 AgentFactory 注册 [ppo 回归]...
+2026-04-29 20:08:24 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:24 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cuda device
+2026-04-29 20:08:25 - py.warnings - WARNING - /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+
+  ✅ PASS - 1.1 AgentFactory 注册 [ppo 回归]
+    agent: ppo
+    class: PPOAgent
+
+Running: 1.3 最小化训练 [ppo 回归]...
+2026-04-29 20:08:26 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:26 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.4751 mHa
+Search completed. Best energy: -1.135809 Hartree
+Best excitations: 2 operators
+  ✅ PASS - 1.3 最小化训练 [ppo 回归]
+    agent: ppo
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [dqn 回归]...
+2026-04-29 20:08:28 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:28 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cuda device
+  ✅ PASS - 1.1 AgentFactory 注册 [dqn 回归]
+    agent: dqn
+    class: DQNAgent
+
+Running: 1.3 最小化训练 [dqn 回归]...
+2026-04-29 20:08:30 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:30 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 4        |
+|    fps              | 90       |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 13       |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 8        |
+|    fps              | 91       |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 25       |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 12       |
+|    fps              | 92       |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 37       |
+----------------------------------
+Search completed. Best energy: -1.133373 Hartree
+Best excitations: 1 operators
+  ✅ PASS - 1.3 最小化训练 [dqn 回归]
+    agent: dqn
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [a2c 回归]...
+2026-04-29 20:08:32 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:32 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+2026-04-29 20:08:32 - py.warnings - WARNING - /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run A2C on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+
+  ✅ PASS - 1.1 AgentFactory 注册 [a2c 回归]
+    agent: a2c
+    class: A2CAgent
+
+Running: 1.3 最小化训练 [a2c 回归]...
+2026-04-29 20:08:33 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:33 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.4751 mHa
+Search completed. Best energy: -1.135809 Hartree
+Best excitations: 2 operators
+  ✅ PASS - 1.3 最小化训练 [a2c 回归]
+    agent: a2c
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [sac_discrete 回归]...
+2026-04-29 20:08:35 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:35 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [sac_discrete 回归]
+    agent: sac_discrete
+    class: SACDiscreteAgent
+
+Running: 1.3 最小化训练 [sac_discrete 回归]...
+2026-04-29 20:08:37 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:37 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+SAC search completed. Best energy: -1.135592 Hartree
+Best excitations: 1 operators
+  ✅ PASS - 1.3 最小化训练 [sac_discrete 回归]
+    agent: sac_discrete
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [grpo 回归]...
+2026-04-29 20:08:39 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:39 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [grpo 回归]
+    agent: grpo
+    class: GRPOAgent
+
+Running: 1.3 最小化训练 [grpo 回归]...
+2026-04-29 20:08:40 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:08:40 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 4 episodes = 4 episodes
+GRPO search completed. Best energy: -1.116759 Hartree
+  ✅ PASS - 1.3 最小化训练 [grpo 回归]
+    agent: grpo
+    message: 2-episode training completed without crash
+
+================================================================================
+测试汇总
+================================================================================
+总计: 17 个测试  ✅ 通过: 17  ❌ 失败: 0
+
+✅ Level 0 通过，可继续 Level 1-5 测试
+
+>>> Level 0 通过，继续 Level 1-5...
+
+>>> 运行 Level 1-5: 功能 / 稳定性 / 化学精度测试...
+
+================================================================================
+RLQAS 验收系统 - Level 1-5  |  新算法验收: gigppo
+================================================================================
+
+Running: Level 1: global_best 单调性...
+2026-04-29 20:09:11 - root - INFO - Logging configured with level INFO
+2026-04-29 20:09:13 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:13 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: global_best 单调性
+    global_bests: ['-1.116759', '-1.133104', '-1.136177', '-1.136177', '-1.136177']
+
+Running: Level 1: reset 后 global_best 保留...
+2026-04-29 20:09:14 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:14 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: reset 后 global_best 保留
+    best_before_reset: -1.116759
+    best_after_reset: -1.116759
+
+Running: Level 1: step() 返回值类型...
+2026-04-29 20:09:16 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:16 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: step() 返回值类型
+    reward: 0.0
+    done: False
+    obs_shape: (15,)
+
+Running: Level 1: 观测值无 NaN/Inf...
+2026-04-29 20:09:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: 观测值无 NaN/Inf
+    message: All observations are finite
+
+Running: Level 2: JSON 序列化 [gigppo]...
+2026-04-29 20:09:18 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:19 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 2] - Level 2: JSON 序列化 [gigppo]
+    agent: gigppo
+    keys: ['best_energy', 'fci_energy', 'energy_error_mha', 'chemical_accuracy', 'n_operators', 'fusion_template', 'molecule', 'bond_length', 'ansatz_type', 'agent_type', 'n_episodes_run', 'n_qubits']
+
+Running: Level 2: chemical_accuracy 类型 [gigppo]...
+2026-04-29 20:09:23 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:23 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 2] - Level 2: chemical_accuracy 类型 [gigppo]
+    agent: gigppo
+    chemical_accuracy: True
+
+Running: Level 3: UCC 基本搜索 [gigppo]...
+2026-04-29 20:09:29 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:29 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [gigppo]
+    agent: gigppo
+    best_energy: -1.137284
+    n_operators: 1
+
+Running: Level 3: UCC 能量物理合理 [gigppo]...
+2026-04-29 20:09:31 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:31 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (200 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 能量物理合理 [gigppo]
+    agent: gigppo
+    best_energy: -1.137284
+    fci_energy: -1.137284
+
+Running: Level 3: HEA 基本搜索 [gigppo]...
+2026-04-29 20:09:33 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: HEA 基本搜索 [gigppo]
+    agent: gigppo
+    best_energy: -1.137284
+    fci_energy: -1.137284
+    n_operators: None
+
+Running: Level 4: n_episodes 生效 [gigppo]...
+2026-04-29 20:09:34 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:34 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 15 episodes (300 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 4] - Level 4: n_episodes 生效 [gigppo]
+    agent: gigppo
+    n_episodes_run: 15
+
+Running: Level 4: max_operators 约束 [gigppo]...
+2026-04-29 20:09:38 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:09:38 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (30 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 4] - Level 4: max_operators 约束 [gigppo]
+    agent: gigppo
+    n_operators: 2
+    max_operators: 3
+
+Running: Level 5: UCC 化学精度 LiH [gigppo]...
+2026-04-29 20:09:46 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-04-29 20:09:46 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 300 episodes (6000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 37 groups x 8 episodes = 296 episodes
+GRPO search completed. Best energy: -7.881141 Hartree
+  ✅ PASS [Level 5] - Level 5: UCC 化学精度 LiH [gigppo]
+    agent: gigppo
+    energy_error_mha: 1.184 mHa
+
+Running: Level 5: HEA 化学精度 H2 [gigppo]...
+2026-04-29 20:14:15 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 300 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 5] - Level 5: HEA 化学精度 H2 [gigppo]
+    agent: gigppo
+    energy_error_mha: 0.000 mHa
+
+Running: Level 3: UCC 基本搜索 [ppo 回归]...
+2026-04-29 20:14:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:14:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=0.0000 mHa
+Search completed. Best energy: -1.137284 Hartree
+Best excitations: 1 operators
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [ppo 回归]
+    agent: ppo
+    best_energy: -1.137284
+    n_operators: 1
+
+Running: Level 3: UCC 基本搜索 [dqn 回归]...
+2026-04-29 20:14:19 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [dqn 回归]
+    agent: dqn
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [a2c 回归]...
+2026-04-29 20:14:22 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.116759, best=-1.116759
+  Converged at episode 2: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [a2c 回归]
+    agent: a2c
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [sac_discrete 回归]...
+2026-04-29 20:14:25 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.116759, best=-1.116759
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [sac_discrete 回归]
+    agent: sac_discrete
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [grpo 回归]...
+2026-04-29 20:14:26 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:14:26 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 4 episodes = 4 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [grpo 回归]
+    agent: grpo
+    best_energy: -1.137284
+    n_operators: 2
+
+Running: Level 5: UCC 化学精度 LiH [ppo 回归]...
+2026-04-29 20:14:34 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-04-29 20:14:34 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 300 episodes (6000 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.5661 mHa
+Search completed. Best energy: -7.880758 Hartree
+Best excitations: 5 operators
+  ✅ PASS [Level 5] - Level 5: UCC 化学精度 LiH [ppo 回归]
+    agent: ppo
+    energy_error_mha: 1.566 mHa
+
+================================================================================
+测试汇总（按 Level）
+================================================================================
+
+Level 1: 4/4 通过
+  ✅ Level 1: global_best 单调性
+  ✅ Level 1: reset 后 global_best 保留
+  ✅ Level 1: step() 返回值类型
+  ✅ Level 1: 观测值无 NaN/Inf
+
+Level 2: 2/2 通过
+  ✅ Level 2: JSON 序列化 [gigppo]
+  ✅ Level 2: chemical_accuracy 类型 [gigppo]
+
+Level 3: 8/8 通过
+  ✅ Level 3: UCC 基本搜索 [gigppo]
+  ✅ Level 3: UCC 能量物理合理 [gigppo]
+  ✅ Level 3: HEA 基本搜索 [gigppo]
+  ✅ Level 3: UCC 基本搜索 [ppo 回归]
+  ✅ Level 3: UCC 基本搜索 [dqn 回归]
+  ✅ Level 3: UCC 基本搜索 [a2c 回归]
+  ✅ Level 3: UCC 基本搜索 [sac_discrete 回归]
+  ✅ Level 3: UCC 基本搜索 [grpo 回归]
+
+Level 4: 2/2 通过
+  ✅ Level 4: n_episodes 生效 [gigppo]
+  ✅ Level 4: max_operators 约束 [gigppo]
+
+Level 5: 3/3 通过
+  ✅ Level 5: UCC 化学精度 LiH [gigppo]
+  ✅ Level 5: HEA 化学精度 H2 [gigppo]
+  ✅ Level 5: UCC 化学精度 LiH [ppo 回归]
+
+================================================================================
+总体判定
+================================================================================
+总计: 19 个测试  ✅ 通过: 19  ❌ 失败: 0
+
+✅ 验收通过
+
+========================================
+  ✅ 验收通过
+  新算法验收: gigppo
+  2026-04-29 20:14:39
+========================================
+  ✅ gigppo PASS
+
+--- run_acceptance.sh --agent tree_grpo ---
+========================================
+  RLQAS 验收系统
+  新算法验收: tree_grpo
+  2026-04-29 20:14:39
+========================================
+
+>>> 运行 Level 0: 接口契约测试...
+
+================================================================================
+RLQAS 验收系统 - Level 0: 接口契约测试  |  新算法验收: tree_grpo
+================================================================================
+
+Running: 1.1 AgentFactory 注册 [tree_grpo]...
+2026-04-29 20:15:06 - root - INFO - Logging configured with level INFO
+2026-04-29 20:15:08 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:08 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [tree_grpo]
+    agent: tree_grpo
+    class: TreeGRPOAgent
+
+Running: 1.1 learn(callback) 签名 [tree_grpo]...
+2026-04-29 20:15:13 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:13 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.130376 Hartree
+  ✅ PASS - 1.1 learn(callback) 签名 [tree_grpo]
+    agent: tree_grpo
+    message: learn() accepts callback parameter
+
+Running: 1.1 act() 返回格式 [tree_grpo]...
+2026-04-29 20:15:14 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:14 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 act() 返回格式 [tree_grpo]
+    agent: tree_grpo
+    action: 2
+
+Running: 1.1 save/load 一致性 [tree_grpo]...
+2026-04-29 20:15:16 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:16 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 save/load 一致性 [tree_grpo]
+    agent: tree_grpo
+    action_before: 2
+    action_after: 2
+
+Running: 1.2 Config 已知 key [tree_grpo]...
+2026-04-29 20:15:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.2 Config 已知 key [tree_grpo]
+    agent: tree_grpo
+    config: {'gamma': 0.99}
+
+Running: 1.3 最小化训练 [tree_grpo]...
+2026-04-29 20:15:18 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:18 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.118722 Hartree
+  ✅ PASS - 1.3 最小化训练 [tree_grpo]
+    agent: tree_grpo
+    message: 2-episode training completed without crash
+
+Running: 1.3 训练后 act() 合法 [tree_grpo]...
+2026-04-29 20:15:19 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:19 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.119165 Hartree
+  ✅ PASS - 1.3 训练后 act() 合法 [tree_grpo]
+    agent: tree_grpo
+    action: 2
+    action_space_n: 3
+
+Running: 1.1 AgentFactory 注册 [ppo 回归]...
+2026-04-29 20:15:21 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:21 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cuda device
+2026-04-29 20:15:22 - py.warnings - WARNING - /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+
+  ✅ PASS - 1.1 AgentFactory 注册 [ppo 回归]
+    agent: ppo
+    class: PPOAgent
+
+Running: 1.3 最小化训练 [ppo 回归]...
+2026-04-29 20:15:22 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:22 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.4751 mHa
+Search completed. Best energy: -1.135809 Hartree
+Best excitations: 2 operators
+  ✅ PASS - 1.3 最小化训练 [ppo 回归]
+    agent: ppo
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [dqn 回归]...
+2026-04-29 20:15:24 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:24 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cuda device
+  ✅ PASS - 1.1 AgentFactory 注册 [dqn 回归]
+    agent: dqn
+    class: DQNAgent
+
+Running: 1.3 最小化训练 [dqn 回归]...
+2026-04-29 20:15:25 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:25 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 4        |
+|    fps              | 93       |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 13       |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 8        |
+|    fps              | 90       |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 25       |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 12       |
+|    fps              | 92       |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 37       |
+----------------------------------
+Search completed. Best energy: -1.133373 Hartree
+Best excitations: 1 operators
+  ✅ PASS - 1.3 最小化训练 [dqn 回归]
+    agent: dqn
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [a2c 回归]...
+2026-04-29 20:15:27 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:27 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+2026-04-29 20:15:27 - py.warnings - WARNING - /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run A2C on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+
+  ✅ PASS - 1.1 AgentFactory 注册 [a2c 回归]
+    agent: a2c
+    class: A2CAgent
+
+Running: 1.3 最小化训练 [a2c 回归]...
+2026-04-29 20:15:28 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:28 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.4751 mHa
+Search completed. Best energy: -1.135809 Hartree
+Best excitations: 2 operators
+  ✅ PASS - 1.3 最小化训练 [a2c 回归]
+    agent: a2c
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [sac_discrete 回归]...
+2026-04-29 20:15:30 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:30 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [sac_discrete 回归]
+    agent: sac_discrete
+    class: SACDiscreteAgent
+
+Running: 1.3 最小化训练 [sac_discrete 回归]...
+2026-04-29 20:15:31 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:31 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+SAC search completed. Best energy: -1.135044 Hartree
+Best excitations: 1 operators
+  ✅ PASS - 1.3 最小化训练 [sac_discrete 回归]
+    agent: sac_discrete
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [grpo 回归]...
+2026-04-29 20:15:33 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:33 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [grpo 回归]
+    agent: grpo
+    class: GRPOAgent
+
+Running: 1.3 最小化训练 [grpo 回归]...
+2026-04-29 20:15:34 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:15:34 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 4 episodes = 4 episodes
+GRPO search completed. Best energy: -1.116759 Hartree
+  ✅ PASS - 1.3 最小化训练 [grpo 回归]
+    agent: grpo
+    message: 2-episode training completed without crash
+
+================================================================================
+测试汇总
+================================================================================
+总计: 17 个测试  ✅ 通过: 17  ❌ 失败: 0
+
+✅ Level 0 通过，可继续 Level 1-5 测试
+
+>>> Level 0 通过，继续 Level 1-5...
+
+>>> 运行 Level 1-5: 功能 / 稳定性 / 化学精度测试...
+
+================================================================================
+RLQAS 验收系统 - Level 1-5  |  新算法验收: tree_grpo
+================================================================================
+
+Running: Level 1: global_best 单调性...
+2026-04-29 20:16:05 - root - INFO - Logging configured with level INFO
+2026-04-29 20:16:07 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:07 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: global_best 单调性
+    global_bests: ['-1.116759', '-1.133104', '-1.136177', '-1.136177', '-1.136177']
+
+Running: Level 1: reset 后 global_best 保留...
+2026-04-29 20:16:08 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:08 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: reset 后 global_best 保留
+    best_before_reset: -1.116759
+    best_after_reset: -1.116759
+
+Running: Level 1: step() 返回值类型...
+2026-04-29 20:16:09 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:09 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: step() 返回值类型
+    reward: 0.0
+    done: False
+    obs_shape: (15,)
+
+Running: Level 1: 观测值无 NaN/Inf...
+2026-04-29 20:16:10 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:10 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: 观测值无 NaN/Inf
+    message: All observations are finite
+
+Running: Level 2: JSON 序列化 [tree_grpo]...
+2026-04-29 20:16:10 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:10 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 2] - Level 2: JSON 序列化 [tree_grpo]
+    agent: tree_grpo
+    keys: ['best_energy', 'fci_energy', 'energy_error_mha', 'chemical_accuracy', 'n_operators', 'fusion_template', 'molecule', 'bond_length', 'ansatz_type', 'agent_type', 'n_episodes_run', 'n_qubits']
+
+Running: Level 2: chemical_accuracy 类型 [tree_grpo]...
+2026-04-29 20:16:16 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:16 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 2] - Level 2: chemical_accuracy 类型 [tree_grpo]
+    agent: tree_grpo
+    chemical_accuracy: True
+
+Running: Level 3: UCC 基本搜索 [tree_grpo]...
+2026-04-29 20:16:22 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:22 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [tree_grpo]
+    agent: tree_grpo
+    best_energy: -1.137284
+    n_operators: 1
+
+Running: Level 3: UCC 能量物理合理 [tree_grpo]...
+2026-04-29 20:16:23 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:23 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (200 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 能量物理合理 [tree_grpo]
+    agent: tree_grpo
+    best_energy: -1.137284
+    fci_energy: -1.137284
+
+Running: Level 3: HEA 基本搜索 [tree_grpo]...
+2026-04-29 20:16:24 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: HEA 基本搜索 [tree_grpo]
+    agent: tree_grpo
+    best_energy: -1.137284
+    fci_energy: -1.137284
+    n_operators: None
+
+Running: Level 4: n_episodes 生效 [tree_grpo]...
+2026-04-29 20:16:25 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:25 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 15 episodes (300 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 4] - Level 4: n_episodes 生效 [tree_grpo]
+    agent: tree_grpo
+    n_episodes_run: 15
+
+Running: Level 4: max_operators 约束 [tree_grpo]...
+2026-04-29 20:16:26 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:16:26 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (30 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 8 episodes = 8 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 4] - Level 4: max_operators 约束 [tree_grpo]
+    agent: tree_grpo
+    n_operators: 3
+    max_operators: 3
+
+Running: Level 5: UCC 化学精度 LiH [tree_grpo]...
+2026-04-29 20:16:33 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-04-29 20:16:33 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 300 episodes (6000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 37 groups x 8 episodes = 296 episodes
+GRPO search completed. Best energy: -7.881628 Hartree
+  ✅ PASS [Level 5] - Level 5: UCC 化学精度 LiH [tree_grpo]
+    agent: tree_grpo
+    energy_error_mha: 0.696 mHa
+
+Running: Level 5: HEA 化学精度 H2 [tree_grpo]...
+2026-04-29 20:21:05 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 300 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 5] - Level 5: HEA 化学精度 H2 [tree_grpo]
+    agent: tree_grpo
+    energy_error_mha: 0.000 mHa
+
+Running: Level 3: UCC 基本搜索 [ppo 回归]...
+2026-04-29 20:21:06 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:21:06 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=0.0000 mHa
+Search completed. Best energy: -1.137284 Hartree
+Best excitations: 1 operators
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [ppo 回归]
+    agent: ppo
+    best_energy: -1.137284
+    n_operators: 1
+
+Running: Level 3: UCC 基本搜索 [dqn 回归]...
+2026-04-29 20:21:08 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [dqn 回归]
+    agent: dqn
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [a2c 回归]...
+2026-04-29 20:21:10 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.116759, best=-1.116759
+  Converged at episode 2: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [a2c 回归]
+    agent: a2c
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [sac_discrete 回归]...
+2026-04-29 20:21:14 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.116759, best=-1.116759
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [sac_discrete 回归]
+    agent: sac_discrete
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [grpo 回归]...
+2026-04-29 20:21:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:21:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 4 episodes = 4 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [grpo 回归]
+    agent: grpo
+    best_energy: -1.137284
+    n_operators: 3
+
+Running: Level 5: UCC 化学精度 LiH [ppo 回归]...
+2026-04-29 20:21:24 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-04-29 20:21:24 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 300 episodes (6000 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.5661 mHa
+Search completed. Best energy: -7.880758 Hartree
+Best excitations: 5 operators
+  ✅ PASS [Level 5] - Level 5: UCC 化学精度 LiH [ppo 回归]
+    agent: ppo
+    energy_error_mha: 1.566 mHa
+
+================================================================================
+测试汇总（按 Level）
+================================================================================
+
+Level 1: 4/4 通过
+  ✅ Level 1: global_best 单调性
+  ✅ Level 1: reset 后 global_best 保留
+  ✅ Level 1: step() 返回值类型
+  ✅ Level 1: 观测值无 NaN/Inf
+
+Level 2: 2/2 通过
+  ✅ Level 2: JSON 序列化 [tree_grpo]
+  ✅ Level 2: chemical_accuracy 类型 [tree_grpo]
+
+Level 3: 8/8 通过
+  ✅ Level 3: UCC 基本搜索 [tree_grpo]
+  ✅ Level 3: UCC 能量物理合理 [tree_grpo]
+  ✅ Level 3: HEA 基本搜索 [tree_grpo]
+  ✅ Level 3: UCC 基本搜索 [ppo 回归]
+  ✅ Level 3: UCC 基本搜索 [dqn 回归]
+  ✅ Level 3: UCC 基本搜索 [a2c 回归]
+  ✅ Level 3: UCC 基本搜索 [sac_discrete 回归]
+  ✅ Level 3: UCC 基本搜索 [grpo 回归]
+
+Level 4: 2/2 通过
+  ✅ Level 4: n_episodes 生效 [tree_grpo]
+  ✅ Level 4: max_operators 约束 [tree_grpo]
+
+Level 5: 3/3 通过
+  ✅ Level 5: UCC 化学精度 LiH [tree_grpo]
+  ✅ Level 5: HEA 化学精度 H2 [tree_grpo]
+  ✅ Level 5: UCC 化学精度 LiH [ppo 回归]
+
+================================================================================
+总体判定
+================================================================================
+总计: 19 个测试  ✅ 通过: 19  ❌ 失败: 0
+
+✅ 验收通过
+
+========================================
+  ✅ 验收通过
+  新算法验收: tree_grpo
+  2026-04-29 20:21:29
+========================================
+  ✅ tree_grpo PASS
+
+--- run_acceptance.sh --agent double_dqn ---
+========================================
+  RLQAS 验收系统
+  新算法验收: double_dqn
+  2026-04-29 20:21:30
+========================================
+
+>>> 运行 Level 0: 接口契约测试...
+
+================================================================================
+RLQAS 验收系统 - Level 0: 接口契约测试  |  新算法验收: double_dqn
+================================================================================
+
+Running: 1.1 AgentFactory 注册 [double_dqn]...
+2026-04-29 20:21:58 - root - INFO - Logging configured with level INFO
+2026-04-29 20:21:59 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:21:59 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [double_dqn]
+    agent: double_dqn
+    class: DoubleDQNAgent
+
+Running: 1.1 learn(callback) 签名 [double_dqn]...
+2026-04-29 20:22:03 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:03 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 40 timesteps (2 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.137009 Hartree
+  ✅ PASS - 1.1 learn(callback) 签名 [double_dqn]
+    agent: double_dqn
+    message: learn() accepts callback parameter
+
+Running: 1.1 act() 返回格式 [double_dqn]...
+2026-04-29 20:22:04 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:04 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 act() 返回格式 [double_dqn]
+    agent: double_dqn
+    action: 0
+
+Running: 1.1 save/load 一致性 [double_dqn]...
+2026-04-29 20:22:06 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:06 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 save/load 一致性 [double_dqn]
+    agent: double_dqn
+    action_before: 2
+    action_after: 2
+
+Running: 1.2 Config 已知 key [double_dqn]...
+2026-04-29 20:22:07 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:07 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.2 Config 已知 key [double_dqn]
+    agent: double_dqn
+    config: {'gamma': 0.99}
+
+Running: 1.3 最小化训练 [double_dqn]...
+2026-04-29 20:22:08 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:08 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 40 timesteps (2 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.127907 Hartree
+  ✅ PASS - 1.3 最小化训练 [double_dqn]
+    agent: double_dqn
+    message: 2-episode training completed without crash
+
+Running: 1.3 训练后 act() 合法 [double_dqn]...
+2026-04-29 20:22:09 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:09 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 40 timesteps (2 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.136917 Hartree
+  ✅ PASS - 1.3 训练后 act() 合法 [double_dqn]
+    agent: double_dqn
+    action: 1
+    action_space_n: 3
+
+Running: 1.1 AgentFactory 注册 [ppo 回归]...
+2026-04-29 20:22:12 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:12 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cuda device
+2026-04-29 20:22:13 - py.warnings - WARNING - /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+
+  ✅ PASS - 1.1 AgentFactory 注册 [ppo 回归]
+    agent: ppo
+    class: PPOAgent
+
+Running: 1.3 最小化训练 [ppo 回归]...
+2026-04-29 20:22:14 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:14 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.4751 mHa
+Search completed. Best energy: -1.135809 Hartree
+Best excitations: 2 operators
+  ✅ PASS - 1.3 最小化训练 [ppo 回归]
+    agent: ppo
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [dqn 回归]...
+2026-04-29 20:22:16 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:16 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cuda device
+  ✅ PASS - 1.1 AgentFactory 注册 [dqn 回归]
+    agent: dqn
+    class: DQNAgent
+
+Running: 1.3 最小化训练 [dqn 回归]...
+2026-04-29 20:22:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 4        |
+|    fps              | 704      |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 13       |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 8        |
+|    fps              | 618      |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 25       |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    exploration_rate | 0.05     |
+| time/               |          |
+|    episodes         | 12       |
+|    fps              | 640      |
+|    time_elapsed     | 0        |
+|    total_timesteps  | 37       |
+----------------------------------
+Search completed. Best energy: -1.133373 Hartree
+Best excitations: 1 operators
+  ✅ PASS - 1.3 最小化训练 [dqn 回归]
+    agent: dqn
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [a2c 回归]...
+2026-04-29 20:22:18 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:18 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+2026-04-29 20:22:19 - py.warnings - WARNING - /curie-home/jpchen/.conda/envs/llm/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run A2C on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+
+  ✅ PASS - 1.1 AgentFactory 注册 [a2c 回归]
+    agent: a2c
+    class: A2CAgent
+
+Running: 1.3 最小化训练 [a2c 回归]...
+2026-04-29 20:22:19 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:19 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.4751 mHa
+Search completed. Best energy: -1.135809 Hartree
+Best excitations: 2 operators
+  ✅ PASS - 1.3 最小化训练 [a2c 回归]
+    agent: a2c
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [sac_discrete 回归]...
+2026-04-29 20:22:22 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:22 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [sac_discrete 回归]
+    agent: sac_discrete
+    class: SACDiscreteAgent
+
+Running: 1.3 最小化训练 [sac_discrete 回归]...
+2026-04-29 20:22:23 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:23 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+SAC search completed. Best energy: -1.133276 Hartree
+Best excitations: 1 operators
+  ✅ PASS - 1.3 最小化训练 [sac_discrete 回归]
+    agent: sac_discrete
+    message: 2-episode training completed without crash
+
+Running: 1.1 AgentFactory 注册 [grpo 回归]...
+2026-04-29 20:22:24 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:24 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS - 1.1 AgentFactory 注册 [grpo 回归]
+    agent: grpo
+    class: GRPOAgent
+
+Running: 1.3 最小化训练 [grpo 回归]...
+2026-04-29 20:22:25 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:25 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 4 episodes = 4 episodes
+GRPO search completed. Best energy: -1.116759 Hartree
+  ✅ PASS - 1.3 最小化训练 [grpo 回归]
+    agent: grpo
+    message: 2-episode training completed without crash
+
+================================================================================
+测试汇总
+================================================================================
+总计: 17 个测试  ✅ 通过: 17  ❌ 失败: 0
+
+✅ Level 0 通过，可继续 Level 1-5 测试
+
+>>> Level 0 通过，继续 Level 1-5...
+
+>>> 运行 Level 1-5: 功能 / 稳定性 / 化学精度测试...
+
+================================================================================
+RLQAS 验收系统 - Level 1-5  |  新算法验收: double_dqn
+================================================================================
+
+Running: Level 1: global_best 单调性...
+2026-04-29 20:22:57 - root - INFO - Logging configured with level INFO
+2026-04-29 20:22:59 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:22:59 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: global_best 单调性
+    global_bests: ['-1.116759', '-1.133104', '-1.136177', '-1.136177', '-1.136177']
+
+Running: Level 1: reset 后 global_best 保留...
+2026-04-29 20:23:00 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:23:00 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: reset 后 global_best 保留
+    best_before_reset: -1.116759
+    best_after_reset: -1.116759
+
+Running: Level 1: step() 返回值类型...
+2026-04-29 20:23:01 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:23:01 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: step() 返回值类型
+    reward: 0.0
+    done: False
+    obs_shape: (15,)
+
+Running: Level 1: 观测值无 NaN/Inf...
+2026-04-29 20:23:03 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:23:03 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+  ✅ PASS [Level 1] - Level 1: 观测值无 NaN/Inf
+    message: All observations are finite
+
+Running: Level 2: JSON 序列化 [double_dqn]...
+2026-04-29 20:23:04 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:23:04 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 40 timesteps (2 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 2] - Level 2: JSON 序列化 [double_dqn]
+    agent: double_dqn
+    keys: ['best_energy', 'fci_energy', 'energy_error_mha', 'chemical_accuracy', 'n_operators', 'fusion_template', 'molecule', 'bond_length', 'ansatz_type', 'agent_type', 'n_episodes_run', 'n_qubits']
+
+Running: Level 2: chemical_accuracy 类型 [double_dqn]...
+2026-04-29 20:23:10 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:23:10 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 2 episodes (40 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 40 timesteps (2 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 2] - Level 2: chemical_accuracy 类型 [double_dqn]
+    agent: double_dqn
+    chemical_accuracy: True
+
+Running: Level 3: UCC 基本搜索 [double_dqn]...
+2026-04-29 20:23:14 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:23:14 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 100 timesteps (5 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [double_dqn]
+    agent: double_dqn
+    best_energy: -1.137284
+    n_operators: 3
+
+Running: Level 3: UCC 能量物理合理 [double_dqn]...
+2026-04-29 20:23:31 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:23:31 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (200 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 200 timesteps (10 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 能量物理合理 [double_dqn]
+    agent: double_dqn
+    best_energy: -1.137284
+    fci_energy: -1.137284
+
+Running: Level 3: HEA 基本搜索 [double_dqn]...
+2026-04-29 20:24:14 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: HEA 基本搜索 [double_dqn]
+    agent: double_dqn
+    best_energy: -1.137284
+    fci_energy: -1.137284
+    n_operators: None
+
+Running: Level 4: n_episodes 生效 [double_dqn]...
+2026-04-29 20:24:17 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:24:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 15 episodes (300 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 300 timesteps (15 episodes × 20 steps)
+Double-DQN search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 4] - Level 4: n_episodes 生效 [double_dqn]
+    agent: double_dqn
+    n_episodes_run: 15
+
+Running: Level 4: max_operators 约束 [double_dqn]...
+2026-04-29 20:25:09 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:25:09 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 10 episodes (30 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 30 timesteps (10 episodes × 3 steps)
+Double-DQN search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 4] - Level 4: max_operators 约束 [double_dqn]
+    agent: double_dqn
+    n_operators: 2
+    max_operators: 3
+
+Running: Level 5: UCC 化学精度 LiH [double_dqn]...
+2026-04-29 20:25:17 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-04-29 20:25:17 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 300 episodes (6000 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting Double-DQN search: 6000 timesteps (300 episodes × 20 steps)
+Double-DQN search completed. Best energy: -7.881684 Hartree
+  ✅ PASS [Level 5] - Level 5: UCC 化学精度 LiH [double_dqn]
+    agent: double_dqn
+    energy_error_mha: 0.640 mHa
+
+Running: Level 5: HEA 化学精度 H2 [double_dqn]...
+2026-04-29 20:47:06 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 300 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.116759, best=-1.116759
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 5] - Level 5: HEA 化学精度 H2 [double_dqn]
+    agent: double_dqn
+    energy_error_mha: 0.000 mHa
+
+Running: Level 3: UCC 基本搜索 [ppo 回归]...
+2026-04-29 20:47:07 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:47:07 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=0.0000 mHa
+Search completed. Best energy: -1.137284 Hartree
+Best excitations: 1 operators
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [ppo 回归]
+    agent: ppo
+    best_energy: -1.137284
+    n_operators: 1
+
+Running: Level 3: UCC 基本搜索 [dqn 回归]...
+2026-04-29 20:47:08 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.137284, best=-1.137284
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [dqn 回归]
+    agent: dqn
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [a2c 回归]...
+2026-04-29 20:47:09 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.116759, best=-1.116759
+  Converged at episode 2: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [a2c 回归]
+    agent: a2c
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [sac_discrete 回归]...
+2026-04-29 20:47:11 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+[HybridSearchController] Starting hybrid search: 5 episodes, threshold=0.0016 Ha, molecule=H2
+  Episode    0: energy=-1.116759, best=-1.116759
+  Converged at episode 1: error=0.0000 mHa (threshold=1.60 mHa)
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [sac_discrete 回归]
+    agent: sac_discrete
+    best_energy: -1.137284
+    n_operators: None
+
+Running: Level 3: UCC 基本搜索 [grpo 回归]...
+2026-04-29 20:47:14 - rlqas_chem.molecule.processor - INFO - Processed molecule H2 with active space (2, 2), transform jordan_wigner, qubits=4, FCI energy=-1.137284
+2026-04-29 20:47:14 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+Starting UCC search for 5 episodes (100 timesteps)
+Early stop threshold: 0.0016 Hartree
+Starting GRPO search: 1 groups x 4 episodes = 4 episodes
+GRPO search completed. Best energy: -1.137284 Hartree
+  ✅ PASS [Level 3] - Level 3: UCC 基本搜索 [grpo 回归]
+    agent: grpo
+    best_energy: -1.137284
+    n_operators: 2
+
+Running: Level 5: UCC 化学精度 LiH [ppo 回归]...
+2026-04-29 20:47:22 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (4, 6), transform jordan_wigner, qubits=12, FCI energy=-7.882324
+2026-04-29 20:47:22 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=ci_vector, max_memory=32.0GB, use_gpu=False
+Using cpu device
+Starting UCC search for 300 episodes (6000 timesteps)
+Early stop threshold: 0.0016 Hartree
+  Early stop: error=1.5661 mHa
+Search completed. Best energy: -7.880758 Hartree
+Best excitations: 5 operators
+  ✅ PASS [Level 5] - Level 5: UCC 化学精度 LiH [ppo 回归]
+    agent: ppo
+    energy_error_mha: 1.566 mHa
+
+================================================================================
+测试汇总（按 Level）
+================================================================================
+
+Level 1: 4/4 通过
+  ✅ Level 1: global_best 单调性
+  ✅ Level 1: reset 后 global_best 保留
+  ✅ Level 1: step() 返回值类型
+  ✅ Level 1: 观测值无 NaN/Inf
+
+Level 2: 2/2 通过
+  ✅ Level 2: JSON 序列化 [double_dqn]
+  ✅ Level 2: chemical_accuracy 类型 [double_dqn]
+
+Level 3: 8/8 通过
+  ✅ Level 3: UCC 基本搜索 [double_dqn]
+  ✅ Level 3: UCC 能量物理合理 [double_dqn]
+  ✅ Level 3: HEA 基本搜索 [double_dqn]
+  ✅ Level 3: UCC 基本搜索 [ppo 回归]
+  ✅ Level 3: UCC 基本搜索 [dqn 回归]
+  ✅ Level 3: UCC 基本搜索 [a2c 回归]
+  ✅ Level 3: UCC 基本搜索 [sac_discrete 回归]
+  ✅ Level 3: UCC 基本搜索 [grpo 回归]
+
+Level 4: 2/2 通过
+  ✅ Level 4: n_episodes 生效 [double_dqn]
+  ✅ Level 4: max_operators 约束 [double_dqn]
+
+Level 5: 3/3 通过
+  ✅ Level 5: UCC 化学精度 LiH [double_dqn]
+  ✅ Level 5: HEA 化学精度 H2 [double_dqn]
+  ✅ Level 5: UCC 化学精度 LiH [ppo 回归]
+
+================================================================================
+总体判定
+================================================================================
+总计: 19 个测试  ✅ 通过: 19  ❌ 失败: 0
+
+✅ 验收通过
+
+========================================
+  ✅ 验收通过
+  新算法验收: double_dqn
+  2026-04-29 20:47:27
+========================================
+  ✅ double_dqn PASS

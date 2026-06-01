@@ -1,0 +1,31 @@
+=== RLQAS LiH HEA GRPO Learning Validation ===
+Job ID  : 83482
+Node    : curie-gpu003
+Started : Mon May 25 06:23:57 PM CST 2026
+
+2026-05-25 18:24:42 - root - INFO - Logging configured with level INFO
+rlqas_chem ready
+2026-05-25 18:25:13 - root - INFO - Logging configured with level INFO
+============================================================
+RLQAS LiH HEA GRPO Learning Validation
+Molecule    : LiH @ 1.6 A  active_space=(2, 3)
+Transform   : jordan_wigner  max_layers=3
+Episodes    : 500  (run in groups of 8)
+Started     : 2026-05-25 18:25:14.785473
+============================================================
+2026-05-25 18:25:19 - rlqas_chem.molecule.processor - INFO - Processed molecule LiH with active space (2, 3), aslst=[1, 2, 5], transform jordan_wigner, qubits=6, FCI energy=-7.881072
+FCI energy  : -7.881072 Ha
+HF energy   : -7.861865 Ha
+HF error    : 19.207 mHa
+
+============================================================
+HEA Search Starting
+  Agent: grpo
+  Episodes: 500
+  Timesteps: 1500
+  Classical opt: True
+============================================================
+
+2026-05-25 18:25:19 - rlqas_chem.simulator.tencirchem - INFO - Simulator initialized with engine=statevector, max_memory=32.0GB, use_gpu=False
+[HEASearchController] GRPO loop: 62 groups × 8 episodes = 496 episodes
+2026-05-25 18:25:24 - jax._src.xla_bridge - INFO - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
